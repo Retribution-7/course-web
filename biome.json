@@ -1,0 +1,41 @@
+{
+	"files": {
+		"ignoreUnknown": true
+	},
+
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+
+			"suspicious": {
+				"noConsole": "warn"
+			},
+
+			"correctness": {
+				"noUnusedVariables": "error",
+				"noUnusedImports": "error",
+				"noUndeclaredVariables": "error"
+			},
+
+			"style": {
+				"useConst": "error",
+				"useTemplate": "warn",
+				"noUselessElse": "error"
+			}
+		}
+	},
+
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double",
+			"jsxQuoteStyle": "double"
+		}
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
+	}
+
+}
