@@ -1,0 +1,25 @@
+{
+  "name": "Metallbase",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "json-server --watch DB/db.json --port 3000"
+  },
+  "devDependencies": {
+    "json-server": "^0.17.4",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.2.1",
+    "@types/leaflet": "^1.9.21",
+    "leaflet": "^1.9.4",
+    "prettier-plugin-css-order": "^2.2.0",
+    "swiper": "^12.1.2",
+    "tailwindcss": "^4.2.1"
+  }
+}
