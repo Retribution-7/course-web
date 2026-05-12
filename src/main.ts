@@ -1,7 +1,9 @@
 import "./styles/main.css";
 
+import { initRouter } from "./app/router";
 import { About } from "./widgets/About";
 import { Calculator, initCalculator } from "./features/Calculator";
+import { AuthPage, initAuthPage } from "./pages/AuthPage";
 import { CartPage, initCartPage } from "./pages/CartPage";
 import { Catalog, initCatalog } from "./widgets/Catalog";
 import { ContactForm, initContactForm } from "./widgets/ContactForm";
@@ -26,6 +28,7 @@ app.innerHTML = `
     ${Testimonials()}
   </main>
   ${CartPage()}
+  ${AuthPage()}
   ${Footer()}
   ${Calculator()}
 `;
@@ -36,3 +39,5 @@ initContactForm();
 initTestimonials();
 initCalculator();
 initCartPage();
+initAuthPage();
+initRouter();
