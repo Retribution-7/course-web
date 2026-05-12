@@ -5,6 +5,7 @@ import { About } from "./widgets/About";
 import { Calculator, initCalculator } from "./features/Calculator";
 import { AuthPage, initAuthPage } from "./pages/AuthPage";
 import { CartPage, initCartPage } from "./pages/CartPage";
+import { ProductDetailPage, initProductDetailPage } from "./pages/ProductDetailPage";
 import { Catalog, initCatalog } from "./widgets/Catalog";
 import { ContactForm, initContactForm } from "./widgets/ContactForm";
 import { Footer } from "./widgets/Footer";
@@ -29,6 +30,7 @@ app.innerHTML = `
   </main>
   ${CartPage()}
   ${AuthPage()}
+  ${ProductDetailPage()}
   ${Footer()}
   ${Calculator()}
 `;
@@ -40,4 +42,5 @@ initTestimonials();
 initCalculator();
 initCartPage();
 initAuthPage();
+initProductDetailPage();
 initRouter();

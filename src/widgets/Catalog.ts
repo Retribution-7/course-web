@@ -18,14 +18,16 @@ const categoryGroups: { key: CategoryKey; title: string }[] = [
 ];
 
 const renderProductGroup = ({ key, title }: { key: CategoryKey; title: string }): string => {
-  const items = products.filter((p) => p.category === key);
+  const items = products
+    .map((p, originalIndex) => ({ product: p, originalIndex }))
+    .filter(({ product }) => product.category === key);
   return `
     <div class="product-group mt-14 lg:mt-20 xl:mt-24" data-group="${key}">
       <h3 class="font-sans font-normal text-[24px] leading-[1.3] lg:text-[30px] xl:text-[36px] xl:leading-[49px] gradient-text mb-6 lg:mb-10">
         ${title}
       </h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 xl:gap-10">
-        ${items.map(ProductCard).join("")}
+        ${items.map(({ product, originalIndex }) => ProductCard(product, originalIndex)).join("")}
       </div>
     </div>
   `;
