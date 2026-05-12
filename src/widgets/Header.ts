@@ -14,6 +14,19 @@ const CartIcon = (extraClass = ""): string => `
   </a>
 `;
 
+const AuthIcon = (extraClass = ""): string => `
+  <a href="#auth"
+     class="auth-link grid place-items-center size-11 rounded-full
+            border border-[#FFC400] bg-white shrink-0
+            transition-transform hover:scale-105 ${extraClass}"
+     aria-label="Войти или зарегистрироваться">
+    <svg viewBox="0 0 24 24" class="size-5 text-primary" fill="none" stroke="currentColor" stroke-width="1.6">
+      <circle cx="12" cy="8" r="4"/>
+      <path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>
+    </svg>
+  </a>
+`;
+
 export const Header = (): string => {
   return `
     <header class="bg-white w-full sticky top-0 z-50 shadow-[0_2px_20px_rgba(0,0,0,0.06)]">
@@ -86,13 +99,15 @@ export const Header = (): string => {
             </button>
           </div>
 
-          <!-- Корзина (десктоп) -->
-          <div class="hidden 2xl:block shrink-0">
+          <!-- Аккаунт + корзина (десктоп) -->
+          <div class="hidden 2xl:flex items-center gap-3 shrink-0">
+            ${AuthIcon()}
             ${CartIcon()}
           </div>
 
-          <!-- Корзина (мобильный/планшет) -->
-          <div class="2xl:hidden ml-auto shrink-0">
+          <!-- Аккаунт + корзина (мобильный/планшет) -->
+          <div class="2xl:hidden ml-auto flex items-center gap-2 shrink-0">
+            ${AuthIcon()}
             ${CartIcon()}
           </div>
 
