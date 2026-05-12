@@ -1,0 +1,263 @@
+interface Stat {
+  value: string;
+  label: string;
+}
+
+interface Milestone {
+  year: string;
+  title: string;
+  description: string;
+}
+
+interface Value {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+const STATS: Stat[] = [
+  { value: "13+", label: "лет на рынке" },
+  { value: "5 000+", label: "постоянных клиентов" },
+  { value: "20 000 м²", label: "складских площадей" },
+  { value: "80+", label: "сотрудников" },
+];
+
+const MILESTONES: Milestone[] = [
+  {
+    year: "2010",
+    title: "Основание компании",
+    description:
+      "Открыли первый склад в Горелово площадью 1 500 м². Начали с поставок профнастила и арматуры.",
+  },
+  {
+    year: "2014",
+    title: "Расширение ассортимента",
+    description:
+      "Добавили в каталог металлочерепицу, фальцевую кровлю и доборные элементы. Склад вырос до 8 000 м².",
+  },
+  {
+    year: "2017",
+    title: "Собственный автопарк",
+    description:
+      "Запустили службу доставки: 50 машин грузоподъёмностью от 1,5 до 20 тонн. Сроки доставки сократились до 1–2 дней.",
+  },
+  {
+    year: "2020",
+    title: "Прямые контракты с заводами",
+    description:
+      "Перешли на работу напрямую с производителями, снизив цены для клиентов на 8–15%.",
+  },
+  {
+    year: "2024",
+    title: "Цифровая платформа",
+    description:
+      "Запустили онлайн-каталог с калькулятором стоимости и автоматизацию обработки заявок — менее 30 минут от заявки до счёта.",
+  },
+];
+
+const VALUES: Value[] = [
+  {
+    icon: "/icons/check-square.svg",
+    title: "Качество без компромиссов",
+    description:
+      "Принимаем металл только у производителей с сертификацией. Каждая партия проходит входной контроль на складе.",
+  },
+  {
+    icon: "/icons/calculatings.svg",
+    title: "Прозрачные цены",
+    description:
+      "Цены в каталоге — финальные. Никаких «уточним при заказе»: вы видите стоимость до копейки ещё на этапе расчёта.",
+  },
+  {
+    icon: "/icons/people.svg",
+    title: "Внимание к клиенту",
+    description:
+      "Менеджер ведёт заказ от заявки до подписания акта приёмки. Любые вопросы — по одному номеру, без переключений.",
+  },
+  {
+    icon: "/icons/time.svg",
+    title: "Скорость поставки",
+    description:
+      "Большая часть заказов отгружается в день обращения. Срочные — в течение 2 часов с момента оплаты.",
+  },
+];
+
+const renderStat = (stat: Stat): string => `
+  <div class="bg-white rounded-[14px] card-shadow p-5 sm:p-6 lg:p-7 text-center flex flex-col gap-2">
+    <span class="font-sans font-normal text-[28px] sm:text-[32px] lg:text-[40px] xl:text-[48px] leading-none gradient-text">
+      ${stat.value}
+    </span>
+    <span class="font-sans text-[13px] sm:text-[14px] leading-[1.4] text-[#758499]">
+      ${stat.label}
+    </span>
+  </div>
+`;
+
+const renderMilestone = (m: Milestone): string => `
+  <article class="relative pl-8 sm:pl-10 lg:pl-12 pb-6 lg:pb-8 last:pb-0
+                  before:absolute before:left-[14px] sm:before:left-[18px] lg:before:left-[22px]
+                  before:top-2 before:bottom-0
+                  before:w-px before:bg-[#E5E9EE]
+                  last:before:hidden">
+    <span class="absolute left-0 top-0 grid size-[30px] sm:size-9 lg:size-11 place-items-center
+                 rounded-full gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]
+                 font-sans text-[11px] sm:text-[12px] lg:text-[13px] text-primary">
+      <span class="sr-only">${m.year}</span>
+    </span>
+    <div class="flex flex-col gap-1.5 sm:gap-2">
+      <span class="font-sans text-[13px] sm:text-[14px] uppercase tracking-[0.08em] text-[#FFC400]">
+        ${m.year}
+      </span>
+      <h3 class="font-sans font-normal text-[18px] sm:text-[20px] lg:text-[24px] leading-[1.2] text-primary">
+        ${m.title}
+      </h3>
+      <p class="font-sans text-[14px] sm:text-[15px] leading-[1.55] text-[#44444E]">
+        ${m.description}
+      </p>
+    </div>
+  </article>
+`;
+
+const renderValue = (v: Value): string => `
+  <article class="bg-white rounded-[14px] card-shadow p-5 sm:p-6 lg:p-7 flex flex-col gap-4">
+    <div class="size-12 lg:size-14 rounded-[12px] gradient-icon grid place-items-center
+                shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]
+                border border-[rgba(255,196,0,0.3)]">
+      <img src="${v.icon}" alt="" class="size-6 object-contain" aria-hidden="true">
+    </div>
+    <h3 class="font-sans font-normal text-[18px] sm:text-[20px] leading-[1.2] gradient-text">
+      ${v.title}
+    </h3>
+    <p class="font-sans text-[14px] sm:text-[15px] leading-[1.55] text-[#44444E]">
+      ${v.description}
+    </p>
+  </article>
+`;
+
+export const AboutCompanyPage = (): string => `
+  <section id="company-page"
+           class="hidden bg-[#F3F5F9] py-10 lg:py-16 min-h-[60vh]"
+           aria-labelledby="company-heading">
+    <div class="container-main">
+
+      <a href="#"
+         class="inline-flex items-center gap-2 font-sans text-[14px] lg:text-[15px]
+                text-[#44444E] hover:text-[#FFC400] transition-colors mb-6 lg:mb-10">
+        <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M10 3l-5 5 5 5"/>
+        </svg>
+        На главную
+      </a>
+
+      <header class="bg-white rounded-[14px] card-shadow p-6 sm:p-8 lg:p-10 xl:p-14">
+        <span class="font-sans text-[13px] lg:text-[14px] uppercase tracking-[0.08em] text-[#FFC400]">
+          О компании
+        </span>
+        <h1 id="company-heading"
+            class="mt-3 font-sans font-normal text-[28px] leading-[1.1] sm:text-[36px] lg:text-[48px] xl:text-[56px] xl:leading-[1.15] gradient-text">
+          МЕТАЛЛОБАЗА ВОЛХОНКА
+        </h1>
+        <p class="mt-4 lg:mt-6 max-w-[760px] font-sans text-[15px] sm:text-[16px] lg:text-[18px] leading-[1.6] text-[#44444E]">
+          С 2010 года поставляем кровельные и фасадные материалы для частных домов,
+          коммерческих объектов и промышленных предприятий по всей Северо-Западу.
+          Работаем напрямую с заводами-изготовителями — это значит честные цены,
+          контроль качества и поставки в срок.
+        </p>
+
+        <div class="mt-6 lg:mt-10 grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5">
+          ${STATS.map(renderStat).join("")}
+        </div>
+      </header>
+
+      <section class="mt-10 lg:mt-14 bg-white rounded-[14px] card-shadow p-6 sm:p-8 lg:p-10 xl:p-14"
+               aria-labelledby="mission-heading">
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-6 lg:gap-12 items-start">
+          <div>
+            <span class="font-sans text-[13px] lg:text-[14px] uppercase tracking-[0.08em] text-[#FFC400]">
+              Наша миссия
+            </span>
+            <h2 id="mission-heading"
+                class="mt-3 font-sans font-normal text-[24px] leading-[1.15] sm:text-[28px] lg:text-[36px] xl:text-[40px] gradient-text">
+              Сделать качественный металл доступным
+            </h2>
+          </div>
+          <p class="font-sans text-[15px] sm:text-[16px] lg:text-[17px] leading-[1.65] text-[#44444E]">
+            Мы верим, что надёжная кровля и фасад не должны стоить как премиальная иномарка.
+            Поэтому мы убираем посредников, держим собственный склад и автопарк,
+            автоматизируем расчёты — и передаём экономию клиенту. Чтобы у каждого
+            был выбор: купить дешевле без потери качества или получить премиальный
+            материал по справедливой цене.
+          </p>
+        </div>
+      </section>
+
+      <section class="mt-10 lg:mt-14" aria-labelledby="values-heading">
+        <h2 id="values-heading"
+            class="font-sans font-normal text-[24px] leading-[1.2] sm:text-[28px] lg:text-[36px] xl:text-[44px] gradient-text">
+          Наши принципы
+        </h2>
+        <div class="mt-6 lg:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          ${VALUES.map(renderValue).join("")}
+        </div>
+      </section>
+
+      <section class="mt-10 lg:mt-14 bg-white rounded-[14px] card-shadow p-6 sm:p-8 lg:p-10 xl:p-14"
+               aria-labelledby="timeline-heading">
+        <h2 id="timeline-heading"
+            class="font-sans font-normal text-[24px] leading-[1.2] sm:text-[28px] lg:text-[36px] xl:text-[44px] gradient-text">
+          История компании
+        </h2>
+        <div class="mt-6 lg:mt-10">
+          ${MILESTONES.map(renderMilestone).join("")}
+        </div>
+      </section>
+
+      <section class="mt-10 lg:mt-14 bg-white rounded-[14px] card-shadow p-6 sm:p-8 lg:p-10 xl:p-14
+                      flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 lg:gap-10">
+        <div class="max-w-[560px]">
+          <h2 class="font-sans font-normal text-[24px] leading-[1.2] sm:text-[28px] lg:text-[32px] gradient-text">
+            Готовы обсудить ваш проект?
+          </h2>
+          <p class="mt-3 font-sans text-[14px] sm:text-[15px] lg:text-[16px] leading-[1.6] text-[#44444E]">
+            Менеджер подберёт материал под ваш бюджет и сроки. Расскажет о текущих
+            ценах, складских остатках и условиях доставки.
+          </p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 lg:gap-4 w-full lg:w-auto">
+          <a href="#consultation"
+             class="inline-flex items-center justify-center rounded-full
+                    bg-gradient-to-r from-button-first to-button-second
+                    px-6 lg:px-8 py-[15px] font-sans text-[15px] lg:text-[17px] leading-[1.4] text-[#44444E]
+                    transition-all duration-300 hover:scale-[1.02] cursor-pointer
+                    shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)] no-underline text-center">
+            Связаться с нами
+          </a>
+          <a href="#catalog"
+             class="inline-flex items-center justify-center rounded-full
+                    bg-[#FAFAFA] border border-[#FFC400]
+                    px-6 lg:px-8 py-[15px] font-sans text-[15px] lg:text-[17px] leading-[1.4] text-[#44444E]
+                    transition-colors duration-200 hover:bg-white cursor-pointer no-underline text-center">
+            В каталог
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </section>
+`;
+
+const showPage = (show: boolean): void => {
+  const page = document.getElementById("company-page");
+  if (!page) return;
+  page.classList.toggle("hidden", !show);
+  if (show) window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+const handleRoute = (): void => {
+  showPage(window.location.hash === "#company");
+};
+
+export const initAboutCompanyPage = (): void => {
+  handleRoute();
+  window.addEventListener("hashchange", handleRoute);
+};
