@@ -6,6 +6,7 @@ import { Calculator, initCalculator } from "./features/Calculator";
 import { AuthPage, initAuthPage } from "./pages/AuthPage";
 import { CartPage, initCartPage } from "./pages/CartPage";
 import { ProductDetailPage, initProductDetailPage } from "./pages/ProductDetailPage";
+import { ReviewsPage, initReviewsPage } from "./pages/ReviewsPage";
 import { Catalog, initCatalog } from "./widgets/Catalog";
 import { ContactForm, initContactForm } from "./widgets/ContactForm";
 import { Footer } from "./widgets/Footer";
@@ -31,6 +32,7 @@ app.innerHTML = `
   ${CartPage()}
   ${AuthPage()}
   ${ProductDetailPage()}
+  ${ReviewsPage()}
   ${Footer()}
   ${Calculator()}
 `;
@@ -43,4 +45,5 @@ initCalculator();
 initCartPage();
 initAuthPage();
 initProductDetailPage();
+initReviewsPage();
 initRouter();

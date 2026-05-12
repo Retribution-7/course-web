@@ -1,30 +1,6 @@
-interface Review {
-  name: string;
-  date: string;
-  avatar: string;
-  text: string;
-}
+import { reviews as allReviews, type Review } from "../entities/reviews";
 
-const reviews: Review[] = [
-  {
-    name: "Serg",
-    date: "27.07.2022",
-    avatar: "/images/customers/customer-1.svg",
-    text: "Долго думал где покупать арматуру на фундамент, по рекомендации друзей заказывал на этой металлобазе. Менеджер Дмитрий все четко посчитал, цена меня устроила. Доставка была в срок. Буду и дальше с ним работать.",
-  },
-  {
-    name: "Квартира дом",
-    date: "21.01.2022",
-    avatar: "/images/customers/customer-2.svg",
-    text: "Рекомендую! Прекрасная компания. Обращаюсь не в первый раз. Менеджеры клиентоориентированы. Приятно, когда тебя и твои запросы понимают. Всегда гуманные цены. Профлист качественный, снегозадержатели супер. Спасибо!",
-  },
-  {
-    name: "Вячеслав Е",
-    date: "10.12.2022",
-    avatar: "/images/customers/customer-3.svg",
-    text: "Все чётко. Приняли заказ по телефону, пока ехал подготовили все документы отправили на WhatsApp точку чтобы не заблудился. Приехал, оплатил, забрал 10 минут максимум.",
-  },
-];
+const reviews: Review[] = allReviews.slice(0, 3);
 
 const renderReviewCard = (review: Review, idx: number): string => `
   <article
@@ -111,6 +87,21 @@ export const Testimonials = (): string => {
           `,
             )
             .join("")}
+        </div>
+
+        <!-- CTA: все отзывы -->
+        <div class="flex justify-center mt-4 lg:mt-8">
+          <a href="#reviews"
+             class="inline-flex items-center gap-2 rounded-full
+                    bg-[#FAFAFA] border border-[#FFC400]
+                    px-6 py-3 lg:px-8 lg:py-[15px]
+                    font-sans text-[14px] sm:text-[15px] lg:text-[17px] leading-[1.4] text-[#44444E]
+                    transition-colors duration-200 hover:bg-white cursor-pointer no-underline">
+            Все отзывы
+            <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M6 3l5 5-5 5"/>
+            </svg>
+          </a>
         </div>
 
       </div>
