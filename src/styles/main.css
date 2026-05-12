@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@import "./theme.css";
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	@apply bg-white text-body text-primary font-sans;
+}
+
+.container-main {
+	@apply mx-auto max-w-container px-5;
+}
+
+.btn-primary {
+	@apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-button-first to-button-second px-10 py-6 text-h5 uppercase transition-all duration-300 hover:scale-[1.02];
+}
