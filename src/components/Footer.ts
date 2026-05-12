@@ -1,0 +1,83 @@
+export const Footer = (): string => {
+  return `
+    <footer class="bg-white border-t border-[rgba(68,68,78,0.1)]" aria-label="Подвал сайта">
+      <div class="container-main py-[37px]">
+
+        <!-- Основная строка -->
+        <div class="flex flex-wrap items-center justify-between gap-8">
+
+          <!-- Логотип -->
+          <a href="/" aria-label="Металлобаза Волхонка — на главную" class="shrink-0">
+            <img src="/icons/logo.svg" alt="Металлобаза Волхонка" class="h-[108px] w-[134px] object-contain">
+          </a>
+
+          <!-- PDF прайс-лист -->
+          <a href="#" class="flex items-center gap-5 shrink-0 group" aria-label="Скачать прайс-лист PDF">
+            <div class="relative size-[61px] shrink-0">
+              <div class="size-full rounded-full gradient-icon flex items-center justify-center shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)]">
+              </div>
+              <span class="absolute inset-0 flex items-center justify-center text-[17px] font-sans text-primary font-normal">PDF</span>
+            </div>
+            <span class="text-[17px] text-primary font-normal group-hover:underline">Скачать прайс-лист</span>
+          </a>
+
+          <!-- Кнопка каталога -->
+          <a href="#catalog" class="btn-primary text-[17px] px-6 py-5 shrink-0">
+            Посмотреть каталог товаров
+          </a>
+
+          <!-- Мессенджеры -->
+          <div class="flex flex-col items-start gap-3 shrink-0">
+            <div class="flex items-center gap-2">
+              <span class="size-[6px] rounded-full bg-[#FFC400] shrink-0"></span>
+              <span class="text-[13px] text-primary font-normal leading-[1.3]">Задайте вопрос online</span>
+            </div>
+            <div class="flex items-center gap-[15px]">
+              <a href="https://wa.me/78123255055" target="_blank" rel="noopener noreferrer"
+                 class="flex items-center justify-center w-[50px] h-[41px] rounded-[8px] shrink-0 transition-opacity hover:opacity-80"
+                 style="background: linear-gradient(145deg, rgba(0,215,41,0.3) 0%, rgb(0,215,41) 100%)"
+                 aria-label="WhatsApp">
+                <img src="/icons/whats-app-logo.svg" alt="WhatsApp" class="size-[19px]">
+              </a>
+              <a href="https://t.me/metallobaza" target="_blank" rel="noopener noreferrer"
+                 class="flex items-center justify-center w-[50px] h-[41px] rounded-[8px] shrink-0 transition-opacity hover:opacity-80"
+                 style="background: linear-gradient(145deg, rgba(40,169,234,0.3) 0%, rgb(40,169,234) 100%)"
+                 aria-label="Telegram">
+                <img src="/icons/telegram-logo.svg" alt="Telegram" class="size-[19px]">
+              </a>
+              <a href="https://vk.com/metallobaza" target="_blank" rel="noopener noreferrer"
+                 class="flex items-center justify-center w-[50px] h-[41px] rounded-[8px] bg-[#0077FF] shrink-0 transition-opacity hover:opacity-80"
+                 aria-label="ВКонтакте">
+                <img src="/icons/vk-logo.svg" alt="ВКонтакте" class="size-[19px]">
+              </a>
+            </div>
+          </div>
+
+          <!-- Телефон -->
+          <div class="flex flex-col items-start shrink-0">
+            <a href="tel:+78123255055"
+               class="text-[28px] leading-[38px] font-sans font-normal gradient-text hover:opacity-80 transition-opacity">
+              +7 (812) 325-50-55
+            </a>
+            <button class="text-[22px] leading-[30px] text-primary font-sans font-normal hover:underline cursor-pointer"
+                    onclick="document.getElementById('consultation')?.scrollIntoView({behavior:'smooth'})">
+              Перезвоним Вам
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Нижняя строка: копирайт -->
+        <div class="mt-[18px] flex flex-col items-center gap-1 border-t border-[rgba(68,68,78,0.1)] pt-[18px]">
+          <a href="#" class="font-sans font-normal text-[17px] leading-[1.8] text-primary hover:underline">
+            Политика конфиденциальности
+          </a>
+          <p class="font-sans font-normal text-[17px] leading-[1.8] text-primary text-center">
+            Copyright © 2010 - 2022 | ООО «СУПЕРМЕТ»
+          </p>
+        </div>
+
+      </div>
+    </footer>
+  `;
+};
