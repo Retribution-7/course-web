@@ -7,12 +7,16 @@ interface FilterState {
   search: string;
   sort: SortOrder;
   rating: RatingFilter;
+  page: number;
 }
+
+const PAGE_SIZE = 6;
 
 const state: FilterState = {
   search: "",
   sort: "newest",
   rating: "all",
+  page: 1,
 };
 
 const Stars = (rating: number): string => {
@@ -167,6 +171,10 @@ export const ReviewsPage = (): string => `
       <div id="reviews-grid"
            class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
       </div>
+
+      <div id="reviews-pagination"
+           class="hidden mt-8 lg:mt-12 flex flex-wrap items-center justify-center gap-2"
+           aria-label="Пагинация"></div>
     </div>
   </section>
 `;
@@ -208,17 +216,51 @@ const sortReviews = (list: Review[]): Review[] => {
   return sorted;
 };
 
+const renderPagination = (totalPages: number, currentPage: number): string => {
+  if (totalPages <= 1) return "";
+  const pageBtn = (label: string, page: number, isActive = false, isDisabled = false) => `
+    <button type="button"
+            data-page="${page}"
+            ${isDisabled ? "disabled" : ""}
+            class="min-w-[40px] h-10 px-3 rounded-full font-sans text-[14px] lg:text-[15px]
+                   transition-colors duration-200 cursor-pointer
+                   ${
+                     isActive
+                       ? "bg-gradient-to-r from-button-first to-button-second text-[#44444E] shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]"
+                       : "bg-white border border-[#FFC400] text-[#44444E] hover:bg-[#FAFAFA]"
+                   }
+                   disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white">
+      ${label}
+    </button>
+  `;
+
+  const pages: string[] = [];
+  pages.push(pageBtn("←", currentPage - 1, false, currentPage === 1));
+  for (let p = 1; p <= totalPages; p++) {
+    pages.push(pageBtn(String(p), p, p === currentPage));
+  }
+  pages.push(pageBtn("→", currentPage + 1, false, currentPage === totalPages));
+  return pages.join("");
+};
+
 const renderGrid = (): void => {
   const grid = document.getElementById("reviews-grid");
   const summary = document.getElementById("reviews-summary");
   const avg = document.getElementById("reviews-avg-rating");
-  if (!grid || !summary || !avg) return;
+  const pagination = document.getElementById("reviews-pagination");
+  if (!grid || !summary || !avg || !pagination) return;
 
   const filtered = sortReviews(reviews.filter(matchesFilters));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  state.page = Math.max(1, Math.min(state.page, totalPages));
+  const start = (state.page - 1) * PAGE_SIZE;
+  const pageItems = filtered.slice(start, start + PAGE_SIZE);
 
   if (filtered.length === 0) {
     grid.innerHTML = "";
     grid.classList.add("hidden");
+    pagination.classList.add("hidden");
+    pagination.innerHTML = "";
     let empty = document.getElementById("reviews-empty");
     if (!empty) {
       empty = document.createElement("div");
@@ -229,7 +271,16 @@ const renderGrid = (): void => {
   } else {
     grid.classList.remove("hidden");
     document.getElementById("reviews-empty")?.remove();
-    grid.innerHTML = filtered.map(renderCard).join("");
+    grid.innerHTML = pageItems.map(renderCard).join("");
+
+    const paginationHtml = renderPagination(totalPages, state.page);
+    if (paginationHtml) {
+      pagination.classList.remove("hidden");
+      pagination.innerHTML = paginationHtml;
+    } else {
+      pagination.classList.add("hidden");
+      pagination.innerHTML = "";
+    }
   }
 
   summary.textContent = `Показано ${pluralReviews(filtered.length)} из ${reviews.length}`;
@@ -255,6 +306,7 @@ const resetFilters = (): void => {
   state.search = "";
   state.rating = "all";
   state.sort = "newest";
+  state.page = 1;
   const search = document.getElementById("reviews-search") as HTMLInputElement | null;
   const rating = document.getElementById("reviews-rating") as HTMLSelectElement | null;
   const sort = document.getElementById("reviews-sort") as HTMLSelectElement | null;
@@ -270,17 +322,32 @@ export const initReviewsPage = (): void => {
 
   document.getElementById("reviews-search")?.addEventListener("input", (e) => {
     state.search = (e.target as HTMLInputElement).value.trim();
+    state.page = 1;
     renderGrid();
   });
 
   document.getElementById("reviews-rating")?.addEventListener("change", (e) => {
     state.rating = (e.target as HTMLSelectElement).value as RatingFilter;
+    state.page = 1;
     renderGrid();
   });
 
   document.getElementById("reviews-sort")?.addEventListener("change", (e) => {
     state.sort = (e.target as HTMLSelectElement).value as SortOrder;
+    state.page = 1;
     renderGrid();
+  });
+
+  document.getElementById("reviews-pagination")?.addEventListener("click", (event) => {
+    const btn = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-page]");
+    if (!btn || btn.disabled) return;
+    const page = Number.parseInt(btn.dataset.page ?? "", 10);
+    if (Number.isNaN(page)) return;
+    state.page = page;
+    renderGrid();
+    document
+      .getElementById("reviews-grid")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   document.addEventListener("click", (event) => {

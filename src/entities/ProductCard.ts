@@ -1,5 +1,7 @@
 import { isAuthenticated } from "../services/auth";
 import { favorites } from "../services/favorites";
+import { showToast } from "../shared/ui/toast";
+import { products } from "./products";
 import type { Product } from "./products";
 
 export const COLOR_OPTIONS = [
@@ -191,7 +193,14 @@ export const initProductCards = (): void => {
         return;
       }
       const id = Number.parseInt(favBtn.dataset.productId ?? "", 10);
-      if (!Number.isNaN(id)) favorites.toggle(id);
+      if (Number.isNaN(id)) return;
+      const added = favorites.toggle(id);
+      const product = products[id];
+      const name = product?.title ?? "Товар";
+      showToast(
+        added ? `«${name}» добавлен в избранное` : `«${name}» убран из избранного`,
+        { type: added ? "success" : "info" },
+      );
       return;
     }
 

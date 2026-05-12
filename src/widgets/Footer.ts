@@ -1,3 +1,19 @@
+export const initFooter = (): void => {
+  document.addEventListener("click", (event) => {
+    const btn = (event.target as HTMLElement).closest('[data-action="reset-settings"]');
+    if (!btn) return;
+    if (
+      confirm(
+        "Сбросить все настройки и выйти?\nБудут удалены: корзина, избранное, аккаунт.",
+      )
+    ) {
+      localStorage.clear();
+      window.location.hash = "";
+      window.location.reload();
+    }
+  });
+};
+
 export const Footer = (): string => {
   return `
     <footer class="bg-white border-t border-[rgba(68,68,78,0.1)]" aria-label="Подвал сайта">
@@ -81,6 +97,11 @@ export const Footer = (): string => {
             <a href="#" class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary hover:underline">
               Политика конфиденциальности
             </a>
+            <span class="hidden sm:inline-block size-1 rounded-full bg-[rgba(68,68,78,0.3)]" aria-hidden="true"></span>
+            <button type="button" data-action="reset-settings"
+                    class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-[#758499] hover:text-[#FFC400] hover:underline cursor-pointer transition-colors">
+              Сбросить настройки
+            </button>
           </nav>
           <p class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary text-center">
             Copyright © 2010 - 2022 | ООО «СУПЕРМЕТ»
