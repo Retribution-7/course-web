@@ -152,10 +152,8 @@ const render = (): void => {
 };
 
 const showPage = (show: boolean): void => {
-  const main = document.querySelector("main");
   const page = document.getElementById("cart-page");
-  if (!main || !page) return;
-  main.classList.toggle("hidden", show);
+  if (!page) return;
   page.classList.toggle("hidden", !show);
   if (show) {
     render();
