@@ -1,3 +1,4 @@
+import { isAuthenticated } from "../services/auth";
 import { cart } from "../services/cart";
 
 const THICKNESS_MULTIPLIER: Record<string, number> = {
@@ -311,6 +312,11 @@ export const initCalculator = (): void => {
   });
 
   document.getElementById("calc-add-to-cart")?.addEventListener("click", () => {
+    if (!isAuthenticated()) {
+      closeModal();
+      window.location.hash = "#auth";
+      return;
+    }
     const areaInput = document.getElementById("calc-area") as HTMLInputElement | null;
     const installEl = document.getElementById("calc-installation") as HTMLInputElement | null;
     const deliveryEl = document.getElementById("calc-delivery") as HTMLInputElement | null;

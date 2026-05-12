@@ -136,9 +136,17 @@ export interface RegisteredUser {
 }
 
 const USER_KEY = "metallobaza-user";
+const AUTH_KEY = "metallobaza-authenticated";
+const AUTH_CHANGE_EVENT = "auth:change";
+
+const emitAuthChange = (): void => {
+  window.dispatchEvent(new CustomEvent(AUTH_CHANGE_EVENT));
+};
 
 export const saveUser = (user: RegisteredUser): void => {
   localStorage.setItem(USER_KEY, JSON.stringify(user));
+  localStorage.setItem(AUTH_KEY, "1");
+  emitAuthChange();
 };
 
 export const getUser = (): RegisteredUser | null => {
@@ -148,4 +156,28 @@ export const getUser = (): RegisteredUser | null => {
   } catch {
     return null;
   }
+};
+
+export const isAuthenticated = (): boolean =>
+  localStorage.getItem(AUTH_KEY) === "1" && getUser() !== null;
+
+export const setAuthenticated = (authenticated: boolean): void => {
+  if (authenticated) localStorage.setItem(AUTH_KEY, "1");
+  else localStorage.removeItem(AUTH_KEY);
+  emitAuthChange();
+};
+
+export const logout = (): void => {
+  localStorage.removeItem(AUTH_KEY);
+  emitAuthChange();
+};
+
+export const onAuthChange = (handler: () => void): (() => void) => {
+  const listener = (): void => handler();
+  window.addEventListener(AUTH_CHANGE_EVENT, listener);
+  window.addEventListener("storage", listener);
+  return () => {
+    window.removeEventListener(AUTH_CHANGE_EVENT, listener);
+    window.removeEventListener("storage", listener);
+  };
 };

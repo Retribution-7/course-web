@@ -3,7 +3,9 @@ import {
   NICKNAME_REGEN_LIMIT,
   generateNickname,
   generatePassword,
+  getUser,
   saveUser,
+  setAuthenticated,
   validateBirthDate,
   validateEmail,
   validateNicknameCustom,
@@ -452,6 +454,19 @@ const handleRegisterSubmit = (event: Event): void => {
 const handleLoginSubmit = (event: Event): void => {
   event.preventDefault();
   if (!validateLoginForm()) return;
+
+  const user = getUser();
+  if (!user) {
+    alert("Пользователь не найден. Сначала зарегистрируйтесь.");
+    return;
+  }
+  const phone = (getInput("login-phone")?.value ?? "").trim();
+  if (user.phone !== phone) {
+    alert("Неверный телефон или пароль.");
+    return;
+  }
+
+  setAuthenticated(true);
   alert("Вход выполнен.");
   window.location.hash = "";
 };
