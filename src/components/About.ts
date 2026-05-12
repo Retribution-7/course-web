@@ -1,52 +1,94 @@
-import { Container } from "../shared/Container";
+interface FeatureCard {
+  icon: string;
+  iconAlt: string;
+  title: string;
+  description: string;
+}
 
-const items = [
-  "Прямые поставки",
-  "Работаем с заводами",
-  "Широкий каталог",
-  "Собственное КП",
-  "Быстрая доставка",
-  "Точные замеры",
+const cards: FeatureCard[] = [
+  {
+    icon: "/icons/check-square.svg",
+    iconAlt: "Галочка",
+    title: "Постоянное наличие",
+    description:
+      "Прямая работа с производителем обеспечивает постоянное наличие всех видов металлопроката",
+  },
+  {
+    icon: "/icons/box.svg",
+    iconAlt: "Коробка",
+    title: "Собственный автопарк",
+    description:
+      "Автомобили грузоподъёмностью от 1.5 до 20 тонн. Всегда быстрая доставка.",
+  },
+  {
+    icon: "/icons/car.svg",
+    iconAlt: "Автомобиль",
+    title: "Объёмы поставок",
+    description:
+      "Собственная служба доставки гарантирует вам поставку материалов на объект в кратчайшие сроки.",
+  },
+  {
+    icon: "/icons/cart.svg",
+    iconAlt: "Корзина",
+    title: "Справедливая цена",
+    description:
+      "Собственные ресурсы и транспорт позволяют снижать стоимость.",
+  },
+  {
+    icon: "/icons/time.svg",
+    iconAlt: "Часы",
+    title: "Обработка заявки < 30 минут",
+    description:
+      "Отдел продаж, насчитывающий более 80 сотрудников, не оставит вашу заявку без внимания.",
+  },
+  {
+    icon: "/icons/people.svg",
+    iconAlt: "Люди",
+    title: "Погрузка без очередей",
+    description:
+      "Развитая складская логистика позволяет отгружать продукцию всегда без очередей.",
+  },
 ];
+
+const renderCard = (card: FeatureCard): string => `
+  <article class="flex flex-col gap-[30px] w-full sm:w-[calc(50%-70px)] xl:w-[397px]">
+    <div class="size-[60px] rounded-[14px] gradient-icon flex items-center justify-center shrink-0
+                border border-[rgba(255,196,0,0.3)]">
+      <img src="${card.icon}" alt="${card.iconAlt}" class="size-6 object-contain" aria-hidden="true">
+    </div>
+    <div class="flex flex-col gap-5">
+      <h3 class="font-sans font-normal text-[22px] leading-[30px] gradient-text">${card.title}</h3>
+      <p class="font-sans font-normal text-[22px] leading-[30px] text-[#69686F] opacity-80">${card.description}</p>
+    </div>
+  </article>
+`;
 
 export const About = (): string => {
   return `
-    <section class="section-spacing bg-light">
-      ${Container(`
-        
-        <div class="max-w-[500px]">
-          <h2 class="title-lg">
-            О нас
-            <br />
-            и нашем бизнесе
-          </h2>
+    <section class="bg-white py-20" id="about" aria-labelledby="about-heading">
+      <div class="container-main flex flex-col gap-[110px]">
+
+        <!-- Заголовок + описание -->
+        <div class="flex flex-col xl:flex-row items-start xl:items-center gap-10 xl:gap-[268px]">
+          <div class="shrink-0">
+            <h2 id="about-heading" class="font-sans font-normal text-[56px] leading-[68px] gradient-text">
+              О НАС<br>и НАШЕМ БИЗНЕСЕ
+            </h2>
+          </div>
+          <p class="font-sans font-normal text-[22px] leading-[30px] text-primary xl:w-[497px]">
+            Каждому клиенту мы гарантируем взаимовыгодные условия сотрудничества.
+            Мы дорожим своими заказчиками, поэтому брак и низкокачественный металл
+            никогда не поступают на склады предприятия.
+            С нами — надёжно, выгодно и безопасно!
+          </p>
         </div>
 
-        <div class="mt-16 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          
-          ${items
-            .map(
-              (item) => `
-                <article class="card p-10">
-                  <div class="mb-8 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-xl font-bold">
-                    +
-                  </div>
-
-                  <h3 class="text-[24px] font-medium">
-                    ${item}
-                  </h3>
-
-                  <p class="mt-5 text-zinc-500 leading-7">
-                    Краткое описание преимущества компании.
-                  </p>
-                </article>
-              `,
-            )
-            .join("")}
-
+        <!-- Карточки преимуществ -->
+        <div class="flex flex-wrap gap-x-[140px] gap-y-[90px]">
+          ${cards.map(renderCard).join("")}
         </div>
 
-      `)}
+      </div>
     </section>
   `;
 };

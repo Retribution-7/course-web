@@ -2,6 +2,8 @@
 
 @theme {
 
+	--max-width-container: 1570px;
+
 	--color-primary: #44444E;
 	--color-secondary: #69686F;
 	--color-button-first: #FFC400;
