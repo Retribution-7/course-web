@@ -1,3 +1,19 @@
+import { cart } from "../services/cart";
+
+const CartIcon = (extraClass = ""): string => `
+  <a href="#cart"
+     class="cart-link relative grid place-items-center size-11 rounded-full
+            gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] shrink-0
+            transition-transform hover:scale-105 ${extraClass}"
+     aria-label="Открыть корзину">
+    <img src="/icons/cart.svg" alt="" class="size-5" aria-hidden="true">
+    <span data-cart-badge
+          class="cart-badge absolute -top-1 -right-1 hidden min-w-[20px] h-5 px-1.5
+                 rounded-full bg-[#FFC400] text-primary font-sans text-[12px] leading-5
+                 text-center font-medium">0</span>
+  </a>
+`;
+
 export const Header = (): string => {
   return `
     <header class="bg-white w-full sticky top-0 z-50 shadow-[0_2px_20px_rgba(0,0,0,0.06)]">
@@ -70,9 +86,19 @@ export const Header = (): string => {
             </button>
           </div>
 
+          <!-- Корзина (десктоп) -->
+          <div class="hidden 2xl:block shrink-0">
+            ${CartIcon()}
+          </div>
+
+          <!-- Корзина (мобильный/планшет) -->
+          <div class="2xl:hidden ml-auto shrink-0">
+            ${CartIcon()}
+          </div>
+
           <!-- Иконка телефона (мобильный/планшет) -->
           <a href="tel:+78123255055"
-             class="2xl:hidden ml-auto flex items-center justify-center size-11 rounded-full gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] shrink-0"
+             class="2xl:hidden flex items-center justify-center size-11 rounded-full gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] shrink-0"
              aria-label="Позвонить +7 (812) 325-50-55">
             <svg class="size-5 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.6.2-1-.4-1.2-.6-2.4-.6-3.6 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.5-.5-.9-1-.9z"/>
@@ -133,7 +159,18 @@ export const Header = (): string => {
   `;
 };
 
+const syncCartBadges = (): void => {
+  const count = cart.count();
+  document.querySelectorAll<HTMLElement>("[data-cart-badge]").forEach((badge) => {
+    badge.textContent = String(count);
+    badge.classList.toggle("hidden", count === 0);
+  });
+};
+
 export const initHeader = (): void => {
+  syncCartBadges();
+  cart.onChange(syncCartBadges);
+
   const btn = document.getElementById("mobile-menu-btn");
   const menu = document.getElementById("mobile-menu");
   if (!btn || !menu) return;
