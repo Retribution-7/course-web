@@ -212,6 +212,66 @@ export const AboutCompanyPage = (): string => `
         </div>
       </section>
 
+      <section class="mt-10 lg:mt-14" aria-labelledby="location-heading">
+        <h2 id="location-heading"
+            class="font-sans font-normal text-[24px] leading-[1.2] sm:text-[28px] lg:text-[36px] xl:text-[44px] gradient-text">
+          Где нас найти
+        </h2>
+        <div class="mt-6 lg:mt-10 grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-5 lg:gap-6 items-stretch">
+          <div class="bg-white rounded-[14px] card-shadow p-6 lg:p-8 flex flex-col gap-5">
+            <div>
+              <span class="font-sans text-[13px] uppercase tracking-[0.08em] text-[#FFC400]">
+                Адрес склада
+              </span>
+              <address class="not-italic mt-2 font-sans text-[16px] lg:text-[18px] leading-[1.4] text-primary">
+                Санкт-Петербург, Горелово,<br>
+                Волхонское шоссе, 6
+              </address>
+            </div>
+            <div>
+              <span class="font-sans text-[13px] uppercase tracking-[0.08em] text-[#FFC400]">
+                Телефон
+              </span>
+              <a href="tel:+78123255055"
+                 class="block mt-2 font-sans text-[20px] lg:text-[24px] leading-none gradient-text hover:opacity-80 transition-opacity">
+                +7 (812) 325-50-55
+              </a>
+            </div>
+            <div>
+              <span class="font-sans text-[13px] uppercase tracking-[0.08em] text-[#FFC400]">
+                Часы работы
+              </span>
+              <ul class="mt-2 flex flex-col gap-1 font-sans text-[14px] lg:text-[15px] leading-[1.4] text-[#44444E]">
+                <li class="flex justify-between gap-4"><span>Пн – Пт</span><span>09:00 – 19:00</span></li>
+                <li class="flex justify-between gap-4"><span>Сб</span><span>10:00 – 17:00</span></li>
+                <li class="flex justify-between gap-4 text-[#758499]"><span>Вс</span><span>выходной</span></li>
+              </ul>
+            </div>
+            <a href="https://yandex.ru/maps/?text=%D0%92%D0%BE%D0%BB%D1%85%D0%BE%D0%BD%D1%81%D0%BA%D0%BE%D0%B5+%D1%88%D0%BE%D1%81%D1%81%D0%B5%2C+6"
+               target="_blank" rel="noopener noreferrer"
+               class="mt-auto inline-flex items-center justify-center gap-2 rounded-full
+                      bg-[#FAFAFA] border border-[#FFC400]
+                      px-5 py-3 font-sans text-[14px] lg:text-[15px] text-[#44444E]
+                      hover:bg-white transition-colors no-underline">
+              Построить маршрут
+              <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <path d="M6 3l5 5-5 5"/>
+              </svg>
+            </a>
+          </div>
+
+          <div class="rounded-[14px] overflow-hidden card-shadow min-h-[320px] sm:min-h-[400px] lg:min-h-[460px] bg-white">
+            <iframe
+              src="https://yandex.ru/map-widget/v1/?ll=30.153500%2C59.789700&mode=search&sll=30.153500%2C59.789700&sspn=0.01%2C0.005&text=%D0%92%D0%BE%D0%BB%D1%85%D0%BE%D0%BD%D1%81%D0%BA%D0%BE%D0%B5%20%D1%88%D0%BE%D1%81%D1%81%D0%B5%2C%206&z=15"
+              title="Карта: Волхонское шоссе, 6"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              class="size-full block border-0"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+      </section>
+
       <section class="mt-10 lg:mt-14 bg-white rounded-[14px] card-shadow p-6 sm:p-8 lg:p-10 xl:p-14
                       flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 lg:gap-10">
         <div class="max-w-[560px]">
