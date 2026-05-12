@@ -1,0 +1,44 @@
+@import "tailwindcss";
+@import "./theme.css";
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	@apply bg-white text-body text-primary font-sans;
+	overflow-x: hidden;
+}
+
+@layer components {
+	.container-main {
+		@apply mx-auto max-w-container px-5;
+	}
+
+	.btn-primary {
+		@apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-button-first to-button-second px-10 py-6 text-h5 transition-all duration-300 hover:scale-[1.02] shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] cursor-pointer;
+	}
+
+	.gradient-text {
+		background: linear-gradient(to top, var(--color-button-second), var(--color-button-first));
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+
+	.gradient-icon {
+		background: radial-gradient(ellipse at top, var(--color-button-first) 0%, var(--color-button-second) 100%);
+	}
+
+	.card-shadow {
+		box-shadow: 0 4px 12.5px rgba(159, 189, 207, 0.15);
+	}
+}
+
+@layer utilities {
+	.catalog-tab.active {
+		background-color: #ffc400;
+		border-color: #ffc400;
+		color: var(--color-primary);
+	}
+}
