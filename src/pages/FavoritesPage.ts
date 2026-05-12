@@ -1,0 +1,133 @@
+import { ProductCard, syncFavoriteButtons } from "../entities/ProductCard";
+import { products } from "../entities/products";
+import { favorites } from "../services/favorites";
+
+const renderEmpty = (): string => `
+  <div class="bg-white rounded-[14px] card-shadow p-10 lg:p-16 text-center">
+    <div class="mx-auto mb-6 grid size-20 place-items-center rounded-full gradient-icon
+                shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)]
+                border border-[rgba(255,196,0,0.3)]">
+      <svg viewBox="0 0 24 24" class="size-10 text-primary" fill="none" stroke="currentColor"
+           stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 21s-7-4.5-7-10.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 7 4.5C19 16.5 12 21 12 21z"/>
+      </svg>
+    </div>
+    <h3 class="font-sans font-normal text-[24px] leading-[1.2] gradient-text">
+      В избранном пусто
+    </h3>
+    <p class="mt-3 font-sans text-[14px] sm:text-[15px] leading-[1.5] text-[#44444E]">
+      Нажмите на сердечко в карточке товара — он появится здесь.
+    </p>
+    <a href="#catalog"
+       class="mt-8 inline-flex items-center justify-center rounded-full
+              bg-gradient-to-r from-button-first to-button-second
+              px-6 py-[15px] font-sans text-[15px] lg:text-[17px] leading-[1.4] text-[#44444E]
+              transition-all duration-300 hover:scale-[1.02] cursor-pointer
+              shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)] no-underline">
+      В каталог
+    </a>
+  </div>
+`;
+
+const pluralItems = (n: number): string => {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return `${n} товар`;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${n} товара`;
+  return `${n} товаров`;
+};
+
+export const FavoritesPage = (): string => `
+  <section id="favorites-page"
+           class="hidden bg-[#F3F5F9] py-10 lg:py-16 min-h-[60vh]"
+           aria-labelledby="favorites-heading">
+    <div class="container-main">
+
+      <a href="#catalog"
+         class="inline-flex items-center gap-2 font-sans text-[14px] lg:text-[15px]
+                text-[#44444E] hover:text-[#FFC400] transition-colors mb-6 lg:mb-10">
+        <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M10 3l-5 5 5 5"/>
+        </svg>
+        В каталог
+      </a>
+
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-6 mb-6 lg:mb-10">
+        <div>
+          <h1 id="favorites-heading"
+              class="font-sans font-normal text-[28px] leading-[1.1] sm:text-[36px] lg:text-[48px] xl:text-[56px] xl:leading-[1.15] gradient-text">
+            ИЗБРАННОЕ
+          </h1>
+          <p id="favorites-summary"
+             class="mt-2 font-sans text-[14px] sm:text-[15px] leading-[1.4] text-[#44444E]"></p>
+        </div>
+        <button type="button"
+                id="favorites-clear"
+                class="hidden self-start sm:self-auto inline-flex items-center justify-center rounded-full
+                       bg-[#FAFAFA] border border-[#FFC400]
+                       px-5 lg:px-6 py-2.5 lg:py-3 font-sans text-[14px] lg:text-[15px] text-[#44444E]
+                       hover:bg-white transition-colors cursor-pointer">
+          Очистить
+        </button>
+      </div>
+
+      <div id="favorites-content"></div>
+    </div>
+  </section>
+`;
+
+const render = (): void => {
+  const content = document.getElementById("favorites-content");
+  const summary = document.getElementById("favorites-summary");
+  const clearBtn = document.getElementById("favorites-clear");
+  if (!content || !summary || !clearBtn) return;
+
+  const ids = favorites.list();
+  const items = ids
+    .map((id) => ({ product: products[id], id }))
+    .filter((entry): entry is { product: (typeof products)[number]; id: number } =>
+      Boolean(entry.product),
+    );
+
+  if (items.length === 0) {
+    content.innerHTML = renderEmpty();
+    summary.textContent = "Пока ничего не добавлено";
+    clearBtn.classList.add("hidden");
+    return;
+  }
+
+  content.innerHTML = `
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+      ${items.map(({ product, id }) => ProductCard(product, id)).join("")}
+    </div>
+  `;
+  summary.textContent = `${pluralItems(items.length)} в избранном`;
+  clearBtn.classList.remove("hidden");
+  syncFavoriteButtons();
+};
+
+const showPage = (show: boolean): void => {
+  const page = document.getElementById("favorites-page");
+  if (!page) return;
+  page.classList.toggle("hidden", !show);
+  if (show) {
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+};
+
+const handleRoute = (): void => {
+  showPage(window.location.hash === "#favorites");
+};
+
+export const initFavoritesPage = (): void => {
+  handleRoute();
+  window.addEventListener("hashchange", handleRoute);
+  favorites.onChange(() => {
+    if (window.location.hash === "#favorites") render();
+  });
+
+  document.getElementById("favorites-clear")?.addEventListener("click", () => {
+    if (confirm("Очистить список избранного?")) favorites.clear();
+  });
+};

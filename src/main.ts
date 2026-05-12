@@ -8,6 +8,7 @@ import { CartPage, initCartPage } from "./pages/CartPage";
 import { ProductDetailPage, initProductDetailPage } from "./pages/ProductDetailPage";
 import { ReviewsPage, initReviewsPage } from "./pages/ReviewsPage";
 import { AboutCompanyPage, initAboutCompanyPage } from "./pages/AboutCompanyPage";
+import { FavoritesPage, initFavoritesPage } from "./pages/FavoritesPage";
 import { Catalog, initCatalog } from "./widgets/Catalog";
 import { ContactForm, initContactForm } from "./widgets/ContactForm";
 import { Footer } from "./widgets/Footer";
@@ -35,6 +36,7 @@ app.innerHTML = `
   ${ProductDetailPage()}
   ${ReviewsPage()}
   ${AboutCompanyPage()}
+  ${FavoritesPage()}
   ${Footer()}
   ${Calculator()}
 `;
@@ -49,4 +51,5 @@ initAuthPage();
 initProductDetailPage();
 initReviewsPage();
 initAboutCompanyPage();
+initFavoritesPage();
 initRouter();

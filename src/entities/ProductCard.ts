@@ -1,3 +1,4 @@
+import { favorites } from "../services/favorites";
 import type { Product } from "./products";
 
 export const COLOR_OPTIONS = [
@@ -73,13 +74,28 @@ export const ProductCard = (product: Product, index: number): string => {
              data-product-price="${product.price}"
              data-product-image="${product.image}">
 
-      <div class="h-[260px] w-full overflow-hidden rounded-[8px]">
+      <div class="relative h-[260px] w-full overflow-hidden rounded-[8px]">
         <img
           src="${product.image}"
           alt="${product.title}"
           class="size-full object-cover transition-transform duration-300 hover:scale-105"
           loading="lazy"
         >
+        <button type="button"
+                class="product-favorite absolute top-3 right-3 grid size-10 place-items-center
+                       rounded-full bg-white/95 backdrop-blur-sm
+                       shadow-[0_2px_8px_rgba(0,0,0,0.12)]
+                       text-[#44444E] transition-all duration-200 hover:scale-110 cursor-pointer"
+                data-action="favorite-toggle"
+                data-product-id="${index}"
+                aria-label="Добавить в избранное"
+                aria-pressed="false">
+          <svg class="product-favorite__icon size-5" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true">
+            <path d="M12 21s-7-4.5-7-10.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 7 4.5C19 16.5 12 21 12 21z"/>
+          </svg>
+        </button>
       </div>
 
       <h3 class="font-sans font-normal text-[20px] leading-[1.2] tracking-[0.04em] text-primary">
@@ -127,6 +143,28 @@ export const ProductCard = (product: Product, index: number): string => {
   `;
 };
 
+export const syncFavoriteButtons = (): void => {
+  document.querySelectorAll<HTMLElement>(".product-favorite").forEach((button) => {
+    const id = Number.parseInt(button.dataset.productId ?? "", 10);
+    if (Number.isNaN(id)) return;
+    const isFav = favorites.has(id);
+    const icon = button.querySelector<SVGElement>(".product-favorite__icon");
+    if (isFav) {
+      button.classList.add("text-[#FFC400]");
+      button.classList.remove("text-[#44444E]");
+      icon?.setAttribute("fill", "currentColor");
+      button.setAttribute("aria-pressed", "true");
+      button.setAttribute("aria-label", "Убрать из избранного");
+    } else {
+      button.classList.remove("text-[#FFC400]");
+      button.classList.add("text-[#44444E]");
+      icon?.setAttribute("fill", "none");
+      button.setAttribute("aria-pressed", "false");
+      button.setAttribute("aria-label", "Добавить в избранное");
+    }
+  });
+};
+
 export const initProductCards = (): void => {
   const closeAll = (except?: Element) => {
     document.querySelectorAll<HTMLElement>(".product-dropdown").forEach((dropdown) => {
@@ -142,6 +180,15 @@ export const initProductCards = (): void => {
 
   document.addEventListener("click", (event) => {
     const target = event.target as HTMLElement;
+
+    const favBtn = target.closest<HTMLElement>('[data-action="favorite-toggle"]');
+    if (favBtn) {
+      event.preventDefault();
+      event.stopPropagation();
+      const id = Number.parseInt(favBtn.dataset.productId ?? "", 10);
+      if (!Number.isNaN(id)) favorites.toggle(id);
+      return;
+    }
 
     const toggle = target.closest<HTMLElement>(".product-dropdown__toggle");
     if (toggle) {
@@ -178,4 +225,7 @@ export const initProductCards = (): void => {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeAll();
   });
+
+  syncFavoriteButtons();
+  favorites.onChange(syncFavoriteButtons);
 };
