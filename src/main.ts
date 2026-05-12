@@ -1,6 +1,7 @@
 import "./styles/main.css";
 
 import { initRouter } from "./app/router";
+import { hidePreloader } from "./shared/ui/preloader";
 import { About } from "./widgets/About";
 import { Calculator, initCalculator } from "./features/Calculator";
 import { AuthPage, initAuthPage } from "./pages/AuthPage";
@@ -12,7 +13,7 @@ import { FavoritesPage, initFavoritesPage } from "./pages/FavoritesPage";
 import { AccountPage, initAccountPage } from "./pages/AccountPage";
 import { Catalog, initCatalog } from "./widgets/Catalog";
 import { ContactForm, initContactForm } from "./widgets/ContactForm";
-import { Footer } from "./widgets/Footer";
+import { Footer, initFooter } from "./widgets/Footer";
 import { Header, initHeader } from "./widgets/Header";
 import { Hero } from "./widgets/Hero";
 import { Testimonials, initTestimonials } from "./widgets/Testimonials";
@@ -56,3 +57,6 @@ initReviewsPage();
 initAboutCompanyPage();
 initFavoritesPage();
 initAccountPage();
+initFooter();
+
+hidePreloader();
