@@ -107,18 +107,6 @@ export const Header = (): string => {
             </div>
           </div>
 
-          <!-- Телефон (только на десктопе) -->
-          <div class="hidden 2xl:flex flex-col items-end shrink-0">
-            <a href="tel:+78123255055"
-               class="text-[28px] leading-[38px] font-sans font-normal gradient-text hover:opacity-80 transition-opacity">
-              +7 (812) 325-50-55
-            </a>
-            <button class="text-[22px] leading-[30px] text-primary font-sans font-normal hover:underline"
-                    onclick="document.getElementById('consultation')?.scrollIntoView({behavior:'smooth'})">
-              Перезвоним Вам
-            </button>
-          </div>
-
           <!-- Аккаунт + избранное + корзина (десктоп) -->
           <div class="hidden 2xl:flex items-center gap-3 shrink-0">
             ${AuthIcon()}
@@ -126,8 +114,8 @@ export const Header = (): string => {
             ${CartIcon()}
           </div>
 
-          <!-- Аккаунт + избранное + корзина (мобильный/планшет) -->
-          <div class="2xl:hidden ml-auto flex items-center gap-2 shrink-0">
+          <!-- Аккаунт + избранное + корзина (мобильный/планшет, прячем ниже 440px) -->
+          <div class="2xl:hidden ml-auto hidden min-[440px]:flex items-center gap-2 shrink-0">
             ${AuthIcon()}
             ${FavoritesIcon()}
             ${CartIcon()}
@@ -135,7 +123,7 @@ export const Header = (): string => {
 
           <!-- Иконка телефона (мобильный/планшет) -->
           <a href="tel:+78123255055"
-             class="2xl:hidden flex items-center justify-center size-11 rounded-full gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] shrink-0"
+             class="2xl:hidden flex items-center justify-center size-11 rounded-full gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] shrink-0 ml-auto min-[440px]:ml-0"
              aria-label="Позвонить +7 (812) 325-50-55">
             <svg class="size-5 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.6.2-1-.4-1.2-.6-2.4-.6-3.6 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.5-.5-.9-1-.9z"/>
@@ -154,6 +142,43 @@ export const Header = (): string => {
 
         <!-- Мобильное меню (drawer) -->
         <div id="mobile-menu" class="hidden 2xl:hidden border-t border-gray-100 py-6 flex flex-col gap-5">
+
+          <!-- Аккаунт + избранное + корзина (только когда не помещаются в шапку, т.е. ниже 440px) -->
+          <div class="min-[440px]:hidden flex flex-col gap-3">
+            <a href="#auth" data-auth-link
+               class="flex items-center gap-4 text-[17px] text-primary"
+               aria-label="Войти или зарегистрироваться">
+              <div class="size-10 rounded-full border border-[#FFC400] bg-white grid place-items-center shrink-0">
+                <svg viewBox="0 0 24 24" class="size-5 text-primary" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                  <circle cx="12" cy="8" r="4"/>
+                  <path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>
+                </svg>
+              </div>
+              Личный кабинет
+            </a>
+            <a href="#favorites"
+               class="flex items-center gap-4 text-[17px] text-primary">
+              <div class="relative size-10 rounded-full border border-[#FFC400] bg-white grid place-items-center shrink-0">
+                <svg viewBox="0 0 24 24" class="size-5 text-primary" fill="none" stroke="currentColor"
+                     stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 21s-7-4.5-7-10.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 7 4.5C19 16.5 12 21 12 21z"/>
+                </svg>
+                <span data-favorites-badge
+                      class="absolute -top-1 -right-1 hidden min-w-[20px] h-5 px-1.5 rounded-full bg-[#FFC400] text-primary font-sans text-[12px] leading-5 text-center font-medium">0</span>
+              </div>
+              Избранное
+            </a>
+            <a href="#cart"
+               class="flex items-center gap-4 text-[17px] text-primary">
+              <div class="relative size-10 rounded-full gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] grid place-items-center shrink-0">
+                <img src="/icons/cart.svg" alt="" class="size-5" aria-hidden="true">
+                <span data-cart-badge
+                      class="absolute -top-1 -right-1 hidden min-w-[20px] h-5 px-1.5 rounded-full bg-[#FFC400] text-primary font-sans text-[12px] leading-5 text-center font-medium">0</span>
+              </div>
+              Корзина
+            </a>
+          </div>
+
           <address class="not-italic text-[17px] leading-[1.6] text-primary">
             Санкт-Петербург, Горелово,<br>Волхонское шоссе, 6
           </address>
