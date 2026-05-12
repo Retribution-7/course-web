@@ -9,6 +9,7 @@ import { ProductDetailPage, initProductDetailPage } from "./pages/ProductDetailP
 import { ReviewsPage, initReviewsPage } from "./pages/ReviewsPage";
 import { AboutCompanyPage, initAboutCompanyPage } from "./pages/AboutCompanyPage";
 import { FavoritesPage, initFavoritesPage } from "./pages/FavoritesPage";
+import { AccountPage, initAccountPage } from "./pages/AccountPage";
 import { Catalog, initCatalog } from "./widgets/Catalog";
 import { ContactForm, initContactForm } from "./widgets/ContactForm";
 import { Footer } from "./widgets/Footer";
@@ -37,10 +38,12 @@ app.innerHTML = `
   ${ReviewsPage()}
   ${AboutCompanyPage()}
   ${FavoritesPage()}
+  ${AccountPage()}
   ${Footer()}
   ${Calculator()}
 `;
 
+initRouter();
 initHeader();
 initCatalog();
 initContactForm();
@@ -52,4 +55,4 @@ initProductDetailPage();
 initReviewsPage();
 initAboutCompanyPage();
 initFavoritesPage();
-initRouter();
+initAccountPage();

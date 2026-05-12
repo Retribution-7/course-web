@@ -1,3 +1,4 @@
+import { isAuthenticated } from "../services/auth";
 import { favorites } from "../services/favorites";
 import type { Product } from "./products";
 
@@ -185,6 +186,10 @@ export const initProductCards = (): void => {
     if (favBtn) {
       event.preventDefault();
       event.stopPropagation();
+      if (!isAuthenticated()) {
+        window.location.hash = "#auth";
+        return;
+      }
       const id = Number.parseInt(favBtn.dataset.productId ?? "", 10);
       if (!Number.isNaN(id)) favorites.toggle(id);
       return;

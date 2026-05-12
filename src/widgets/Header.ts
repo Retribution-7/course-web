@@ -1,3 +1,4 @@
+import { isAuthenticated, onAuthChange } from "../services/auth";
 import { cart } from "../services/cart";
 import { favorites } from "../services/favorites";
 
@@ -34,6 +35,7 @@ const FavoritesIcon = (extraClass = ""): string => `
 
 const AuthIcon = (extraClass = ""): string => `
   <a href="#auth"
+     data-auth-link
      class="auth-link grid place-items-center size-11 rounded-full
             border border-[#FFC400] bg-white shrink-0
             transition-transform hover:scale-105 ${extraClass}"
@@ -210,11 +212,24 @@ const syncFavoritesBadges = (): void => {
   });
 };
 
+const syncAuthLink = (): void => {
+  const auth = isAuthenticated();
+  document.querySelectorAll<HTMLAnchorElement>("[data-auth-link]").forEach((link) => {
+    link.href = auth ? "#account" : "#auth";
+    link.setAttribute(
+      "aria-label",
+      auth ? "Личный кабинет" : "Войти или зарегистрироваться",
+    );
+  });
+};
+
 export const initHeader = (): void => {
   syncCartBadges();
   syncFavoritesBadges();
+  syncAuthLink();
   cart.onChange(syncCartBadges);
   favorites.onChange(syncFavoritesBadges);
+  onAuthChange(syncAuthLink);
 
   const btn = document.getElementById("mobile-menu-btn");
   const menu = document.getElementById("mobile-menu");
