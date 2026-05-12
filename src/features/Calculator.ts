@@ -1,3 +1,5 @@
+import { cart } from "../services/cart";
+
 const THICKNESS_MULTIPLIER: Record<string, number> = {
   "0,35": 0.85,
   "0,4": 0.9,
@@ -137,6 +139,17 @@ export const Calculator = (): string => `
               class="font-sans text-[28px] leading-none text-primary"></span>
       </div>
 
+      <button type="button"
+              id="calc-add-to-cart"
+              class="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-full
+                     bg-gradient-to-r from-button-first to-button-second
+                     px-6 py-[15px] font-sans text-[17px] leading-[1.4] text-[#44444E]
+                     transition-all duration-300 hover:scale-[1.02] cursor-pointer
+                     shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]">
+        <img src="/icons/cart.svg" alt="" class="size-5" aria-hidden="true">
+        <span>В корзину</span>
+      </button>
+
     </div>
   </div>
 `;
@@ -151,12 +164,22 @@ const getSurfaceMult = (value: string): number =>
   SURFACE_MULTIPLIER[value] ?? 1;
 
 interface CalcState {
+  title: string;
+  image: string;
+  color: string;
   basePrice: number;
   thickness: string;
   surface: string;
 }
 
-const state: CalcState = { basePrice: 0, thickness: "", surface: "" };
+const state: CalcState = {
+  title: "",
+  image: "",
+  color: "",
+  basePrice: 0,
+  thickness: "",
+  surface: "",
+};
 
 const recalc = (): void => {
   const areaInput = document.getElementById("calc-area") as HTMLInputElement | null;
@@ -200,6 +223,7 @@ const openModal = (article: HTMLElement): void => {
   if (!modal) return;
 
   const title = article.dataset.productTitle ?? "";
+  const image = article.dataset.productImage ?? "";
   const price = parseNumber(article.dataset.productPrice ?? "0");
 
   const values = article.querySelectorAll<HTMLElement>(".product-dropdown__value");
@@ -207,6 +231,9 @@ const openModal = (article: HTMLElement): void => {
   const thickness = values[1]?.textContent?.trim() ?? "";
   const surface = values[2]?.textContent?.trim() ?? "";
 
+  state.title = title;
+  state.image = image;
+  state.color = color;
   state.basePrice = price;
   state.thickness = thickness;
   state.surface = surface;
@@ -281,5 +308,39 @@ export const initCalculator = (): void => {
     const next = Math.min(10000, parseNumber(input.value) + 10);
     input.value = String(next);
     recalc();
+  });
+
+  document.getElementById("calc-add-to-cart")?.addEventListener("click", () => {
+    const areaInput = document.getElementById("calc-area") as HTMLInputElement | null;
+    const installEl = document.getElementById("calc-installation") as HTMLInputElement | null;
+    const deliveryEl = document.getElementById("calc-delivery") as HTMLInputElement | null;
+    if (!areaInput) return;
+
+    const area = Math.max(1, Math.min(10000, parseNumber(areaInput.value)));
+    const tMult = getThicknessMult(state.thickness);
+    const sMult = getSurfaceMult(state.surface);
+    const pricePerM2 = state.basePrice * tMult * sMult;
+    const installation = installEl?.checked ?? false;
+    const delivery = deliveryEl?.checked ?? false;
+    const total =
+      pricePerM2 * area +
+      (installation ? area * INSTALLATION_PER_M2 : 0) +
+      (delivery ? DELIVERY_FEE : 0);
+
+    cart.add({
+      title: state.title,
+      image: state.image,
+      color: state.color,
+      thickness: state.thickness,
+      surface: state.surface,
+      area,
+      pricePerM2,
+      installation,
+      delivery,
+      total,
+    });
+
+    closeModal();
+    window.location.hash = "#cart";
   });
 };

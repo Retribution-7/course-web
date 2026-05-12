@@ -1,13 +1,14 @@
 import "./styles/main.css";
 
-import { About } from "./components/About";
-import { Calculator, initCalculator } from "./components/Calculator";
-import { Catalog, initCatalog } from "./components/Catalog";
-import { ContactForm, initContactForm } from "./components/ContactForm";
-import { Footer } from "./components/Footer";
-import { Header, initHeader } from "./components/Header";
-import { Hero } from "./components/Hero";
-import { Testimonials, initTestimonials } from "./components/Testimonials";
+import { About } from "./widgets/About";
+import { Calculator, initCalculator } from "./features/Calculator";
+import { CartPage, initCartPage } from "./pages/CartPage";
+import { Catalog, initCatalog } from "./widgets/Catalog";
+import { ContactForm, initContactForm } from "./widgets/ContactForm";
+import { Footer } from "./widgets/Footer";
+import { Header, initHeader } from "./widgets/Header";
+import { Hero } from "./widgets/Hero";
+import { Testimonials, initTestimonials } from "./widgets/Testimonials";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -24,6 +25,7 @@ app.innerHTML = `
     ${ContactForm()}
     ${Testimonials()}
   </main>
+  ${CartPage()}
   ${Footer()}
   ${Calculator()}
 `;
@@ -33,3 +35,4 @@ initCatalog();
 initContactForm();
 initTestimonials();
 initCalculator();
+initCartPage();
