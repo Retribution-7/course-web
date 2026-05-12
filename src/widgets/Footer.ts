@@ -67,12 +67,22 @@ export const Footer = (): string => {
 
         </div>
 
-        <!-- Нижняя строка: копирайт -->
-        <div class="mt-[18px] flex flex-col items-center gap-1 border-t border-[rgba(68,68,78,0.1)] pt-[18px]">
-          <a href="#" class="font-sans font-normal text-[17px] leading-[1.8] text-primary hover:underline">
-            Политика конфиденциальности
-          </a>
-          <p class="font-sans font-normal text-[17px] leading-[1.8] text-primary text-center">
+        <!-- Нижняя строка: ссылки + копирайт -->
+        <div class="mt-[18px] flex flex-col items-center gap-2 border-t border-[rgba(68,68,78,0.1)] pt-[18px]">
+          <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2" aria-label="Дополнительные ссылки">
+            <a href="#company" class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary hover:underline">
+              О компании
+            </a>
+            <span class="hidden sm:inline-block size-1 rounded-full bg-[rgba(68,68,78,0.3)]" aria-hidden="true"></span>
+            <a href="#reviews" class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary hover:underline">
+              Отзывы
+            </a>
+            <span class="hidden sm:inline-block size-1 rounded-full bg-[rgba(68,68,78,0.3)]" aria-hidden="true"></span>
+            <a href="#" class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary hover:underline">
+              Политика конфиденциальности
+            </a>
+          </nav>
+          <p class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary text-center">
             Copyright © 2010 - 2022 | ООО «СУПЕРМЕТ»
           </p>
         </div>
