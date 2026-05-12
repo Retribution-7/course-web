@@ -1,6 +1,6 @@
 import type { Product } from "./products";
 
-const COLOR_OPTIONS = [
+export const COLOR_OPTIONS = [
   "RAL 3005",
   "RAL 3011",
   "RAL 5005",
@@ -14,11 +14,11 @@ const COLOR_OPTIONS = [
   "Антрацит",
 ];
 
-const THICKNESS_OPTIONS = ["0,35", "0,4", "0,45", "0,5", "0,55", "0,7", "0,8"];
+export const THICKNESS_OPTIONS = ["0,35", "0,4", "0,45", "0,5", "0,55", "0,7", "0,8"];
 
-const SURFACE_OPTIONS = ["Полиэстер", "Матовая", "Глянцевая", "Структурная"];
+export const SURFACE_OPTIONS = ["Полиэстер", "Матовая", "Глянцевая", "Структурная"];
 
-const Dropdown = (label: string, value: string, options: string[], name: string): string => {
+export const Dropdown = (label: string, value: string, options: string[], name: string): string => {
   const items = options
     .map(
       (option) => `
@@ -64,10 +64,11 @@ const Dropdown = (label: string, value: string, options: string[], name: string)
   `;
 };
 
-export const ProductCard = (product: Product): string => {
+export const ProductCard = (product: Product, index: number): string => {
   return `
     <article class="bg-white rounded-[14px] card-shadow p-6 flex flex-col gap-[23px]"
              data-category="${product.category}"
+             data-product-id="${index}"
              data-product-title="${product.title}"
              data-product-price="${product.price}"
              data-product-image="${product.image}">
@@ -113,13 +114,13 @@ export const ProductCard = (product: Product): string => {
                        shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]">
           Рассчитать стоимость
         </button>
-        <button type="button"
-                class="self-start inline-flex items-center justify-center rounded-full
-                       bg-[#FAFAFA] border border-[#FFC400]
-                       px-6 py-[15px] font-sans text-[17px] leading-[1.8] text-[#44444E]
-                       transition-colors duration-200 hover:bg-white cursor-pointer">
+        <a href="#product/${index}"
+           class="self-start inline-flex items-center justify-center rounded-full
+                  bg-[#FAFAFA] border border-[#FFC400]
+                  px-6 py-[15px] font-sans text-[17px] leading-[1.8] text-[#44444E]
+                  transition-colors duration-200 hover:bg-white cursor-pointer no-underline">
           Подробнее о товаре
-        </button>
+        </a>
       </div>
 
     </article>
