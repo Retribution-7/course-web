@@ -1,16 +1,22 @@
 import "./styles/main.css";
 
 import { initRouter } from "./app/router";
-import { hidePreloader } from "./shared/ui/preloader";
-import { About } from "./widgets/About";
 import { Calculator, initCalculator } from "./features/Calculator";
+import {
+  AboutCompanyPage,
+  initAboutCompanyPage,
+} from "./pages/AboutCompanyPage";
+import { AccountPage, initAccountPage } from "./pages/AccountPage";
 import { AuthPage, initAuthPage } from "./pages/AuthPage";
 import { CartPage, initCartPage } from "./pages/CartPage";
-import { ProductDetailPage, initProductDetailPage } from "./pages/ProductDetailPage";
-import { ReviewsPage, initReviewsPage } from "./pages/ReviewsPage";
-import { AboutCompanyPage, initAboutCompanyPage } from "./pages/AboutCompanyPage";
 import { FavoritesPage, initFavoritesPage } from "./pages/FavoritesPage";
-import { AccountPage, initAccountPage } from "./pages/AccountPage";
+import {
+  ProductDetailPage,
+  initProductDetailPage,
+} from "./pages/ProductDetailPage";
+import { ReviewsPage, initReviewsPage } from "./pages/ReviewsPage";
+import { hidePreloader } from "./shared/ui/preloader";
+import { About } from "./widgets/About";
 import { Catalog, initCatalog } from "./widgets/Catalog";
 import { ContactForm, initContactForm } from "./widgets/ContactForm";
 import { Footer, initFooter } from "./widgets/Footer";
