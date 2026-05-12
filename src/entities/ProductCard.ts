@@ -1,4 +1,4 @@
-import type { Product } from "../data/products";
+import type { Product } from "./products";
 
 const COLOR_OPTIONS = [
   "RAL 3005",

@@ -1,5 +1,5 @@
-import { products } from "../data/products";
-import { ProductCard, initProductCards } from "./ProductCard";
+import { products } from "../entities/products";
+import { ProductCard, initProductCards } from "../entities/ProductCard";
 
 type CategoryKey = "metal-tile" | "corrugated-sheet" | "seam-roofing";
 type TabKey = "all" | CategoryKey;
