@@ -1,4 +1,5 @@
 import { cart } from "../services/cart";
+import { favorites } from "../services/favorites";
 
 const CartIcon = (extraClass = ""): string => `
   <a href="#cart"
@@ -9,6 +10,23 @@ const CartIcon = (extraClass = ""): string => `
     <img src="/icons/cart.svg" alt="" class="size-5" aria-hidden="true">
     <span data-cart-badge
           class="cart-badge absolute -top-1 -right-1 hidden min-w-[20px] h-5 px-1.5
+                 rounded-full bg-[#FFC400] text-primary font-sans text-[12px] leading-5
+                 text-center font-medium">0</span>
+  </a>
+`;
+
+const FavoritesIcon = (extraClass = ""): string => `
+  <a href="#favorites"
+     class="favorites-link relative grid place-items-center size-11 rounded-full
+            border border-[#FFC400] bg-white shrink-0
+            transition-transform hover:scale-105 ${extraClass}"
+     aria-label="Открыть избранное">
+    <svg viewBox="0 0 24 24" class="size-5 text-primary" fill="none" stroke="currentColor"
+         stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 21s-7-4.5-7-10.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 7 4.5C19 16.5 12 21 12 21z"/>
+    </svg>
+    <span data-favorites-badge
+          class="favorites-badge absolute -top-1 -right-1 hidden min-w-[20px] h-5 px-1.5
                  rounded-full bg-[#FFC400] text-primary font-sans text-[12px] leading-5
                  text-center font-medium">0</span>
   </a>
@@ -99,15 +117,17 @@ export const Header = (): string => {
             </button>
           </div>
 
-          <!-- Аккаунт + корзина (десктоп) -->
+          <!-- Аккаунт + избранное + корзина (десктоп) -->
           <div class="hidden 2xl:flex items-center gap-3 shrink-0">
             ${AuthIcon()}
+            ${FavoritesIcon()}
             ${CartIcon()}
           </div>
 
-          <!-- Аккаунт + корзина (мобильный/планшет) -->
+          <!-- Аккаунт + избранное + корзина (мобильный/планшет) -->
           <div class="2xl:hidden ml-auto flex items-center gap-2 shrink-0">
             ${AuthIcon()}
+            ${FavoritesIcon()}
             ${CartIcon()}
           </div>
 
@@ -182,9 +202,19 @@ const syncCartBadges = (): void => {
   });
 };
 
+const syncFavoritesBadges = (): void => {
+  const count = favorites.count();
+  document.querySelectorAll<HTMLElement>("[data-favorites-badge]").forEach((badge) => {
+    badge.textContent = String(count);
+    badge.classList.toggle("hidden", count === 0);
+  });
+};
+
 export const initHeader = (): void => {
   syncCartBadges();
+  syncFavoritesBadges();
   cart.onChange(syncCartBadges);
+  favorites.onChange(syncFavoritesBadges);
 
   const btn = document.getElementById("mobile-menu-btn");
   const menu = document.getElementById("mobile-menu");

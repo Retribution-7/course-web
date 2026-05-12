@@ -1,4 +1,10 @@
-const PAGE_HASHES = new Set<string>(["#cart", "#auth", "#reviews", "#company"]);
+const PAGE_HASHES = new Set<string>([
+  "#cart",
+  "#auth",
+  "#reviews",
+  "#company",
+  "#favorites",
+]);
 const PAGE_PREFIXES = ["#product/"];
 
 const update = (): void => {

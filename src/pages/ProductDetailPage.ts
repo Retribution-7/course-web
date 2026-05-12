@@ -4,6 +4,7 @@ import {
   ProductCard,
   SURFACE_OPTIONS,
   THICKNESS_OPTIONS,
+  syncFavoriteButtons,
 } from "../entities/ProductCard";
 import { products } from "../entities/products";
 import type { Product } from "../entities/products";
@@ -205,6 +206,7 @@ const showPage = (show: boolean, productIdx?: number): void => {
       `;
     } else {
       content.innerHTML = renderDetail(product, productIdx);
+      syncFavoriteButtons();
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
