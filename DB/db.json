@@ -1,0 +1,669 @@
+{
+  "products": [
+    {
+      "id": 0,
+      "title": "Монтеррей",
+      "image": "/images/metal-tiles/metal-tile-1.jpg",
+      "price": "590",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Высота волны, мм",
+          "value": "39"
+        },
+        {
+          "label": "Высота ступеньки, мм",
+          "value": "14"
+        }
+      ],
+      "color": "RAL 3005",
+      "thickness": "0,5",
+      "surface": "Полиэстер",
+      "category": "metal-tile"
+    },
+    {
+      "id": 1,
+      "title": "Kvinta Plus",
+      "image": "/images/metal-tiles/metal-tile-2.jpg",
+      "price": "610",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Высота волны, мм",
+          "value": "46"
+        },
+        {
+          "label": "Высота ступеньки, мм",
+          "value": "25"
+        }
+      ],
+      "color": "RAL 6020",
+      "thickness": "0,5",
+      "surface": "Матовая",
+      "category": "metal-tile"
+    },
+    {
+      "id": 2,
+      "title": "Каскад",
+      "image": "/images/metal-tiles/metal-tile-3.jpg",
+      "price": "625",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Высота волны, мм",
+          "value": "25"
+        },
+        {
+          "label": "Высота ступеньки, мм",
+          "value": "22"
+        }
+      ],
+      "color": "RAL 7004",
+      "thickness": "0,45",
+      "surface": "Полиэстер",
+      "category": "metal-tile"
+    },
+    {
+      "id": 3,
+      "title": "Супермонтеррей",
+      "image": "/images/metal-tiles/metal-tile-4.jpg",
+      "price": "640",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Высота волны, мм",
+          "value": "46"
+        },
+        {
+          "label": "Высота ступеньки, мм",
+          "value": "21"
+        }
+      ],
+      "color": "RAL 8017",
+      "thickness": "0,5",
+      "surface": "Полиэстер",
+      "category": "metal-tile"
+    },
+    {
+      "id": 4,
+      "title": "Ламонтерра",
+      "image": "/images/metal-tiles/metal-tile-5.jpg",
+      "price": "650",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Высота волны, мм",
+          "value": "23.5"
+        },
+        {
+          "label": "Высота ступеньки, мм",
+          "value": "20"
+        }
+      ],
+      "color": "RAL 5005",
+      "thickness": "0,5",
+      "surface": "Матовая",
+      "category": "metal-tile"
+    },
+    {
+      "id": 5,
+      "title": "Джокер",
+      "image": "/images/metal-tiles/metal-tile-6.jpg",
+      "price": "660",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Высота волны, мм",
+          "value": "50"
+        },
+        {
+          "label": "Высота ступеньки, мм",
+          "value": "30"
+        }
+      ],
+      "color": "RAL 9005",
+      "thickness": "0,5",
+      "surface": "Матовая",
+      "category": "metal-tile"
+    },
+    {
+      "id": 6,
+      "title": "Андалузия",
+      "image": "/images/metal-tiles/metal-tile-7.jpg",
+      "price": "675",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Высота волны, мм",
+          "value": "35"
+        },
+        {
+          "label": "Высота ступеньки, мм",
+          "value": "16"
+        }
+      ],
+      "color": "RAL 3011",
+      "thickness": "0,5",
+      "surface": "Полиэстер",
+      "category": "metal-tile"
+    },
+    {
+      "id": 7,
+      "title": "Трамонтана",
+      "image": "/images/metal-tiles/metal-tile-8.jpg",
+      "price": "690",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Высота волны, мм",
+          "value": "40"
+        },
+        {
+          "label": "Высота ступеньки, мм",
+          "value": "20"
+        }
+      ],
+      "color": "RAL 6005",
+      "thickness": "0,5",
+      "surface": "Матовая",
+      "category": "metal-tile"
+    },
+    {
+      "id": 8,
+      "title": "Профнастил C8",
+      "image": "/images/corrugated-sheets/corrugated-sheet-1.jpg",
+      "price": "320",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Ширина общая, мм",
+          "value": "1200"
+        },
+        {
+          "label": "Ширина полезная, мм",
+          "value": "1160"
+        }
+      ],
+      "color": "Оцинкованный",
+      "thickness": "0,35",
+      "surface": "Выбрать",
+      "category": "corrugated-sheet"
+    },
+    {
+      "id": 9,
+      "title": "Профнастил C10",
+      "image": "/images/corrugated-sheets/corrugated-sheet-2.jpg",
+      "price": "330",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Ширина общая, мм",
+          "value": "1180"
+        },
+        {
+          "label": "Ширина полезная, мм",
+          "value": "1100"
+        }
+      ],
+      "color": "RAL 5005",
+      "thickness": "0,4",
+      "surface": "Полиэстер",
+      "category": "corrugated-sheet"
+    },
+    {
+      "id": 10,
+      "title": "Профнастил C20",
+      "image": "/images/corrugated-sheets/corrugated-sheet-3.jpg",
+      "price": "360",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Ширина общая, мм",
+          "value": "1150"
+        },
+        {
+          "label": "Ширина полезная, мм",
+          "value": "1100"
+        }
+      ],
+      "color": "RAL 6005",
+      "thickness": "0,45",
+      "surface": "Полиэстер",
+      "category": "corrugated-sheet"
+    },
+    {
+      "id": 11,
+      "title": "Профнастил C21",
+      "image": "/images/corrugated-sheets/corrugated-sheet-4.jpg",
+      "price": "370",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Ширина общая, мм",
+          "value": "1051"
+        },
+        {
+          "label": "Ширина полезная, мм",
+          "value": "1000"
+        }
+      ],
+      "color": "RAL 8017",
+      "thickness": "0,45",
+      "surface": "Матовая",
+      "category": "corrugated-sheet"
+    },
+    {
+      "id": 12,
+      "title": "Профнастил C44",
+      "image": "/images/corrugated-sheets/corrugated-sheet-5.jpg",
+      "price": "420",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Ширина общая, мм",
+          "value": "1047"
+        },
+        {
+          "label": "Ширина полезная, мм",
+          "value": "1000"
+        }
+      ],
+      "color": "RAL 3011",
+      "thickness": "0,5",
+      "surface": "Полиэстер",
+      "category": "corrugated-sheet"
+    },
+    {
+      "id": 13,
+      "title": "Профнастил HC35",
+      "image": "/images/corrugated-sheets/corrugated-sheet-6.jpg",
+      "price": "450",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Ширина общая, мм",
+          "value": "1060"
+        },
+        {
+          "label": "Ширина полезная, мм",
+          "value": "1000"
+        }
+      ],
+      "color": "RAL 9005",
+      "thickness": "0,5",
+      "surface": "Матовая",
+      "category": "corrugated-sheet"
+    },
+    {
+      "id": 14,
+      "title": "Профнастил HC60",
+      "image": "/images/corrugated-sheets/corrugated-sheet-7.jpg",
+      "price": "510",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Ширина общая, мм",
+          "value": "902"
+        },
+        {
+          "label": "Ширина полезная, мм",
+          "value": "845"
+        }
+      ],
+      "color": "RAL 5005",
+      "thickness": "0,7",
+      "surface": "Полиэстер",
+      "category": "corrugated-sheet"
+    },
+    {
+      "id": 15,
+      "title": "Профнастил H75",
+      "image": "/images/corrugated-sheets/corrugated-sheet-8.jpg",
+      "price": "580",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Ширина общая, мм",
+          "value": "800"
+        },
+        {
+          "label": "Ширина полезная, мм",
+          "value": "750"
+        }
+      ],
+      "color": "Оцинкованный",
+      "thickness": "0,8",
+      "surface": "Выбрать",
+      "category": "corrugated-sheet"
+    },
+    {
+      "id": 16,
+      "title": "Кликфальц",
+      "image": "/images/seam-roofing/seam-roofing-1.jpg",
+      "price": "655",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Максимальная длина, м",
+          "value": "9"
+        },
+        {
+          "label": "Минимальная длина, м",
+          "value": "0,5"
+        }
+      ],
+      "color": "RAL 7024",
+      "thickness": "0,5",
+      "surface": "Матовая",
+      "category": "seam-roofing"
+    },
+    {
+      "id": 17,
+      "title": "Кликфальц Pro",
+      "image": "/images/seam-roofing/seam-roofing-2.jpg",
+      "price": "780",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Максимальная длина, м",
+          "value": "9"
+        },
+        {
+          "label": "Минимальная длина, м",
+          "value": "0,5"
+        }
+      ],
+      "color": "RAL 9005",
+      "thickness": "0,5",
+      "surface": "Матовая",
+      "category": "seam-roofing"
+    },
+    {
+      "id": 18,
+      "title": "Кликфальц Pro Golf",
+      "image": "/images/seam-roofing/seam-roofing-3.jpg",
+      "price": "821",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Максимальная длина, м",
+          "value": "9"
+        },
+        {
+          "label": "Минимальная длина, м",
+          "value": "0,5"
+        }
+      ],
+      "color": "RAL",
+      "thickness": "0,45",
+      "surface": "Матовая",
+      "category": "seam-roofing"
+    },
+    {
+      "id": 19,
+      "title": "Кликфальц Mini",
+      "image": "/images/seam-roofing/seam-roofing-4.jpg",
+      "price": "790",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Максимальная длина, м",
+          "value": "6"
+        },
+        {
+          "label": "Минимальная длина, м",
+          "value": "0,5"
+        }
+      ],
+      "color": "RAL 8017",
+      "thickness": "0,5",
+      "surface": "Полиэстер",
+      "category": "seam-roofing"
+    },
+    {
+      "id": 20,
+      "title": "Фальц одинарный",
+      "image": "/images/seam-roofing/seam-roofing-5.jpg",
+      "price": "820",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Максимальная длина, м",
+          "value": "8"
+        },
+        {
+          "label": "Минимальная длина, м",
+          "value": "0,5"
+        }
+      ],
+      "color": "RAL 6005",
+      "thickness": "0,5",
+      "surface": "Матовая",
+      "category": "seam-roofing"
+    },
+    {
+      "id": 21,
+      "title": "Фальц двойной",
+      "image": "/images/seam-roofing/seam-roofing-6.jpg",
+      "price": "860",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Максимальная длина, м",
+          "value": "8"
+        },
+        {
+          "label": "Минимальная длина, м",
+          "value": "0,5"
+        }
+      ],
+      "color": "RAL 3005",
+      "thickness": "0,5",
+      "surface": "Матовая",
+      "category": "seam-roofing"
+    },
+    {
+      "id": 22,
+      "title": "Фальц стоячий",
+      "image": "/images/seam-roofing/seam-roofing-7.jpg",
+      "price": "890",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Максимальная длина, м",
+          "value": "10"
+        },
+        {
+          "label": "Минимальная длина, м",
+          "value": "0,5"
+        }
+      ],
+      "color": "RAL 6020",
+      "thickness": "0,55",
+      "surface": "Матовая",
+      "category": "seam-roofing"
+    },
+    {
+      "id": 23,
+      "title": "Фальц премиум",
+      "image": "/images/seam-roofing/seam-roofing-8.jpg",
+      "price": "950",
+      "brand": "Grande Line",
+      "specs": [
+        {
+          "label": "Максимальная длина, м",
+          "value": "10"
+        },
+        {
+          "label": "Минимальная длина, м",
+          "value": "0,5"
+        }
+      ],
+      "color": "Антрацит",
+      "thickness": "0,7",
+      "surface": "Матовая",
+      "category": "seam-roofing"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Иван",
+      "lastName": "Петров",
+      "email": "ivan.petrov@example.com",
+      "phone": "+375 (29) 123-45-67",
+      "birthDate": "1990-05-12",
+      "nickname": "IvanPetrov90",
+      "password": "Test1234!",
+      "role": "customer",
+      "createdAt": "2024-01-15"
+    },
+    {
+      "id": 2,
+      "firstName": "Анна",
+      "lastName": "Соколова",
+      "email": "anna.sokolova@example.com",
+      "phone": "+375 (33) 987-65-43",
+      "birthDate": "1995-11-30",
+      "nickname": "AnnaSokolova",
+      "password": "Test1234!",
+      "role": "customer",
+      "createdAt": "2024-03-22"
+    },
+    {
+      "id": 3,
+      "firstName": "Михаил",
+      "lastName": "Козлов",
+      "email": "m.kozlov@example.com",
+      "phone": "+375 (44) 555-00-11",
+      "birthDate": "1985-07-20",
+      "nickname": "MikhailKozlov",
+      "password": "Test1234!",
+      "role": "manager",
+      "createdAt": "2023-11-08"
+    },
+    {
+      "phone": "+375 (33) 987-65-43",
+      "email": "anna.sokolova@example.com",
+      "firstName": "Анна",
+      "lastName": "Соколова",
+      "birthDate": "1995-11-30",
+      "nickname": "AnnaSokolova",
+      "password": "Test1234!",
+      "createdAt": "2024-03-22",
+      "id": 4
+    }
+  ],
+  "favorites": [],
+  "cart": [],
+  "reviews": [
+    {
+      "id": 1,
+      "name": "Serg",
+      "date": "27.07.2024",
+      "avatar": "/images/customers/customer-1.svg",
+      "text": "Долго думал где покупать арматуру на фундамент, по рекомендации друзей заказывал на этой металлобазе. Менеджер Дмитрий все четко посчитал, цена меня устроила. Доставка была в срок. Буду и дальше с ними работать.",
+      "rating": 5,
+      "product": "Арматура"
+    },
+    {
+      "id": 2,
+      "name": "Квартира дом",
+      "date": "21.01.2024",
+      "avatar": "/images/customers/customer-2.svg",
+      "text": "Рекомендую! Прекрасная компания. Обращаюсь не в первый раз. Менеджеры клиентоориентированы. Приятно, когда тебя и твои запросы понимают. Всегда гуманные цены. Профлист качественный, снегозадержатели супер. Спасибо!",
+      "rating": 5,
+      "product": "Профнастил"
+    },
+    {
+      "id": 3,
+      "name": "Вячеслав Е.",
+      "date": "10.12.2023",
+      "avatar": "/images/customers/customer-3.svg",
+      "text": "Все чётко. Приняли заказ по телефону, пока ехал подготовили все документы, отправили в WhatsApp точку, чтобы не заблудился. Приехал, оплатил, забрал — 10 минут максимум.",
+      "rating": 5,
+      "product": "Металлочерепица"
+    },
+    {
+      "id": 4,
+      "name": "Алексей М.",
+      "date": "03.11.2024",
+      "avatar": "/images/customers/customer-1.svg",
+      "text": "Покупал металлочерепицу Монтеррей для дачи. Качество отличное, цвет точно по каталогу. Менеджер подсказал по доборным элементам — учёл всё, ничего не пришлось докупать.",
+      "rating": 5,
+      "product": "Металлочерепица"
+    },
+    {
+      "id": 5,
+      "name": "Ольга К.",
+      "date": "18.09.2024",
+      "avatar": "/images/customers/customer-2.svg",
+      "text": "Заказывала фальцевую кровлю на гараж. Доставили чуть позже срока на один день, но извинились и сделали скидку на следующий заказ. В целом нормально, монтажники довольны.",
+      "rating": 4,
+      "product": "Фальцевая кровля"
+    },
+    {
+      "id": 6,
+      "name": "Игорь Степанов",
+      "date": "05.08.2024",
+      "avatar": "/images/customers/customer-3.svg",
+      "text": "Хорошие цены, оперативная отгрузка. Брал профнастил С21 на забор — лист ровный, без замятий. Погрузили аккуратно, никаких царапин.",
+      "rating": 5,
+      "product": "Профнастил"
+    },
+    {
+      "id": 7,
+      "name": "Дмитрий В.",
+      "date": "22.06.2024",
+      "avatar": "/images/customers/customer-1.svg",
+      "text": "Всё устроило, только курьер позвонил за 10 минут до прибытия — пришлось бежать со стройки. Лучше бы предупреждали за полчаса. По товару претензий нет.",
+      "rating": 4,
+      "product": "Металлочерепица"
+    },
+    {
+      "id": 8,
+      "name": "Марина Л.",
+      "date": "14.05.2024",
+      "avatar": "/images/customers/customer-2.svg",
+      "text": "Спасибо менеджеру Анне! Помогла рассчитать кровлю на сложный скат, учла все нюансы. Заказ собрали быстро, на складе всё было в наличии.",
+      "rating": 5,
+      "product": "Кликфальц"
+    },
+    {
+      "id": 9,
+      "name": "Николай П.",
+      "date": "29.03.2024",
+      "avatar": "/images/customers/customer-3.svg",
+      "text": "Брал на бытовку самый дешёвый профнастил — лист тонкий, но для своих задач норм. За цену претензий нет, всё честно описано в карточке товара.",
+      "rating": 4,
+      "product": "Профнастил"
+    },
+    {
+      "id": 10,
+      "name": "Сергей З.",
+      "date": "11.02.2024",
+      "avatar": "/images/customers/customer-1.svg",
+      "text": "Уже третий раз обращаюсь. Стабильное качество, нормальные сроки, без сюрпризов с ценой. Сейчас брал металлочерепицу Каскад — кладётся отлично, замки плотные.",
+      "rating": 5,
+      "product": "Металлочерепица"
+    },
+    {
+      "id": 11,
+      "name": "Татьяна Р.",
+      "date": "07.01.2024",
+      "avatar": "/images/customers/customer-2.svg",
+      "text": "Доставка пришла на день раньше — пришлось договариваться о хранении. В остальном всё ок: товар качественный, документы в порядке.",
+      "rating": 3,
+      "product": "Фальцевая кровля"
+    },
+    {
+      "id": 12,
+      "name": "Андрей Н.",
+      "date": "19.12.2023",
+      "avatar": "/images/customers/customer-3.svg",
+      "text": "Приехал на склад без записи — встретили, всё показали, помогли загрузить. Чувствуется, что людям не всё равно. Цены адекватные, рекомендую.",
+      "rating": 5,
+      "product": "Профнастил"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { TOP_100_PASSWORDS_2023 } from "./passwords-top";
+import { postUser } from "./api";
 
 const MIN_AGE = 16;
 const MIN_PASSWORD = 8;
@@ -132,21 +133,31 @@ export interface RegisteredUser {
   firstName: string;
   middleName?: string;
   nickname: string;
+  password: string;
   createdAt: string;
 }
 
 const USER_KEY = "metallobaza-user";
 const AUTH_KEY = "metallobaza-authenticated";
+const SERVER_ID_KEY = "metallobaza-server-uid";
 const AUTH_CHANGE_EVENT = "auth:change";
 
 const emitAuthChange = (): void => {
   window.dispatchEvent(new CustomEvent(AUTH_CHANGE_EVENT));
 };
 
+export const getServerId = (): string | null => localStorage.getItem(SERVER_ID_KEY);
+export const setServerId = (id: string): void => localStorage.setItem(SERVER_ID_KEY, id);
+
 export const saveUser = (user: RegisteredUser): void => {
   localStorage.setItem(USER_KEY, JSON.stringify(user));
   localStorage.setItem(AUTH_KEY, "1");
   emitAuthChange();
+
+  // Persist to JSON Server in the background
+  void postUser(user)
+    .then((saved) => setServerId(String(saved.id)))
+    .catch(() => {});
 };
 
 export const getUser = (): RegisteredUser | null => {

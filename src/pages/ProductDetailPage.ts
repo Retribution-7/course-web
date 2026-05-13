@@ -6,7 +6,7 @@ import {
   THICKNESS_OPTIONS,
   syncFavoriteButtons,
 } from "../entities/ProductCard";
-import { products } from "../entities/products";
+import { fetchProductById, fetchProducts } from "../services/api";
 import type { Product } from "../entities/products";
 
 const CATEGORY_LABEL: Record<Product["category"], string> = {
@@ -45,7 +45,7 @@ const ADVANTAGES: Record<Product["category"], string[]> = {
   ],
 };
 
-const renderDetail = (product: Product, index: number): string => {
+const renderDetail = (product: Product, index: number, related: Product[]): string => {
   const advantages = ADVANTAGES[product.category]
     .map(
       (text) => `
@@ -56,11 +56,6 @@ const renderDetail = (product: Product, index: number): string => {
     )
     .join("");
 
-  const related = products
-    .map((p, i) => ({ p, i }))
-    .filter(({ p, i }) => p.category === product.category && i !== index)
-    .slice(0, 3);
-
   const relatedHtml =
     related.length === 0
       ? ""
@@ -70,7 +65,7 @@ const renderDetail = (product: Product, index: number): string => {
             Похожие материалы
           </h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mt-6 lg:mt-10">
-            ${related.map(({ p, i }) => ProductCard(p, i)).join("")}
+            ${related.map((p) => ProductCard(p, p.id ?? 0)).join("")}
           </div>
         </section>
       `;
@@ -184,13 +179,24 @@ export const ProductDetailPage = (): string => `
   </section>
 `;
 
-const showPage = (show: boolean, productIdx?: number): void => {
+const showPage = async (show: boolean, productIdx?: number): Promise<void> => {
   const page = document.getElementById("product-page");
   const content = document.getElementById("product-detail-content");
   if (!page || !content) return;
   page.classList.toggle("hidden", !show);
-  if (show && productIdx !== undefined) {
-    const product = products[productIdx];
+
+  if (!show || productIdx === undefined) return;
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  content.innerHTML = `
+    <div class="flex justify-center py-20">
+      <span class="font-sans text-[15px] text-[#758499]">Загрузка товара...</span>
+    </div>
+  `;
+
+  try {
+    const product = await fetchProductById(productIdx);
+
     if (!product) {
       content.innerHTML = `
         <div class="bg-white rounded-[14px] card-shadow p-10 text-center">
@@ -204,18 +210,28 @@ const showPage = (show: boolean, productIdx?: number): void => {
           </a>
         </div>
       `;
-    } else {
-      content.innerHTML = renderDetail(product, productIdx);
-      syncFavoriteButtons();
+      return;
     }
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    const allInCategory = await fetchProducts({ category: product.category });
+    const related = allInCategory.filter((p) => p.id !== productIdx).slice(0, 3);
+
+    content.innerHTML = renderDetail(product, productIdx, related);
+    syncFavoriteButtons();
+  } catch {
+    content.innerHTML = `
+      <div class="bg-white rounded-[14px] card-shadow p-10 text-center">
+        <h3 class="font-sans text-[20px] gradient-text">Ошибка загрузки</h3>
+        <p class="mt-2 font-sans text-[15px] text-[#44444E]">Проверьте, что JSON Server запущен.</p>
+      </div>
+    `;
   }
 };
 
 const handleRoute = (): void => {
   const match = window.location.hash.match(/^#product\/(\d+)$/);
-  if (match) showPage(true, Number.parseInt(match[1], 10));
-  else showPage(false);
+  if (match) void showPage(true, Number.parseInt(match[1], 10));
+  else void showPage(false);
 };
 
 export const initProductDetailPage = (): void => {

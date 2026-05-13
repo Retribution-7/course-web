@@ -14,6 +14,7 @@ import {
   validatePhone,
   validateRequired,
 } from "../services/auth";
+import { fetchUsers } from "../services/api";
 
 type Tab = "login" | "register";
 
@@ -437,6 +438,10 @@ const handleRegisterSubmit = (event: Event): void => {
     return;
   }
   const middle = getInput("reg-middlename")?.value.trim() ?? "";
+  const password =
+    regState.pwdMode === "auto"
+      ? regState.autoPassword
+      : (getInput("reg-password")?.value ?? "");
   saveUser({
     phone: (getInput("reg-phone")?.value ?? "").trim(),
     email: (getInput("reg-email")?.value ?? "").trim(),
@@ -445,6 +450,7 @@ const handleRegisterSubmit = (event: Event): void => {
     firstName: (getInput("reg-firstname")?.value ?? "").trim(),
     middleName: middle || undefined,
     nickname: (getInput("reg-nickname")?.value ?? "").trim(),
+    password,
     createdAt: new Date().toISOString(),
   });
   alert("Регистрация прошла успешно. Добро пожаловать!");
@@ -455,20 +461,51 @@ const handleLoginSubmit = (event: Event): void => {
   event.preventDefault();
   if (!validateLoginForm()) return;
 
-  const user = getUser();
-  if (!user) {
-    alert("Пользователь не найден. Сначала зарегистрируйтесь.");
-    return;
-  }
   const phone = (getInput("login-phone")?.value ?? "").trim();
-  if (user.phone !== phone) {
-    alert("Неверный телефон или пароль.");
+  const password = getInput("login-password")?.value ?? "";
+
+  const localUser = getUser();
+  if (localUser) {
+    if (localUser.phone !== phone || localUser.password !== password) {
+      alert("Неверный телефон или пароль.");
+      return;
+    }
+    setAuthenticated(true);
+    alert("Вход выполнен.");
+    window.location.hash = "";
     return;
   }
 
-  setAuthenticated(true);
-  alert("Вход выполнен.");
-  window.location.hash = "";
+  // Local user not found — try JSON Server
+  const loginBtn = document.getElementById("login-submit") as HTMLButtonElement | null;
+  if (loginBtn) loginBtn.disabled = true;
+
+  fetchUsers()
+    .then((users) => {
+      const found = users.find((u) => u.phone === phone && u.password === password);
+      if (!found) {
+        alert("Пользователь не найден или неверный пароль.");
+        return;
+      }
+      saveUser({
+        phone: found.phone,
+        email: found.email,
+        firstName: found.firstName,
+        lastName: found.lastName,
+        birthDate: found.birthDate ?? "",
+        nickname: found.nickname ?? "",
+        password,
+        createdAt: found.createdAt,
+      });
+      alert("Вход выполнен.");
+      window.location.hash = "";
+    })
+    .catch(() => {
+      alert("Ошибка соединения с сервером. Попробуйте позже.");
+    })
+    .finally(() => {
+      if (loginBtn) loginBtn.disabled = !validateLoginForm();
+    });
 };
 
 const showPage = (show: boolean): void => {
