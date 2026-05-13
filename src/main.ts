@@ -23,6 +23,9 @@ import { Footer, initFooter } from "./widgets/Footer";
 import { Header, initHeader } from "./widgets/Header";
 import { Hero } from "./widgets/Hero";
 import { Testimonials, initTestimonials } from "./widgets/Testimonials";
+import { isAuthenticated, onAuthChange } from "./services/auth";
+import { favorites } from "./services/favorites";
+import { cart } from "./services/cart";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -66,3 +69,14 @@ initAccountPage();
 initFooter();
 
 hidePreloader();
+
+// Sync favorites and cart from JSON Server when user is authenticated
+const syncFromServer = (): void => {
+  if (isAuthenticated()) {
+    void favorites.loadFromServer();
+    void cart.loadFromServer();
+  }
+};
+
+syncFromServer();
+onAuthChange(syncFromServer);

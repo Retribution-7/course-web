@@ -1,4 +1,5 @@
-import { reviews, reviewDateMs, type Review } from "../entities/reviews";
+import { fetchReviews } from "../services/api";
+import { reviewDateMs, type Review } from "../entities/reviews";
 
 type SortOrder = "newest" | "oldest" | "rating";
 type RatingFilter = "all" | "5" | "4plus" | "3plus";
@@ -18,6 +19,8 @@ const state: FilterState = {
   rating: "all",
   page: 1,
 };
+
+let cachedReviews: Review[] = [];
 
 const Stars = (rating: number): string => {
   const full = Math.max(0, Math.min(5, Math.round(rating)));
@@ -250,7 +253,7 @@ const renderGrid = (): void => {
   const pagination = document.getElementById("reviews-pagination");
   if (!grid || !summary || !avg || !pagination) return;
 
-  const filtered = sortReviews(reviews.filter(matchesFilters));
+  const filtered = sortReviews(cachedReviews.filter(matchesFilters));
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   state.page = Math.max(1, Math.min(state.page, totalPages));
   const start = (state.page - 1) * PAGE_SIZE;
@@ -283,19 +286,51 @@ const renderGrid = (): void => {
     }
   }
 
-  summary.textContent = `Показано ${pluralReviews(filtered.length)} из ${reviews.length}`;
-  const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
-  avg.textContent = (sum / reviews.length).toFixed(1);
+  summary.textContent = `Показано ${pluralReviews(filtered.length)} из ${cachedReviews.length}`;
+  const sum = cachedReviews.reduce((acc, r) => acc + r.rating, 0);
+  avg.textContent = cachedReviews.length > 0 ? (sum / cachedReviews.length).toFixed(1) : "";
+};
+
+const showLoadingState = (): void => {
+  const grid = document.getElementById("reviews-grid");
+  if (grid) {
+    grid.classList.remove("hidden");
+    grid.innerHTML = `
+      <div class="col-span-full flex justify-center py-16">
+        <span class="font-sans text-[15px] text-[#758499]">Загрузка отзывов...</span>
+      </div>
+    `;
+  }
 };
 
 const showPage = (show: boolean): void => {
   const page = document.getElementById("reviews-page");
   if (!page) return;
   page.classList.toggle("hidden", !show);
-  if (show) {
+  if (!show) return;
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (cachedReviews.length > 0) {
     renderGrid();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
   }
+
+  showLoadingState();
+  fetchReviews()
+    .then((reviews) => {
+      cachedReviews = reviews;
+      renderGrid();
+    })
+    .catch(() => {
+      const grid = document.getElementById("reviews-grid");
+      if (grid)
+        grid.innerHTML = `
+          <div class="col-span-full text-center py-16 font-sans text-[15px] text-[#758499]">
+            Не удалось загрузить отзывы. Проверьте, что JSON Server запущен.
+          </div>
+        `;
+    });
 };
 
 const handleRoute = (): void => {

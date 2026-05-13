@@ -1,6 +1,7 @@
 import { ProductCard, syncFavoriteButtons } from "../entities/ProductCard";
-import { products } from "../entities/products";
+import { fetchProductsByIds } from "../services/api";
 import { favorites } from "../services/favorites";
+import type { Product } from "../entities/products";
 
 const renderEmpty = (): string => `
   <div class="bg-white rounded-[14px] card-shadow p-10 lg:p-16 text-center">
@@ -76,18 +77,38 @@ export const FavoritesPage = (): string => `
   </section>
 `;
 
-const render = (): void => {
+const render = async (): Promise<void> => {
   const content = document.getElementById("favorites-content");
   const summary = document.getElementById("favorites-summary");
   const clearBtn = document.getElementById("favorites-clear");
   if (!content || !summary || !clearBtn) return;
 
   const ids = favorites.list();
-  const items = ids
-    .map((id) => ({ product: products[id], id }))
-    .filter((entry): entry is { product: (typeof products)[number]; id: number } =>
-      Boolean(entry.product),
-    );
+
+  if (ids.length === 0) {
+    content.innerHTML = renderEmpty();
+    summary.textContent = "Пока ничего не добавлено";
+    clearBtn.classList.add("hidden");
+    return;
+  }
+
+  content.innerHTML = `
+    <div class="col-span-full flex justify-center py-16">
+      <span class="font-sans text-[15px] text-[#758499]">Загрузка...</span>
+    </div>
+  `;
+
+  let items: Product[];
+  try {
+    items = await fetchProductsByIds(ids);
+  } catch {
+    content.innerHTML = `
+      <div class="col-span-full text-center py-16 font-sans text-[15px] text-[#758499]">
+        Не удалось загрузить товары
+      </div>
+    `;
+    return;
+  }
 
   if (items.length === 0) {
     content.innerHTML = renderEmpty();
@@ -98,7 +119,7 @@ const render = (): void => {
 
   content.innerHTML = `
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
-      ${items.map(({ product, id }) => ProductCard(product, id)).join("")}
+      ${items.map((p) => ProductCard(p, p.id ?? 0)).join("")}
     </div>
   `;
   summary.textContent = `${pluralItems(items.length)} в избранном`;
@@ -111,7 +132,7 @@ const showPage = (show: boolean): void => {
   if (!page) return;
   page.classList.toggle("hidden", !show);
   if (show) {
-    render();
+    void render();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 };
@@ -124,7 +145,7 @@ export const initFavoritesPage = (): void => {
   handleRoute();
   window.addEventListener("hashchange", handleRoute);
   favorites.onChange(() => {
-    if (window.location.hash === "#favorites") render();
+    if (window.location.hash === "#favorites") void render();
   });
 
   document.getElementById("favorites-clear")?.addEventListener("click", () => {
