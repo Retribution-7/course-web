@@ -1,5 +1,7 @@
 import { isAuthenticated } from "../services/auth";
 import { cart } from "../services/cart";
+import { t, translateTitle } from "../services/i18n";
+import { showToast } from "../shared/ui/toast";
 
 const THICKNESS_MULTIPLIER: Record<string, number> = {
   "0,35": 0.85,
@@ -39,13 +41,15 @@ export const Calculator = (): string => `
               id="calc-close"
               class="absolute right-4 top-4 grid size-8 place-items-center rounded-full
                      text-[#44444E] hover:bg-[#F3F5F9] transition-colors cursor-pointer"
-              aria-label="Закрыть калькулятор">
+              aria-label="${t("calc-close-btn")}"
+              data-i18n-aria-label="calc-close-btn">
         <svg viewBox="0 0 14 14" class="size-4" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M1 1l12 12M13 1L1 13"/>
         </svg>
       </button>
 
       <h3 id="calc-title"
+          data-i18n="calc-title"
           class="font-sans font-normal text-[24px] leading-[1.2] lg:text-[28px] gradient-text pr-10">
         Расчёт стоимости
       </h3>
@@ -53,13 +57,14 @@ export const Calculator = (): string => `
          class="mt-2 font-sans text-[15px] leading-[1.3] text-[#44444E]"></p>
 
       <dl class="mt-5 grid grid-cols-[1fr_auto] gap-x-6 gap-y-1.5 font-sans text-[13px] leading-[1.3] text-[#44444E]">
-        <dt>Цвет</dt><dd id="calc-color" class="text-right"></dd>
-        <dt>Толщина</dt><dd id="calc-thickness" class="text-right"></dd>
-        <dt>Поверхность</dt><dd id="calc-surface" class="text-right"></dd>
+        <dt data-i18n="calc-color-label">Цвет</dt><dd id="calc-color" class="text-right"></dd>
+        <dt data-i18n="calc-thickness-label">Толщина</dt><dd id="calc-thickness" class="text-right"></dd>
+        <dt data-i18n="calc-surface-label">Поверхность</dt><dd id="calc-surface" class="text-right"></dd>
       </dl>
 
       <div class="mt-6">
         <label for="calc-area"
+               data-i18n="calc-area-label"
                class="block font-sans text-[13px] leading-[1.3] text-[#44444E]">
           Площадь крыши, м²
         </label>
@@ -69,7 +74,8 @@ export const Calculator = (): string => `
                   class="grid size-10 place-items-center rounded-full border border-[#ddd]
                          font-sans text-[20px] text-[#44444E] cursor-pointer
                          hover:border-[#FFC400] transition-colors"
-                  aria-label="Уменьшить площадь">−</button>
+                  aria-label="${t("calc-area-decrease")}"
+                  data-i18n-aria-label="calc-area-decrease">−</button>
           <input id="calc-area"
                  type="number"
                  min="1"
@@ -85,7 +91,8 @@ export const Calculator = (): string => `
                   class="grid size-10 place-items-center rounded-full border border-[#ddd]
                          font-sans text-[20px] text-[#44444E] cursor-pointer
                          hover:border-[#FFC400] transition-colors"
-                  aria-label="Увеличить площадь">+</button>
+                  aria-label="${t("calc-area-increase")}"
+                  data-i18n-aria-label="calc-area-increase">+</button>
         </div>
       </div>
 
@@ -93,7 +100,8 @@ export const Calculator = (): string => `
         <input id="calc-installation"
                type="checkbox"
                class="size-4 accent-[#FFC400]" />
-        <span class="font-sans text-[14px] leading-[1.3] text-[#44444E]">
+        <span data-i18n="calc-installation-label"
+              class="font-sans text-[14px] leading-[1.3] text-[#44444E]">
           Включить монтаж (${INSTALLATION_PER_M2} ₽/м²)
         </span>
       </label>
@@ -101,41 +109,42 @@ export const Calculator = (): string => `
         <input id="calc-delivery"
                type="checkbox"
                class="size-4 accent-[#FFC400]" />
-        <span class="font-sans text-[14px] leading-[1.3] text-[#44444E]">
+        <span data-i18n="calc-delivery-label"
+              class="font-sans text-[14px] leading-[1.3] text-[#44444E]">
           Доставка (${DELIVERY_FEE.toLocaleString("ru-RU")} ₽)
         </span>
       </label>
 
       <div class="mt-6 rounded-[10px] bg-[#F3F5F9] p-4 font-sans text-[13px] leading-[1.4] text-[#44444E]">
         <div class="flex justify-between gap-4">
-          <span>Базовая цена</span>
+          <span data-i18n="calc-base-price">Базовая цена</span>
           <span id="calc-base"></span>
         </div>
         <div class="flex justify-between gap-4">
-          <span>Коэф. толщины</span>
+          <span data-i18n="calc-mult-thickness">Коэф. толщины</span>
           <span id="calc-mult-thickness"></span>
         </div>
         <div class="flex justify-between gap-4">
-          <span>Коэф. поверхности</span>
+          <span data-i18n="calc-mult-surface">Коэф. поверхности</span>
           <span id="calc-mult-surface"></span>
         </div>
         <div class="my-2 h-px bg-[#ddd]"></div>
         <div class="flex justify-between gap-4">
-          <span>Материал</span>
+          <span data-i18n="calc-material-label">Материал</span>
           <span id="calc-material"></span>
         </div>
         <div id="calc-row-installation" class="flex justify-between gap-4 hidden">
-          <span>Монтаж</span>
+          <span data-i18n="calc-installation-row">Монтаж</span>
           <span id="calc-installation-sum"></span>
         </div>
         <div id="calc-row-delivery" class="flex justify-between gap-4 hidden">
-          <span>Доставка</span>
+          <span data-i18n="calc-delivery-row">Доставка</span>
           <span id="calc-delivery-sum"></span>
         </div>
       </div>
 
       <div class="mt-4 flex items-baseline justify-between gap-4">
-        <span class="font-sans text-[15px] text-[#44444E]">Итого</span>
+        <span data-i18n="calc-total-label" class="font-sans text-[15px] text-[#44444E]">Итого</span>
         <span id="calc-total"
               class="font-sans text-[28px] leading-none text-primary"></span>
       </div>
@@ -148,7 +157,7 @@ export const Calculator = (): string => `
                      transition-all duration-300 hover:scale-[1.02] cursor-pointer
                      shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]">
         <img src="/icons/cart.svg" alt="" class="size-5" aria-hidden="true">
-        <span>В корзину</span>
+        <span data-i18n="calc-add-to-cart">В корзину</span>
       </button>
 
     </div>
@@ -228,9 +237,9 @@ const openModal = (article: HTMLElement): void => {
   const price = parseNumber(article.dataset.productPrice ?? "0");
 
   const values = article.querySelectorAll<HTMLElement>(".product-dropdown__value");
-  const color = values[0]?.textContent?.trim() ?? "";
-  const thickness = values[1]?.textContent?.trim() ?? "";
-  const surface = values[2]?.textContent?.trim() ?? "";
+  const color = values[0]?.dataset.value ?? values[0]?.textContent?.trim() ?? "";
+  const thickness = values[1]?.dataset.value ?? values[1]?.textContent?.trim() ?? "";
+  const surface = values[2]?.dataset.value ?? values[2]?.textContent?.trim() ?? "";
 
   state.title = title;
   state.image = image;
@@ -346,6 +355,7 @@ export const initCalculator = (): void => {
       total,
     });
 
+    showToast(`«${translateTitle(state.title)}» ${t("calc-toast-cart-added")}`, { type: "success" });
     closeModal();
     window.location.hash = "#cart";
   });

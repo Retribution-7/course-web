@@ -1,12 +1,10 @@
+import { t } from "../services/i18n";
+
 export const initFooter = (): void => {
   document.addEventListener("click", (event) => {
     const btn = (event.target as HTMLElement).closest('[data-action="reset-settings"]');
     if (!btn) return;
-    if (
-      confirm(
-        "Сбросить все настройки и выйти?\nБудут удалены: корзина, избранное, аккаунт.",
-      )
-    ) {
+    if (confirm(t("footer-reset-confirm"))) {
       localStorage.clear();
       window.location.hash = "";
       window.location.reload();
@@ -34,11 +32,11 @@ export const Footer = (): string => {
               </div>
               <span class="absolute inset-0 flex items-center justify-center text-[17px] font-sans text-primary font-normal">PDF</span>
             </div>
-            <span class="text-[17px] text-primary font-normal group-hover:underline">Скачать прайс-лист</span>
+            <span class="text-[17px] text-primary font-normal group-hover:underline" data-i18n="footer-pdf-download">Скачать прайс-лист</span>
           </a>
 
           <!-- Кнопка каталога -->
-          <a href="#catalog" class="btn-primary text-[17px] px-6 py-5 shrink-0">
+          <a href="#catalog" class="btn-primary text-[17px] px-6 py-5 shrink-0" data-i18n="footer-catalog-btn">
             Посмотреть каталог товаров
           </a>
 
@@ -46,7 +44,7 @@ export const Footer = (): string => {
           <div class="flex flex-col items-start gap-3 shrink-0">
             <div class="flex items-center gap-2">
               <span class="size-[6px] rounded-full bg-[#FFC400] shrink-0"></span>
-              <span class="text-[13px] text-primary font-normal leading-[1.3]">Задайте вопрос online</span>
+              <span class="text-[13px] text-primary font-normal leading-[1.3]" data-i18n="footer-ask-online">Задайте вопрос online</span>
             </div>
             <div class="flex items-center gap-[15px]">
               <a href="https://wa.me/78123255055" target="_blank" rel="noopener noreferrer"
@@ -76,7 +74,8 @@ export const Footer = (): string => {
               +7 (812) 325-50-55
             </a>
             <button class="text-[22px] leading-[30px] text-primary font-sans font-normal hover:underline cursor-pointer"
-                    onclick="document.getElementById('consultation')?.scrollIntoView({behavior:'smooth'})">
+                    onclick="document.getElementById('consultation')?.scrollIntoView({behavior:'smooth'})"
+                    data-i18n="footer-callback">
               Перезвоним Вам
             </button>
           </div>
@@ -86,19 +85,22 @@ export const Footer = (): string => {
         <!-- Нижняя строка: ссылки + копирайт -->
         <div class="mt-[18px] flex flex-col items-center gap-2 border-t border-[rgba(68,68,78,0.1)] pt-[18px]">
           <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2" aria-label="Дополнительные ссылки">
-            <a href="#company" class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary hover:underline">
+            <a href="#company" class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary hover:underline"
+               data-i18n="footer-company">
               О компании
             </a>
             <span class="hidden sm:inline-block size-1 rounded-full bg-[rgba(68,68,78,0.3)]" aria-hidden="true"></span>
-            <a href="#reviews" class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary hover:underline">
+            <a href="#reviews" class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary hover:underline"
+               data-i18n="footer-reviews">
               Отзывы
             </a>
             <span class="hidden sm:inline-block size-1 rounded-full bg-[rgba(68,68,78,0.3)]" aria-hidden="true"></span>
-            <a href="#" class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary hover:underline">
+            <a href="#" class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary hover:underline"
+               data-i18n="footer-privacy">
               Политика конфиденциальности
             </a>
             <span class="hidden sm:inline-block size-1 rounded-full bg-[rgba(68,68,78,0.3)]" aria-hidden="true"></span>
-            <button type="button" data-action="reset-settings"
+            <button type="button" data-action="reset-settings" data-i18n="footer-reset"
                     class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-[#758499] hover:text-[#FFC400] hover:underline cursor-pointer transition-colors">
               Сбросить настройки
             </button>

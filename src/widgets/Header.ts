@@ -1,6 +1,7 @@
 import { isAuthenticated, isAdmin, onAuthChange } from "../services/auth";
 import { cart } from "../services/cart";
 import { favorites } from "../services/favorites";
+import { getCurrentLang, getTranslate, type Lang } from "../services/i18n";
 
 const CartIcon = (extraClass = ""): string => `
   <a href="#cart"
@@ -62,6 +63,25 @@ const AdminIcon = (extraClass = ""): string => `
   </a>
 `;
 
+const LangToggle = (): string => `
+  <div class="relative flex items-center bg-[#F3F5F9] rounded-full p-0.5 shrink-0"
+       role="group" aria-label="Language / Язык">
+    <div data-lang-indicator
+         class="absolute top-0.5 bottom-0.5 left-0.5 w-[calc(50%-2px)] rounded-full
+                bg-gradient-to-r from-button-first to-button-second
+                shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]
+                transition-transform duration-300 pointer-events-none"></div>
+    <button type="button" data-lang-btn="ru"
+            class="lang-btn relative z-10 w-9 h-8 font-sans text-[13px] font-medium text-primary cursor-pointer">
+      RU
+    </button>
+    <button type="button" data-lang-btn="en"
+            class="lang-btn relative z-10 w-9 h-8 font-sans text-[13px] font-medium text-primary cursor-pointer">
+      EN
+    </button>
+  </div>
+`;
+
 export const Header = (): string => {
   return `
     <header class="bg-white w-full sticky top-0 z-50 shadow-[0_2px_20px_rgba(0,0,0,0.06)]">
@@ -87,11 +107,11 @@ export const Header = (): string => {
             <div class="size-[61px] rounded-full gradient-icon flex items-center justify-center shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] shrink-0">
               <span class="text-[17px] font-sans text-primary font-normal">PDF</span>
             </div>
-            <span class="text-[17px] text-primary font-normal group-hover:underline">Скачать прайс-лист</span>
+            <span class="text-[17px] text-primary font-normal group-hover:underline" data-i18n="header-pdf-download">Скачать прайс-лист</span>
           </a>
 
           <!-- Кнопка каталога -->
-          <a href="#catalog" class="hidden 2xl:inline-flex btn-primary text-[17px] px-6 py-5 shrink-0">
+          <a href="#catalog" class="hidden 2xl:inline-flex btn-primary text-[17px] px-6 py-5 shrink-0" data-i18n="header-catalog-btn">
             Посмотреть каталог товаров
           </a>
 
@@ -99,7 +119,7 @@ export const Header = (): string => {
           <div class="hidden 2xl:flex flex-col items-start gap-3 shrink-0">
             <div class="flex items-center gap-2">
               <span class="size-[6px] rounded-full bg-[#FFC400] shrink-0"></span>
-              <span class="text-[13px] text-primary font-normal leading-[1.3]">Задайте вопрос online</span>
+              <span class="text-[13px] text-primary font-normal leading-[1.3]" data-i18n="header-ask-online">Задайте вопрос online</span>
             </div>
             <div class="flex items-center gap-[15px]">
               <a href="https://wa.me/78123255055" target="_blank" rel="noopener noreferrer"
@@ -122,8 +142,9 @@ export const Header = (): string => {
             </div>
           </div>
 
-          <!-- Аккаунт + избранное + корзина (десктоп) -->
+          <!-- Переключатель языка + Аккаунт + избранное + корзина (десктоп) -->
           <div class="hidden 2xl:flex items-center gap-3 shrink-0">
+            ${LangToggle()}
             ${AdminIcon()}
             ${AuthIcon()}
             ${FavoritesIcon()}
@@ -172,7 +193,7 @@ export const Header = (): string => {
                   <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"/>
                 </svg>
               </div>
-              Панель администратора
+              <span data-i18n="header-admin">Панель администратора</span>
             </a>
             <a href="#auth" data-auth-link
                class="flex items-center gap-4 text-[17px] text-primary"
@@ -183,7 +204,7 @@ export const Header = (): string => {
                   <path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>
                 </svg>
               </div>
-              Личный кабинет
+              <span data-i18n="header-account">Личный кабинет</span>
             </a>
             <a href="#favorites"
                class="flex items-center gap-4 text-[17px] text-primary">
@@ -195,7 +216,7 @@ export const Header = (): string => {
                 <span data-favorites-badge
                       class="absolute -top-1 -right-1 hidden min-w-[20px] h-5 px-1.5 rounded-full bg-[#FFC400] text-primary font-sans text-[12px] leading-5 text-center font-medium">0</span>
               </div>
-              Избранное
+              <span data-i18n="header-favorites">Избранное</span>
             </a>
             <a href="#cart"
                class="flex items-center gap-4 text-[17px] text-primary">
@@ -204,7 +225,7 @@ export const Header = (): string => {
                 <span data-cart-badge
                       class="absolute -top-1 -right-1 hidden min-w-[20px] h-5 px-1.5 rounded-full bg-[#FFC400] text-primary font-sans text-[12px] leading-5 text-center font-medium">0</span>
               </div>
-              Корзина
+              <span data-i18n="header-cart">Корзина</span>
             </a>
           </div>
 
@@ -215,9 +236,9 @@ export const Header = (): string => {
             <div class="size-10 rounded-full gradient-icon flex items-center justify-center shrink-0">
               <span class="text-xs text-primary">PDF</span>
             </div>
-            Скачать прайс-лист
+            <span data-i18n="header-pdf-download">Скачать прайс-лист</span>
           </a>
-          <a href="#catalog" class="btn-primary w-full text-center text-[17px] px-6 py-4">
+          <a href="#catalog" class="btn-primary w-full text-center text-[17px] px-6 py-4" data-i18n="header-catalog-btn">
             Посмотреть каталог товаров
           </a>
           <div class="flex gap-3">
@@ -241,9 +262,16 @@ export const Header = (): string => {
           </div>
           <button type="button"
                   class="text-[17px] text-left text-primary font-sans font-normal underline underline-offset-2"
-                  onclick="document.getElementById('consultation')?.scrollIntoView({behavior:'smooth'}); document.getElementById('mobile-menu')?.classList.add('hidden');">
+                  onclick="document.getElementById('consultation')?.scrollIntoView({behavior:'smooth'}); document.getElementById('mobile-menu')?.classList.add('hidden');"
+                  data-i18n="header-callback">
             Перезвоним Вам
           </button>
+
+          <!-- Переключатель языка в мобильном меню -->
+          <div class="flex items-center gap-3">
+            ${LangToggle()}
+          </div>
+
         </div>
       </div>
     </header>
@@ -284,6 +312,13 @@ const syncAdminLink = (): void => {
   });
 };
 
+const updateLangToggle = (lang: Lang): void => {
+  const isEn = lang === "en";
+  document.querySelectorAll<HTMLElement>("[data-lang-indicator]").forEach((el) => {
+    el.style.transform = isEn ? "translateX(100%)" : "translateX(0)";
+  });
+};
+
 export const initHeader = (): void => {
   syncCartBadges();
   syncFavoritesBadges();
@@ -293,6 +328,16 @@ export const initHeader = (): void => {
   favorites.onChange(syncFavoritesBadges);
   onAuthChange(syncAuthLink);
   onAuthChange(syncAdminLink);
+
+  updateLangToggle(getCurrentLang());
+
+  document.querySelectorAll<HTMLButtonElement>("[data-lang-btn]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const lang = btn.dataset.langBtn as Lang;
+      getTranslate(lang);
+      updateLangToggle(lang);
+    });
+  });
 
   const btn = document.getElementById("mobile-menu-btn");
   const menu = document.getElementById("mobile-menu");

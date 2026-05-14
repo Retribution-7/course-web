@@ -1,5 +1,6 @@
 import { fetchReviews } from "../services/api";
 import { reviewDateMs, type Review } from "../entities/reviews";
+import { t, getCurrentLang } from "../services/i18n";
 
 type SortOrder = "newest" | "oldest" | "rating";
 type RatingFilter = "all" | "5" | "4plus" | "3plus";
@@ -24,8 +25,9 @@ let cachedReviews: Review[] = [];
 
 const Stars = (rating: number): string => {
   const full = Math.max(0, Math.min(5, Math.round(rating)));
+  const ariaLabel = getCurrentLang() === "en" ? `Rating: ${full} out of 5` : `Оценка: ${full} из 5`;
   return `
-    <div class="flex items-center gap-0.5" aria-label="Оценка: ${full} из 5">
+    <div class="flex items-center gap-0.5" aria-label="${ariaLabel}">
       ${Array.from({ length: 5 })
         .map(
           (_, i) => `
@@ -80,10 +82,10 @@ const renderCard = (review: Review): string => `
 const renderEmpty = (): string => `
   <div class="bg-white rounded-[14px] card-shadow p-10 lg:p-16 text-center">
     <h3 class="font-sans font-normal text-[22px] leading-[1.2] gradient-text">
-      Ничего не найдено
+      ${t("reviews-empty-title")}
     </h3>
     <p class="mt-3 font-sans text-[14px] leading-[1.5] text-[#44444E]">
-      Попробуйте изменить параметры фильтрации или поиска.
+      ${t("reviews-empty-desc")}
     </p>
     <button type="button"
             data-action="reviews-reset"
@@ -91,7 +93,7 @@ const renderEmpty = (): string => `
                    bg-[#FAFAFA] border border-[#FFC400]
                    px-6 py-3 font-sans text-[14px] lg:text-[15px] text-[#44444E]
                    hover:bg-white transition-colors cursor-pointer">
-      Сбросить фильтры
+      ${t("reviews-reset")}
     </button>
   </div>
 `;
@@ -108,12 +110,13 @@ export const ReviewsPage = (): string => `
         <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
           <path d="M10 3l-5 5 5 5"/>
         </svg>
-        Назад
+        <span data-i18n="reviews-back">Назад</span>
       </a>
 
       <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-6 mb-6 lg:mb-10">
         <div>
           <h1 id="reviews-heading"
+              data-i18n="reviews-heading"
               class="font-sans font-normal text-[28px] leading-[1.1] sm:text-[36px] lg:text-[48px] xl:text-[56px] xl:leading-[1.15] gradient-text">
             ВСЕ ОТЗЫВЫ
           </h1>
@@ -123,7 +126,7 @@ export const ReviewsPage = (): string => `
         </div>
         <div class="flex items-baseline gap-2 font-sans text-[14px] text-[#758499]">
           <span class="text-[24px] sm:text-[28px] leading-none text-primary" id="reviews-avg-rating"></span>
-          <span>средняя оценка</span>
+          <span data-i18n="reviews-avg-label">средняя оценка</span>
         </div>
       </div>
 
@@ -134,6 +137,7 @@ export const ReviewsPage = (): string => `
           <input id="reviews-search"
                  type="search"
                  placeholder="Поиск по имени или тексту"
+                 data-i18n-placeholder="reviews-search-placeholder"
                  class="h-11 w-full rounded-[8px] border border-[#ddd] bg-white pl-10 pr-3
                         font-sans text-[14px] lg:text-[15px] text-primary
                         focus:outline-none focus:border-[#FFC400] transition-colors" />
@@ -151,10 +155,10 @@ export const ReviewsPage = (): string => `
                   class="h-11 w-full rounded-[8px] border border-[#ddd] bg-white px-3
                          font-sans text-[14px] lg:text-[15px] text-primary
                          focus:outline-none focus:border-[#FFC400] transition-colors cursor-pointer">
-            <option value="all">Все рейтинги</option>
-            <option value="5">Только 5 звёзд</option>
-            <option value="4plus">4 и выше</option>
-            <option value="3plus">3 и выше</option>
+            <option value="all" data-i18n="reviews-rating-all">Все рейтинги</option>
+            <option value="5" data-i18n="reviews-rating-5">Только 5 звёзд</option>
+            <option value="4plus" data-i18n="reviews-rating-4plus">4 и выше</option>
+            <option value="3plus" data-i18n="reviews-rating-3plus">3 и выше</option>
           </select>
         </div>
 
@@ -164,9 +168,9 @@ export const ReviewsPage = (): string => `
                   class="h-11 w-full rounded-[8px] border border-[#ddd] bg-white px-3
                          font-sans text-[14px] lg:text-[15px] text-primary
                          focus:outline-none focus:border-[#FFC400] transition-colors cursor-pointer">
-            <option value="newest">Сначала новые</option>
-            <option value="oldest">Сначала старые</option>
-            <option value="rating">По рейтингу</option>
+            <option value="newest" data-i18n="reviews-sort-newest">Сначала новые</option>
+            <option value="oldest" data-i18n="reviews-sort-oldest">Сначала старые</option>
+            <option value="rating" data-i18n="reviews-sort-rating">По рейтингу</option>
           </select>
         </div>
       </div>
@@ -183,6 +187,7 @@ export const ReviewsPage = (): string => `
 `;
 
 const pluralReviews = (n: number): string => {
+  if (getCurrentLang() === "en") return `${n} review${n !== 1 ? "s" : ""}`;
   const mod10 = n % 10;
   const mod100 = n % 100;
   if (mod10 === 1 && mod100 !== 11) return `${n} отзыв`;
@@ -286,7 +291,11 @@ const renderGrid = (): void => {
     }
   }
 
-  summary.textContent = `Показано ${pluralReviews(filtered.length)} из ${cachedReviews.length}`;
+  const fn = filtered.length;
+  const total = cachedReviews.length;
+  summary.textContent = getCurrentLang() === "en"
+    ? `Showing ${fn} of ${total} ${fn !== 1 ? "reviews" : "review"}`
+    : `Показано ${pluralReviews(fn)} из ${total}`;
   const sum = cachedReviews.reduce((acc, r) => acc + r.rating, 0);
   avg.textContent = cachedReviews.length > 0 ? (sum / cachedReviews.length).toFixed(1) : "";
 };
@@ -297,7 +306,7 @@ const showLoadingState = (): void => {
     grid.classList.remove("hidden");
     grid.innerHTML = `
       <div class="col-span-full flex justify-center py-16">
-        <span class="font-sans text-[15px] text-[#758499]">Загрузка отзывов...</span>
+        <span class="font-sans text-[15px] text-[#758499]">${t("reviews-loading")}</span>
       </div>
     `;
   }
@@ -327,7 +336,7 @@ const showPage = (show: boolean): void => {
       if (grid)
         grid.innerHTML = `
           <div class="col-span-full text-center py-16 font-sans text-[15px] text-[#758499]">
-            Не удалось загрузить отзывы. Проверьте, что JSON Server запущен.
+            ${t("reviews-error")}
           </div>
         `;
     });

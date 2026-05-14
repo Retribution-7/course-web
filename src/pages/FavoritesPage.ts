@@ -2,6 +2,7 @@ import { ProductCard, syncFavoriteButtons } from "../entities/ProductCard";
 import { fetchProductsByIds } from "../services/api";
 import { favorites } from "../services/favorites";
 import type { Product } from "../entities/products";
+import { t, getCurrentLang } from "../services/i18n";
 
 const renderEmpty = (): string => `
   <div class="bg-white rounded-[14px] card-shadow p-10 lg:p-16 text-center">
@@ -14,10 +15,10 @@ const renderEmpty = (): string => `
       </svg>
     </div>
     <h3 class="font-sans font-normal text-[24px] leading-[1.2] gradient-text">
-      В избранном пусто
+      ${t("favorites-empty-title")}
     </h3>
     <p class="mt-3 font-sans text-[14px] sm:text-[15px] leading-[1.5] text-[#44444E]">
-      Нажмите на сердечко в карточке товара — он появится здесь.
+      ${t("favorites-empty-desc")}
     </p>
     <a href="#catalog"
        class="mt-8 inline-flex items-center justify-center rounded-full
@@ -25,12 +26,13 @@ const renderEmpty = (): string => `
               px-6 py-[15px] font-sans text-[15px] lg:text-[17px] leading-[1.4] text-[#44444E]
               transition-all duration-300 hover:scale-[1.02] cursor-pointer
               shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)] no-underline">
-      В каталог
+      ${t("favorites-to-catalog")}
     </a>
   </div>
 `;
 
 const pluralItems = (n: number): string => {
+  if (getCurrentLang() === "en") return `${n} item${n !== 1 ? "s" : ""}`;
   const mod10 = n % 10;
   const mod100 = n % 100;
   if (mod10 === 1 && mod100 !== 11) return `${n} товар`;
@@ -50,12 +52,13 @@ export const FavoritesPage = (): string => `
         <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
           <path d="M10 3l-5 5 5 5"/>
         </svg>
-        В каталог
+        <span data-i18n="favorites-to-catalog">В каталог</span>
       </a>
 
       <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-6 mb-6 lg:mb-10">
         <div>
           <h1 id="favorites-heading"
+              data-i18n="favorites-heading"
               class="font-sans font-normal text-[28px] leading-[1.1] sm:text-[36px] lg:text-[48px] xl:text-[56px] xl:leading-[1.15] gradient-text">
             ИЗБРАННОЕ
           </h1>
@@ -64,6 +67,7 @@ export const FavoritesPage = (): string => `
         </div>
         <button type="button"
                 id="favorites-clear"
+                data-i18n="favorites-clear-btn"
                 class="hidden self-start sm:self-auto inline-flex items-center justify-center rounded-full
                        bg-[#FAFAFA] border border-[#FFC400]
                        px-5 lg:px-6 py-2.5 lg:py-3 font-sans text-[14px] lg:text-[15px] text-[#44444E]
@@ -87,14 +91,14 @@ const render = async (): Promise<void> => {
 
   if (ids.length === 0) {
     content.innerHTML = renderEmpty();
-    summary.textContent = "Пока ничего не добавлено";
+    summary.textContent = t("favorites-nothing");
     clearBtn.classList.add("hidden");
     return;
   }
 
   content.innerHTML = `
     <div class="col-span-full flex justify-center py-16">
-      <span class="font-sans text-[15px] text-[#758499]">Загрузка...</span>
+      <span class="font-sans text-[15px] text-[#758499]">${t("favorites-loading")}</span>
     </div>
   `;
 
@@ -104,7 +108,7 @@ const render = async (): Promise<void> => {
   } catch {
     content.innerHTML = `
       <div class="col-span-full text-center py-16 font-sans text-[15px] text-[#758499]">
-        Не удалось загрузить товары
+        ${t("favorites-error")}
       </div>
     `;
     return;
@@ -112,7 +116,7 @@ const render = async (): Promise<void> => {
 
   if (items.length === 0) {
     content.innerHTML = renderEmpty();
-    summary.textContent = "Пока ничего не добавлено";
+    summary.textContent = t("favorites-nothing");
     clearBtn.classList.add("hidden");
     return;
   }
@@ -122,7 +126,10 @@ const render = async (): Promise<void> => {
       ${items.map((p) => ProductCard(p, p.id ?? 0)).join("")}
     </div>
   `;
-  summary.textContent = `${pluralItems(items.length)} в избранном`;
+  const n = items.length;
+  summary.textContent = getCurrentLang() === "en"
+    ? `${n} item${n !== 1 ? "s" : ""} in favorites`
+    : `${pluralItems(n)} в избранном`;
   clearBtn.classList.remove("hidden");
   syncFavoriteButtons();
 };
@@ -149,6 +156,6 @@ export const initFavoritesPage = (): void => {
   });
 
   document.getElementById("favorites-clear")?.addEventListener("click", () => {
-    if (confirm("Очистить список избранного?")) favorites.clear();
+    if (confirm(t("favorites-clear-confirm"))) favorites.clear();
   });
 };

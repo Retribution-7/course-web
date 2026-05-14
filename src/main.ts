@@ -21,6 +21,7 @@ import { Testimonials, initTestimonials } from "./widgets/Testimonials";
 import { isAuthenticated, onAuthChange } from "./services/auth";
 import { favorites } from "./services/favorites";
 import { cart } from "./services/cart";
+import { initI18n } from "./services/i18n";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -49,6 +50,7 @@ app.innerHTML = `
   ${Calculator()}
 `;
 
+initI18n();
 initRouter();
 initHeader();
 initCatalog();

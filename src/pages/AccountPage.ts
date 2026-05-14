@@ -1,6 +1,7 @@
 import { cart } from "../services/cart";
 import { favorites } from "../services/favorites";
 import { getUser, logout, onAuthChange, type RegisteredUser } from "../services/auth";
+import { t, getCurrentLang } from "../services/i18n";
 
 const getInitials = (user: RegisteredUser): string => {
   const f = user.firstName.charAt(0).toUpperCase();
@@ -12,22 +13,16 @@ const formatBirthDate = (iso: string): string => {
   if (!iso) return "—";
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString("ru-RU", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
+  const locale = getCurrentLang() === "en" ? "en-US" : "ru-RU";
+  return d.toLocaleDateString(locale, { day: "2-digit", month: "long", year: "numeric" });
 };
 
 const formatCreatedAt = (iso: string): string => {
   if (!iso) return "—";
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString("ru-RU", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
+  const locale = getCurrentLang() === "en" ? "en-US" : "ru-RU";
+  return d.toLocaleDateString(locale, { day: "2-digit", month: "long", year: "numeric" });
 };
 
 const fullName = (user: RegisteredUser): string => {
@@ -47,10 +42,11 @@ export const AccountPage = (): string => `
         <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
           <path d="M10 3l-5 5 5 5"/>
         </svg>
-        На главную
+        <span data-i18n="account-home">На главную</span>
       </a>
 
       <h1 id="account-heading"
+          data-i18n="account-heading"
           class="font-sans font-normal text-[28px] leading-[1.1] sm:text-[36px] lg:text-[48px] xl:text-[56px] xl:leading-[1.15] gradient-text">
         ЛИЧНЫЙ КАБИНЕТ
       </h1>
@@ -78,7 +74,7 @@ const renderProfileCard = (user: RegisteredUser): string => `
         ${fullName(user)}
       </h2>
       <p class="font-sans text-[14px] lg:text-[15px] leading-[1.4] text-[#758499]">
-        В клиентах с ${formatCreatedAt(user.createdAt)}
+        ${t("account-member-since")} ${formatCreatedAt(user.createdAt)}
       </p>
     </div>
   </div>
@@ -87,24 +83,24 @@ const renderProfileCard = (user: RegisteredUser): string => `
 const renderInfoCard = (user: RegisteredUser): string => `
   <div class="bg-white rounded-[14px] card-shadow p-6 sm:p-8 lg:p-10">
     <h3 class="font-sans font-normal text-[20px] lg:text-[24px] leading-[1.2] text-primary mb-5 lg:mb-6">
-      Личные данные
+      ${t("account-personal-data")}
     </h3>
     <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 lg:gap-x-10 gap-y-4 lg:gap-y-5
                font-sans text-[14px] lg:text-[15px] leading-[1.4]">
       <div class="flex flex-col gap-1">
-        <dt class="text-[13px] uppercase tracking-[0.04em] text-[#758499]">Телефон</dt>
+        <dt class="text-[13px] uppercase tracking-[0.04em] text-[#758499]">${t("account-phone")}</dt>
         <dd class="text-primary">${user.phone}</dd>
       </div>
       <div class="flex flex-col gap-1">
-        <dt class="text-[13px] uppercase tracking-[0.04em] text-[#758499]">E-mail</dt>
+        <dt class="text-[13px] uppercase tracking-[0.04em] text-[#758499]">${t("account-email")}</dt>
         <dd class="text-primary break-all">${user.email}</dd>
       </div>
       <div class="flex flex-col gap-1">
-        <dt class="text-[13px] uppercase tracking-[0.04em] text-[#758499]">Дата рождения</dt>
+        <dt class="text-[13px] uppercase tracking-[0.04em] text-[#758499]">${t("account-birthdate")}</dt>
         <dd class="text-primary">${formatBirthDate(user.birthDate)}</dd>
       </div>
       <div class="flex flex-col gap-1">
-        <dt class="text-[13px] uppercase tracking-[0.04em] text-[#758499]">Никнейм</dt>
+        <dt class="text-[13px] uppercase tracking-[0.04em] text-[#758499]">${t("account-nickname")}</dt>
         <dd class="text-primary">${user.nickname}</dd>
       </div>
     </dl>
@@ -141,7 +137,7 @@ const renderStatTile = (
 const renderStats = (): string => `
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
     ${renderStatTile(
-      "Товаров в избранном",
+      t("account-favorites-stat"),
       favorites.count(),
       "#favorites",
       `<svg viewBox="0 0 24 24" class="size-6 text-primary" fill="none" stroke="currentColor"
@@ -150,7 +146,7 @@ const renderStats = (): string => `
        </svg>`,
     )}
     ${renderStatTile(
-      "Позиций в корзине",
+      t("account-cart-stat"),
       cart.count(),
       "#cart",
       `<img src="/icons/cart.svg" alt="" class="size-6" aria-hidden="true">`,
@@ -163,11 +159,10 @@ const renderActions = (): string => `
               flex flex-col sm:flex-row sm:items-center justify-between gap-5">
     <div>
       <h3 class="font-sans font-normal text-[20px] lg:text-[24px] leading-[1.2] text-primary">
-        Завершить сеанс?
+        ${t("account-logout-title")}
       </h3>
       <p class="mt-2 font-sans text-[14px] lg:text-[15px] leading-[1.5] text-[#44444E] max-w-[480px]">
-        После выхода защищённые разделы (корзина, избранное, отзывы, страницы товаров)
-        снова станут недоступны. Личные данные останутся сохранены.
+        ${t("account-logout-desc")}
       </p>
     </div>
     <button type="button"
@@ -176,7 +171,7 @@ const renderActions = (): string => `
                    bg-[#FAFAFA] border border-[#FFC400]
                    px-6 lg:px-8 py-[15px] font-sans text-[15px] lg:text-[17px] text-[#44444E]
                    hover:bg-white transition-colors cursor-pointer">
-      Выйти
+      ${t("account-logout-btn")}
     </button>
   </div>
 `;
@@ -189,13 +184,13 @@ const render = (): void => {
   if (!user) {
     content.innerHTML = `
       <div class="bg-white rounded-[14px] card-shadow p-10 text-center">
-        <h3 class="font-sans text-[20px] gradient-text">Сначала войдите</h3>
+        <h3 class="font-sans text-[20px] gradient-text">${t("account-login-first")}</h3>
         <a href="#auth"
            class="mt-4 inline-flex items-center justify-center rounded-full
                   bg-gradient-to-r from-button-first to-button-second
                   px-6 py-[15px] font-sans text-[15px] text-[#44444E]
                   shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)] cursor-pointer">
-          Войти
+          ${t("account-login-link")}
         </a>
       </div>
     `;
@@ -242,7 +237,7 @@ export const initAccountPage = (): void => {
   document.addEventListener("click", (event) => {
     const target = event.target as HTMLElement;
     if (target.closest('[data-action="logout"]')) {
-      if (confirm("Выйти из личного кабинета?")) {
+      if (confirm(t("account-logout-confirm"))) {
         logout();
         window.location.hash = "";
       }

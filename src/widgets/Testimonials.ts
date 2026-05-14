@@ -1,5 +1,6 @@
 import { fetchReviews } from "../services/api";
 import type { Review } from "../entities/reviews";
+import { t } from "../services/i18n";
 
 const renderReviewCard = (review: Review, idx: number): string => `
   <article
@@ -44,7 +45,9 @@ export const Testimonials = (): string => `
 
       <div class="flex items-start justify-between gap-6">
         <div class="flex-1">
-          <h2 id="testimonials-heading" class="font-sans font-normal text-[26px] leading-[1.2] sm:text-[36px] xl:text-[56px] xl:leading-[68px]">
+          <h2 id="testimonials-heading"
+              data-i18n-html="testimonials-heading"
+              class="font-sans font-normal text-[26px] leading-[1.2] sm:text-[36px] xl:text-[56px] xl:leading-[68px]">
             <span class="gradient-text">ЛУЧШЕ ВСЕГО О НАС</span><br>
             РАССКАЖУТ НАШИ КЛИЕНТЫ
           </h2>
@@ -71,7 +74,7 @@ export const Testimonials = (): string => `
         <div
           id="testimonials-track"
           class="flex gap-[41px] transition-transform duration-500 ease-in-out min-h-[200px] items-center justify-center">
-          <span class="font-sans text-[15px] text-[#758499]">Загрузка отзывов...</span>
+          <span class="font-sans text-[15px] text-[#758499]" data-i18n="testimonials-loading">Загрузка отзывов...</span>
         </div>
       </div>
 
@@ -84,7 +87,7 @@ export const Testimonials = (): string => `
                   px-6 py-3 lg:px-8 lg:py-[15px]
                   font-sans text-[14px] sm:text-[15px] lg:text-[17px] leading-[1.4] text-[#44444E]
                   transition-colors duration-200 hover:bg-white cursor-pointer no-underline">
-          Все отзывы
+          <span data-i18n="testimonials-all">Все отзывы</span>
           <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
             <path d="M6 3l5 5-5 5"/>
           </svg>
@@ -174,6 +177,6 @@ export const initTestimonials = (): void => {
     })
     .catch(() => {
       const track = document.getElementById("testimonials-track");
-      if (track) track.innerHTML = `<span class="font-sans text-[15px] text-[#758499]">Не удалось загрузить отзывы</span>`;
+      if (track) track.innerHTML = `<span class="font-sans text-[15px] text-[#758499]">${t("testimonials-error")}</span>`;
     });
 };
