@@ -1,4 +1,4 @@
-import { isAuthenticated, onAuthChange } from "../services/auth";
+import { isAuthenticated, isAdmin, onAuthChange } from "../services/auth";
 import { cart } from "../services/cart";
 import { favorites } from "../services/favorites";
 
@@ -43,6 +43,21 @@ const AuthIcon = (extraClass = ""): string => `
     <svg viewBox="0 0 24 24" class="size-5 text-primary" fill="none" stroke="currentColor" stroke-width="1.6">
       <circle cx="12" cy="8" r="4"/>
       <path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>
+    </svg>
+  </a>
+`;
+
+const AdminIcon = (extraClass = ""): string => `
+  <a href="#admin"
+     data-admin-link
+     style="display:none"
+     class="place-items-center size-11 rounded-full
+            gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] shrink-0
+            transition-transform hover:scale-105 ${extraClass}"
+     aria-label="Панель администратора">
+    <svg viewBox="0 0 24 24" class="size-5 text-white" fill="none" stroke="currentColor"
+         stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"/>
     </svg>
   </a>
 `;
@@ -109,6 +124,7 @@ export const Header = (): string => {
 
           <!-- Аккаунт + избранное + корзина (десктоп) -->
           <div class="hidden 2xl:flex items-center gap-3 shrink-0">
+            ${AdminIcon()}
             ${AuthIcon()}
             ${FavoritesIcon()}
             ${CartIcon()}
@@ -116,6 +132,7 @@ export const Header = (): string => {
 
           <!-- Аккаунт + избранное + корзина (мобильный/планшет, прячем ниже 440px) -->
           <div class="2xl:hidden ml-auto hidden min-[440px]:flex items-center gap-2 shrink-0">
+            ${AdminIcon()}
             ${AuthIcon()}
             ${FavoritesIcon()}
             ${CartIcon()}
@@ -145,6 +162,18 @@ export const Header = (): string => {
 
           <!-- Аккаунт + избранное + корзина (только когда не помещаются в шапку, т.е. ниже 440px) -->
           <div class="min-[440px]:hidden flex flex-col gap-3">
+            <a href="#admin" data-admin-link
+               style="display:none"
+               class="flex items-center gap-4 text-[17px] text-primary"
+               aria-label="Панель администратора">
+              <div class="size-10 rounded-full gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] grid place-items-center shrink-0">
+                <svg viewBox="0 0 24 24" class="size-5 text-white" fill="none" stroke="currentColor"
+                     stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"/>
+                </svg>
+              </div>
+              Панель администратора
+            </a>
             <a href="#auth" data-auth-link
                class="flex items-center gap-4 text-[17px] text-primary"
                aria-label="Войти или зарегистрироваться">
@@ -248,13 +277,22 @@ const syncAuthLink = (): void => {
   });
 };
 
+const syncAdminLink = (): void => {
+  const admin = isAdmin();
+  document.querySelectorAll<HTMLElement>("[data-admin-link]").forEach((el) => {
+    el.style.display = admin ? "grid" : "none";
+  });
+};
+
 export const initHeader = (): void => {
   syncCartBadges();
   syncFavoritesBadges();
   syncAuthLink();
+  syncAdminLink();
   cart.onChange(syncCartBadges);
   favorites.onChange(syncFavoritesBadges);
   onAuthChange(syncAuthLink);
+  onAuthChange(syncAdminLink);
 
   const btn = document.getElementById("mobile-menu-btn");
   const menu = document.getElementById("mobile-menu");

@@ -49,6 +49,7 @@ app.innerHTML = `
   ${AboutCompanyPage()}
   ${FavoritesPage()}
   ${AccountPage()}
+  ${AdminPage()}
   ${Footer()}
   ${Calculator()}
 `;
@@ -66,6 +67,7 @@ initReviewsPage();
 initAboutCompanyPage();
 initFavoritesPage();
 initAccountPage();
+initAdminPage();
 initFooter();
 
 hidePreloader();

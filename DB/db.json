@@ -539,7 +539,7 @@
       "birthDate": "1985-07-20",
       "nickname": "MikhailKozlov",
       "password": "Test1234!",
-      "role": "manager",
+      "role": "admin",
       "createdAt": "2023-11-08"
     },
     {
@@ -551,7 +551,20 @@
       "nickname": "AnnaSokolova",
       "password": "Test1234!",
       "createdAt": "2024-03-22",
-      "id": 4
+      "id": 4,
+      "role": "customer"
+    },
+    {
+      "id": 100,
+      "firstName": "Главный",
+      "lastName": "Администратор",
+      "email": "admin@metallobaza.ru",
+      "phone": "+375 (29) 999-00-00",
+      "birthDate": "1985-01-01",
+      "nickname": "Admin",
+      "password": "Admin@2024",
+      "role": "admin",
+      "createdAt": "2023-01-01T00:00:00.000Z"
     }
   ],
   "favorites": [],

@@ -1,4 +1,4 @@
-import { isAuthenticated, onAuthChange } from "../services/auth";
+import { isAuthenticated, isAdmin, onAuthChange } from "../services/auth";
 
 const PAGE_HASHES = new Set<string>([
   "#cart",
@@ -7,6 +7,7 @@ const PAGE_HASHES = new Set<string>([
   "#company",
   "#favorites",
   "#account",
+  "#admin",
 ]);
 const PAGE_PREFIXES = ["#product/"];
 
@@ -16,8 +17,11 @@ const PROTECTED_HASHES = new Set<string>([
   "#company",
   "#favorites",
   "#account",
+  "#admin",
 ]);
 const PROTECTED_PREFIXES = ["#product/"];
+
+const ADMIN_HASHES = new Set<string>(["#admin"]);
 
 const isProtected = (hash: string): boolean =>
   PROTECTED_HASHES.has(hash) || PROTECTED_PREFIXES.some((p) => hash.startsWith(p));
@@ -26,6 +30,10 @@ const guard = (): boolean => {
   const hash = window.location.hash;
   if (isProtected(hash) && !isAuthenticated()) {
     window.location.replace("#auth");
+    return false;
+  }
+  if (ADMIN_HASHES.has(hash) && !isAdmin()) {
+    window.location.replace("");
     return false;
   }
   return true;
@@ -49,8 +57,11 @@ export const initRouter = (): void => {
   handle();
   window.addEventListener("hashchange", handle);
   onAuthChange(() => {
-    if (!isAuthenticated() && isProtected(window.location.hash)) {
+    const hash = window.location.hash;
+    if (!isAuthenticated() && isProtected(hash)) {
       window.location.replace("#auth");
+    } else if (ADMIN_HASHES.has(hash) && !isAdmin()) {
+      window.location.replace("");
     }
   });
 };

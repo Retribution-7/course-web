@@ -135,6 +135,7 @@ export interface RegisteredUser {
   nickname: string;
   password: string;
   createdAt: string;
+  role?: "customer" | "admin";
 }
 
 const USER_KEY = "metallobaza-user";
@@ -160,6 +161,14 @@ export const saveUser = (user: RegisteredUser): void => {
     .catch(() => {});
 };
 
+// Restores user from server data without creating a duplicate server record
+export const restoreUser = (user: RegisteredUser, serverId: number): void => {
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
+  localStorage.setItem(AUTH_KEY, "1");
+  setServerId(String(serverId));
+  emitAuthChange();
+};
+
 export const getUser = (): RegisteredUser | null => {
   try {
     const raw = localStorage.getItem(USER_KEY);
@@ -171,6 +180,13 @@ export const getUser = (): RegisteredUser | null => {
 
 export const isAuthenticated = (): boolean =>
   localStorage.getItem(AUTH_KEY) === "1" && getUser() !== null;
+
+export const getRole = (): "customer" | "admin" => {
+  const user = getUser();
+  return user?.role === "admin" ? "admin" : "customer";
+};
+
+export const isAdmin = (): boolean => isAuthenticated() && getRole() === "admin";
 
 export const setAuthenticated = (authenticated: boolean): void => {
   if (authenticated) localStorage.setItem(AUTH_KEY, "1");
