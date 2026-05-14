@@ -50,15 +50,17 @@ const cards: FeatureCard[] = [
   },
 ];
 
-const renderCard = (card: FeatureCard): string => `
+const renderCard = (card: FeatureCard, idx: number): string => `
   <article class="flex flex-col gap-5 lg:gap-[30px] w-full sm:w-[calc(50%-32px)] xl:w-[calc(33.333%-94px)]">
     <div class="size-[60px] rounded-[14px] gradient-icon flex items-center justify-center shrink-0
                 border border-[rgba(255,196,0,0.3)]">
       <img src="${card.icon}" alt="${card.iconAlt}" class="size-6 object-contain" aria-hidden="true">
     </div>
     <div class="flex flex-col gap-3 lg:gap-5">
-      <h3 class="font-sans font-normal text-[18px] leading-[1.4] lg:text-[22px] lg:leading-[30px] gradient-text">${card.title}</h3>
-      <p class="font-sans font-normal text-[16px] leading-[1.4] lg:text-[22px] lg:leading-[30px] text-[#69686F] opacity-80">${card.description}</p>
+      <h3 class="font-sans font-normal text-[18px] leading-[1.4] lg:text-[22px] lg:leading-[30px] gradient-text"
+          data-i18n="about-card-${idx}-title">${card.title}</h3>
+      <p class="font-sans font-normal text-[16px] leading-[1.4] lg:text-[22px] lg:leading-[30px] text-[#69686F] opacity-80"
+         data-i18n="about-card-${idx}-desc">${card.description}</p>
     </div>
   </article>
 `;
@@ -72,11 +74,13 @@ export const About = (): string => {
         <div class="flex flex-col xl:flex-row items-start xl:items-center gap-8 xl:gap-[268px]">
           <div class="shrink-0">
             <h2 id="about-heading"
+                data-i18n-html="about-heading"
                 class="font-sans font-normal text-[32px] leading-[1.2] sm:text-[40px] xl:text-[56px] xl:leading-[68px] gradient-text">
               О НАС<br>и НАШЕМ БИЗНЕСЕ
             </h2>
           </div>
-          <p class="font-sans font-normal text-[16px] leading-[1.5] lg:text-[18px] xl:text-[22px] xl:leading-[30px] text-primary xl:w-[497px]">
+          <p data-i18n="about-desc"
+             class="font-sans font-normal text-[16px] leading-[1.5] lg:text-[18px] xl:text-[22px] xl:leading-[30px] text-primary xl:w-[497px]">
             Каждому клиенту мы гарантируем взаимовыгодные условия сотрудничества.
             Мы дорожим своими заказчиками, поэтому брак и низкокачественный металл
             никогда не поступают на склады предприятия.
@@ -86,7 +90,7 @@ export const About = (): string => {
 
         <!-- Карточки преимуществ -->
         <div class="flex flex-wrap gap-x-16 gap-y-12 xl:gap-x-[140px] xl:gap-y-[90px]">
-          ${cards.map(renderCard).join("")}
+          ${cards.map((card, idx) => renderCard(card, idx)).join("")}
         </div>
 
       </div>

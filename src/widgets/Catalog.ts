@@ -1,23 +1,24 @@
 import { ProductCard, initProductCards, syncFavoriteButtons } from "../entities/ProductCard";
 import { fetchProducts } from "../services/api";
 import type { ProductFilters } from "../services/api";
+import { t } from "../services/i18n";
 
 type CategoryKey = "metal-tile" | "corrugated-sheet" | "seam-roofing";
 type TabKey = "all" | CategoryKey;
 
-const tabs: { key: TabKey; label: string }[] = [
-  { key: "all", label: "Все материалы" },
-  { key: "metal-tile", label: "Металлочерепица" },
-  { key: "corrugated-sheet", label: "Профнастил" },
-  { key: "seam-roofing", label: "Фальцевая кровля" },
+const tabs: { key: TabKey; label: string; i18nKey: string }[] = [
+  { key: "all", label: "Все материалы", i18nKey: "catalog-tab-all" },
+  { key: "metal-tile", label: "Металлочерепица", i18nKey: "catalog-tab-metal-tile" },
+  { key: "corrugated-sheet", label: "Профнастил", i18nKey: "catalog-tab-corrugated" },
+  { key: "seam-roofing", label: "Фальцевая кровля", i18nKey: "catalog-tab-seam" },
 ];
 
-const sortOptions: { value: string; label: string }[] = [
-  { value: "", label: "По умолчанию" },
-  { value: "price:asc", label: "Цена: по возрастанию" },
-  { value: "price:desc", label: "Цена: по убыванию" },
-  { value: "title:asc", label: "Название: А → Я" },
-  { value: "title:desc", label: "Название: Я → А" },
+const sortOptions: { value: string; label: string; i18nKey: string }[] = [
+  { value: "", label: "По умолчанию", i18nKey: "catalog-sort-default" },
+  { value: "price:asc", label: "Цена: по возрастанию", i18nKey: "catalog-sort-price-asc" },
+  { value: "price:desc", label: "Цена: по убыванию", i18nKey: "catalog-sort-price-desc" },
+  { value: "title:asc", label: "Название: А → Я", i18nKey: "catalog-sort-name-asc" },
+  { value: "title:desc", label: "Название: Я → А", i18nKey: "catalog-sort-name-desc" },
 ];
 
 export const Catalog = (): string => `
@@ -25,6 +26,7 @@ export const Catalog = (): string => `
     <div class="container-main">
 
       <h2 id="catalog-heading"
+          data-i18n="catalog-heading"
           class="font-sans font-normal text-[32px] leading-[1.2] sm:text-[40px] xl:text-[56px] xl:leading-[68px] gradient-text">
         КАТАЛОГ ТОВАРОВ
       </h2>
@@ -41,6 +43,7 @@ export const Catalog = (): string => `
             id="catalog-search"
             type="search"
             placeholder="Поиск по названию..."
+            data-i18n-placeholder="catalog-search-placeholder"
             autocomplete="off"
             class="w-full h-[46px] pl-10 pr-4 rounded-full border border-[#FFC400] bg-white
                    font-sans text-[15px] text-[#44444E] placeholder-[#aab2bc]
@@ -56,7 +59,7 @@ export const Catalog = (): string => `
                  appearance-none transition-shadow"
           style="background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%2344444E'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 14px center"
           aria-label="Сортировка">
-          ${sortOptions.map((o) => `<option value="${o.value}">${o.label}</option>`).join("")}
+          ${sortOptions.map((o) => `<option value="${o.value}" data-i18n="${o.i18nKey}">${o.label}</option>`).join("")}
         </select>
       </div>
 
@@ -70,6 +73,7 @@ export const Catalog = (): string => `
                    transition-colors duration-200 cursor-pointer whitespace-nowrap
                    ${idx === 0 ? "active" : ""}"
             data-tab="${tab.key}"
+            data-i18n="${tab.i18nKey}"
             id="tab-${tab.key}"
             type="button"
             role="tab"
@@ -87,7 +91,7 @@ export const Catalog = (): string => `
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 xl:gap-10 mt-14 lg:mt-20 xl:mt-24"
         role="tabpanel">
         <div class="col-span-full flex justify-center items-center py-20">
-          <span class="font-sans text-[15px] text-[#758499]">Загрузка каталога...</span>
+          <span class="font-sans text-[15px] text-[#758499]" data-i18n="catalog-loading">Загрузка каталога...</span>
         </div>
       </div>
 
@@ -106,7 +110,7 @@ const renderGrid = async (): Promise<void> => {
 
   grid.innerHTML = `
     <div class="col-span-full flex justify-center items-center py-20">
-      <span class="font-sans text-[15px] text-[#758499]">Загрузка...</span>
+      <span class="font-sans text-[15px] text-[#758499]">${t("catalog-loading")}</span>
     </div>
   `;
 
@@ -129,7 +133,7 @@ const renderGrid = async (): Promise<void> => {
                stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/>
           </svg>
-          <span class="font-sans text-[15px] text-[#758499]">Ничего не найдено — попробуйте изменить фильтры</span>
+          <span class="font-sans text-[15px] text-[#758499]">${t("catalog-not-found")}</span>
         </div>
       `;
       return;
@@ -140,9 +144,7 @@ const renderGrid = async (): Promise<void> => {
   } catch {
     grid.innerHTML = `
       <div class="col-span-full flex flex-col items-center gap-4 py-20 text-center">
-        <span class="font-sans text-[15px] text-[#758499]">
-          Не удалось загрузить каталог. Убедитесь, что JSON Server запущен (<code>npm run server</code>).
-        </span>
+        <span class="font-sans text-[15px] text-[#758499]">${t("catalog-error")}</span>
       </div>
     `;
   }

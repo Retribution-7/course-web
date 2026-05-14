@@ -15,13 +15,15 @@ export const Hero = (): string => {
 
         <div class="flex flex-col gap-6 lg:gap-8 xl:gap-[43px] max-w-[899px] xl:max-w-none">
 
-          <h1 class="font-sans font-normal text-[28px] leading-[1.2] sm:text-[36px] lg:text-[44px] lg:leading-[1.2] xl:text-[56px] xl:leading-[68px] text-[#303030]">
+          <h1 data-i18n-html="hero-title"
+              class="font-sans font-normal text-[28px] leading-[1.2] sm:text-[36px] lg:text-[44px] lg:leading-[1.2] xl:text-[56px] xl:leading-[68px] text-[#303030]">
             ПРОДАЖА кровельных материалов<br>
             <span class="gradient-text">с доставкой<br>по Санкт-Петербургу<br>и области</span>
             в день заказа
           </h1>
 
-          <p class="font-sans text-[16px] sm:text-[18px] xl:text-[22px] leading-[1.3] text-black max-w-[434px]">
+          <p data-i18n-html="hero-desc"
+             class="font-sans text-[16px] sm:text-[18px] xl:text-[22px] leading-[1.3] text-black max-w-[434px]">
             За 1 минуту пройдите тест и
             <strong class="gradient-text font-normal">рассчитайте стоимость кровли</strong>
             под ваш объект с точностью 97% и получите подарки
@@ -30,7 +32,8 @@ export const Hero = (): string => {
           <div>
             <button
               class="btn-primary text-[14px] sm:text-[16px] xl:text-[22px] px-6 py-4 sm:px-8 sm:py-5 xl:px-[46px] xl:py-9"
-              aria-label="Рассчитать стоимость материалов">
+              aria-label="Рассчитать стоимость материалов"
+              data-i18n="hero-btn">
               РАССЧИТАТЬ СТОИМОСТЬ МАТЕРИАЛОВ
             </button>
           </div>
@@ -50,7 +53,7 @@ export const Hero = (): string => {
                  transition-opacity hover:opacity-90 cursor-pointer"
           aria-label="Произвести расчёт">
           <img src="/icons/calculatings.svg" alt="" aria-hidden="true" class="w-[37px] h-[32px] object-contain">
-          <span class="font-sans text-[10px] leading-none text-white text-center">Произвести расчет</span>
+          <span class="font-sans text-[10px] leading-none text-white text-center" data-i18n="hero-calc">Произвести расчет</span>
         </button>
 
         <a
@@ -61,7 +64,7 @@ export const Hero = (): string => {
                  transition-opacity hover:opacity-90"
           aria-label="Скачать прайс-лист">
           <img src="/icons/price-list.svg" alt="" aria-hidden="true" class="w-[47px] h-[39px] object-contain">
-          <span class="font-sans text-[10px] leading-none text-white text-center">Скачать прайс-лист</span>
+          <span class="font-sans text-[10px] leading-none text-white text-center" data-i18n="hero-price-list">Скачать прайс-лист</span>
         </a>
 
         <button
@@ -72,7 +75,7 @@ export const Hero = (): string => {
           onclick="document.getElementById('consultation')?.scrollIntoView({behavior:'smooth'})"
           aria-label="Перезвоните мне">
           <img src="/icons/whats-app-logo.svg" alt="" aria-hidden="true" class="w-[37px] h-[36px] object-contain">
-          <span class="font-sans text-[10px] leading-none text-white text-center">Перезвоните<br>мне</span>
+          <span class="font-sans text-[10px] leading-none text-white text-center" data-i18n-html="hero-call-back">Перезвоните<br>мне</span>
         </button>
 
       </div>

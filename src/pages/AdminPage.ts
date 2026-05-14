@@ -11,21 +11,19 @@ import {
   type ApiUser,
 } from "../services/api";
 import type { Product } from "../entities/products";
+import { t, getCurrentLang } from "../services/i18n";
 
 type AdminTab = "users" | "products" | "reviews";
 
 let currentTab: AdminTab = "users";
 
-const CATEGORY_LABELS: Record<string, string> = {
-  "metal-tile": "Металлочерепица",
-  "corrugated-sheet": "Профнастил",
-  "seam-roofing": "Фальцевая кровля",
-};
-
-const ROLE_LABELS: Record<string, string> = {
-  customer: "Покупатель",
-  admin: "Администратор",
-  manager: "Менеджер",
+const catLabelKey = (category: string): string => {
+  const map: Record<string, string> = {
+    "metal-tile": "metal-tile",
+    "corrugated-sheet": "corrugated",
+    "seam-roofing": "seam",
+  };
+  return `cat-label-${map[category] ?? category}`;
 };
 
 const ROLE_COLORS: Record<string, string> = {
@@ -51,10 +49,11 @@ export const AdminPage = (): string => `
         <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
           <path d="M10 3l-5 5 5 5"/>
         </svg>
-        На главную
+        <span data-i18n="admin-home">На главную</span>
       </a>
 
       <h1 id="admin-heading"
+          data-i18n="admin-heading"
           class="font-sans font-normal text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px]
                  leading-[1.1] gradient-text">
         ПАНЕЛЬ АДМИНИСТРАТОРА
@@ -64,18 +63,18 @@ export const AdminPage = (): string => `
            class="mt-6 lg:mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 lg:mb-10">
       </div>
 
-      <div class="flex gap-2 mb-6 overflow-x-auto pb-1" role="tablist" aria-label="Разделы панели">
+      <div class="flex gap-2 mb-6 overflow-x-auto pb-1" role="tablist">
         <button type="button" data-admin-tab="users" role="tab" aria-selected="true"
                 class="admin-tab-btn shrink-0 px-5 py-2.5 rounded-full font-sans text-[15px] cursor-pointer transition-all">
-          Пользователи
+          <span data-i18n="admin-tab-users">Пользователи</span>
         </button>
         <button type="button" data-admin-tab="products" role="tab" aria-selected="false"
                 class="admin-tab-btn shrink-0 px-5 py-2.5 rounded-full font-sans text-[15px] cursor-pointer transition-all">
-          Товары
+          <span data-i18n="admin-tab-products">Товары</span>
         </button>
         <button type="button" data-admin-tab="reviews" role="tab" aria-selected="false"
                 class="admin-tab-btn shrink-0 px-5 py-2.5 rounded-full font-sans text-[15px] cursor-pointer transition-all">
-          Отзывы
+          <span data-i18n="admin-tab-reviews">Отзывы</span>
         </button>
       </div>
 
@@ -140,25 +139,25 @@ const loadStats = async (): Promise<void> => {
     const revenue = cart.reduce((s, i) => s + i.total, 0);
     el.innerHTML = `
       ${StatCard(
-        "Пользователей",
+        t("admin-stat-users"),
         users.length,
         `<svg viewBox="0 0 24 24" class="size-6 text-primary" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>`,
         "gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]",
       )}
       ${StatCard(
-        "Товаров в каталоге",
+        t("admin-stat-products"),
         products.length,
         `<svg viewBox="0 0 24 24" class="size-6 text-[#2E7D32]" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`,
         "bg-[#E8F5E9]",
       )}
       ${StatCard(
-        "Отзывов",
+        t("admin-stat-reviews"),
         reviews.length,
         `<svg viewBox="0 0 24 24" class="size-6 text-[#E65100]" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
         "bg-[#FFF3E0]",
       )}
       ${StatCard(
-        "Выручка (корзины)",
+        t("admin-stat-revenue"),
         formatPrice(revenue),
         `<svg viewBox="0 0 24 24" class="size-6 text-[#1565C0]" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
         "bg-[#E3F2FD]",
@@ -187,7 +186,8 @@ const updateTabStyles = (active: AdminTab): void => {
 // ── Users Tab ─────────────────────────────────────────────────────────────────
 
 const RoleBadge = (role: string): string => {
-  const label = ROLE_LABELS[role] ?? role;
+  const knownRoles = ["customer", "admin", "manager"];
+  const label = knownRoles.includes(role) ? t(`admin-role-${role}`) : role;
   const cls = ROLE_COLORS[role] ?? "bg-gray-100 text-gray-600";
   return `<span class="inline-block px-2.5 py-0.5 rounded-full text-[12px] ${cls}">${label}</span>`;
 };
@@ -199,11 +199,12 @@ const renderUsersTab = async (): Promise<void> => {
   try {
     const users = await fetchUsers();
     const currentPhone = getUser()?.phone ?? "";
+    const locale = getCurrentLang() === "en" ? "en-US" : "ru-RU";
 
     const rows = users.map((u) => {
       const isSelf = u.phone === currentPhone;
       const nextRole = u.role === "admin" ? "customer" : "admin";
-      const btnLabel = u.role === "admin" ? "Сделать покупателем" : "Сделать админом";
+      const btnLabel = u.role === "admin" ? t("admin-make-customer") : t("admin-make-admin");
       return `
         <tr class="border-t border-[#F0F0F0] hover:bg-[#FAFAFA] transition-colors">
           <td class="px-4 py-3 text-[#758499]">#${u.id}</td>
@@ -215,12 +216,12 @@ const renderUsersTab = async (): Promise<void> => {
           <td class="px-4 py-3 text-[#44444E] break-all">${u.email}</td>
           <td class="px-4 py-3">${RoleBadge(u.role ?? "customer")}</td>
           <td class="px-4 py-3 text-[#758499] whitespace-nowrap">
-            ${u.createdAt ? new Date(u.createdAt).toLocaleDateString("ru-RU") : "—"}
+            ${u.createdAt ? new Date(u.createdAt).toLocaleDateString(locale) : "—"}
           </td>
           <td class="px-4 py-3">
             ${
               isSelf
-                ? `<span class="text-[12px] text-[#758499] italic">Вы</span>`
+                ? `<span class="text-[12px] text-[#758499] italic">${t("admin-you")}</span>`
                 : `<button type="button"
                            data-change-role="${u.id}"
                            data-next-role="${nextRole}"
@@ -235,12 +236,12 @@ const renderUsersTab = async (): Promise<void> => {
 
     el.innerHTML = `
       <div class="mb-5">
-        <h3 class="font-sans font-normal text-[20px] text-primary">Все пользователи (${users.length})</h3>
+        <h3 class="font-sans font-normal text-[20px] text-primary">${t("admin-all-users")} (${users.length})</h3>
       </div>
       ${TableWrap(`
-        ${ThRow("ID", "Пользователь", "Телефон", "E-mail", "Роль", "Дата регистрации", "Действия")}
+        ${ThRow(t("admin-col-id"), t("admin-col-user"), t("admin-col-phone"), t("admin-col-email"), t("admin-col-role"), t("admin-col-reg-date"), t("admin-col-actions"))}
         <tbody>
-          ${rows || `<tr><td colspan="7" class="px-4 py-8 text-center text-[#758499]">Нет пользователей</td></tr>`}
+          ${rows || `<tr><td colspan="7" class="px-4 py-8 text-center text-[#758499]">${t("admin-no-users")}</td></tr>`}
         </tbody>
       `)}
     `;
@@ -254,13 +255,13 @@ const renderUsersTab = async (): Promise<void> => {
           await updateUser(id, { role: nextRole });
           void renderUsersTab();
         } catch {
-          alert("Ошибка изменения роли");
+          alert(t("admin-error-role"));
           btn.disabled = false;
         }
       });
     });
   } catch {
-    el.innerHTML = `<div class="p-8 text-center text-red-500">Ошибка загрузки пользователей</div>`;
+    el.innerHTML = `<div class="p-8 text-center text-red-500">${t("admin-error-load-users")}</div>`;
   }
 };
 
@@ -272,58 +273,58 @@ const INPUT_CLS =
 
 const ProductAddFormHTML = (): string => `
   <div id="product-add-form" class="hidden bg-white rounded-[14px] card-shadow p-6 mb-5">
-    <h3 class="font-sans font-normal text-[20px] text-primary mb-5">Новый товар</h3>
+    <h3 class="font-sans font-normal text-[20px] text-primary mb-5">${t("admin-new-product")}</h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">Название <span class="text-red-500">*</span></label>
+        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-title")} <span class="text-red-500">*</span></label>
         <input id="pf-title" type="text" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">Бренд</label>
+        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-brand")}</label>
         <input id="pf-brand" type="text" value="Grande Line" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">Категория <span class="text-red-500">*</span></label>
+        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-category")} <span class="text-red-500">*</span></label>
         <select id="pf-category" class="${INPUT_CLS}">
-          <option value="metal-tile">Металлочерепица</option>
-          <option value="corrugated-sheet">Профнастил</option>
-          <option value="seam-roofing">Фальцевая кровля</option>
+          <option value="metal-tile">${t("cat-label-metal-tile")}</option>
+          <option value="corrugated-sheet">${t("cat-label-corrugated")}</option>
+          <option value="seam-roofing">${t("cat-label-seam")}</option>
         </select>
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">Цена, ₽/м² <span class="text-red-500">*</span></label>
+        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-price")} <span class="text-red-500">*</span></label>
         <input id="pf-price" type="number" min="1" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">Цвет (RAL)</label>
+        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-color")}</label>
         <input id="pf-color" type="text" placeholder="RAL 3005" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">Толщина, мм</label>
+        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-thickness")}</label>
         <input id="pf-thickness" type="text" placeholder="0,5" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">Покрытие</label>
+        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-surface")}</label>
         <input id="pf-surface" type="text" placeholder="Полиэстер" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">URL изображения <span class="text-red-500">*</span></label>
+        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-image")} <span class="text-red-500">*</span></label>
         <input id="pf-image" type="text" placeholder="/images/metal-tiles/..." class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">Характеристика 1 — название</label>
+        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-spec1-label")}</label>
         <input id="pf-spec1-label" type="text" placeholder="Высота волны, мм" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">Характеристика 1 — значение</label>
+        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-spec1-value")}</label>
         <input id="pf-spec1-value" type="text" placeholder="39" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">Характеристика 2 — название</label>
+        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-spec2-label")}</label>
         <input id="pf-spec2-label" type="text" placeholder="Высота ступеньки, мм" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">Характеристика 2 — значение</label>
+        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-spec2-value")}</label>
         <input id="pf-spec2-value" type="text" placeholder="14" class="${INPUT_CLS}" />
       </div>
     </div>
@@ -336,14 +337,14 @@ const ProductAddFormHTML = (): string => `
                      shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]
                      hover:scale-[1.02] transition-all cursor-pointer
                      disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
-        Сохранить
+        ${t("admin-save")}
       </button>
       <button type="button" id="cancel-product-btn"
               class="inline-flex items-center justify-center rounded-full
                      border border-[#ddd] bg-white px-6 py-3
                      font-sans text-[15px] text-[#44444E]
                      hover:border-[#FFC400] transition-colors cursor-pointer">
-        Отменить
+        ${t("admin-cancel")}
       </button>
     </div>
   </div>
@@ -375,7 +376,7 @@ const wireProductForm = (): void => {
 
     if (!title || !price || !image) {
       if (errEl) {
-        errEl.textContent = "Заполните обязательные поля: Название, Цена и URL изображения";
+        errEl.textContent = t("admin-form-error");
         errEl.classList.remove("hidden");
       }
       return;
@@ -403,7 +404,7 @@ const wireProductForm = (): void => {
       void renderProductsTab();
       void loadStats();
     } catch {
-      alert("Ошибка при добавлении товара");
+      alert(t("admin-error-product"));
       if (saveBtn) saveBtn.disabled = false;
     }
   });
@@ -424,7 +425,7 @@ const renderProductsTab = async (): Promise<void> => {
                class="w-12 h-12 object-cover rounded-[8px]" loading="lazy">
         </td>
         <td class="px-4 py-3 text-primary whitespace-nowrap">${p.title}</td>
-        <td class="px-4 py-3 text-[#44444E] whitespace-nowrap">${CATEGORY_LABELS[p.category] ?? p.category}</td>
+        <td class="px-4 py-3 text-[#44444E] whitespace-nowrap">${t(catLabelKey(p.category))}</td>
         <td class="px-4 py-3 text-primary whitespace-nowrap">${p.price} ₽/м²</td>
         <td class="px-4 py-3 text-[#44444E]">${p.brand}</td>
         <td class="px-4 py-3 text-[#44444E]">${p.color}</td>
@@ -435,7 +436,7 @@ const renderProductsTab = async (): Promise<void> => {
                   data-delete-product="${p.id}"
                   class="text-[13px] px-3 py-1.5 rounded-full border border-red-300
                          bg-white text-red-500 hover:bg-red-50 transition-colors cursor-pointer">
-            Удалить
+            ${t("admin-delete")}
           </button>
         </td>
       </tr>
@@ -443,7 +444,7 @@ const renderProductsTab = async (): Promise<void> => {
 
     el.innerHTML = `
       <div class="flex flex-wrap items-center justify-between gap-4 mb-5">
-        <h3 class="font-sans font-normal text-[20px] text-primary">Все товары (${products.length})</h3>
+        <h3 class="font-sans font-normal text-[20px] text-primary">${t("admin-all-products")} (${products.length})</h3>
         <button type="button" id="toggle-add-product"
                 class="inline-flex items-center gap-2 rounded-full
                        bg-gradient-to-r from-button-first to-button-second
@@ -454,14 +455,14 @@ const renderProductsTab = async (): Promise<void> => {
                stroke-linecap="round" aria-hidden="true">
             <line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/>
           </svg>
-          Добавить товар
+          ${t("admin-add-product")}
         </button>
       </div>
       ${ProductAddFormHTML()}
       ${TableWrap(`
-        ${ThRow("ID", "Фото", "Название", "Категория", "Цена", "Бренд", "Цвет", "Толщина", "Покрытие", "Действия")}
+        ${ThRow(t("admin-col-id"), t("admin-col-photo"), t("admin-col-name"), t("admin-col-category"), t("admin-col-price"), t("admin-col-brand"), t("admin-col-color"), t("admin-col-thickness"), t("admin-col-surface"), t("admin-col-actions"))}
         <tbody>
-          ${rows || `<tr><td colspan="10" class="px-4 py-8 text-center text-[#758499]">Нет товаров</td></tr>`}
+          ${rows || `<tr><td colspan="10" class="px-4 py-8 text-center text-[#758499]">${t("admin-no-products")}</td></tr>`}
         </tbody>
       `)}
     `;
@@ -471,18 +472,18 @@ const renderProductsTab = async (): Promise<void> => {
     el.querySelectorAll<HTMLButtonElement>("[data-delete-product]").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const id = Number(btn.dataset.deleteProduct);
-        if (!confirm("Удалить этот товар из каталога?")) return;
+        if (!confirm(t("admin-confirm-delete-product"))) return;
         try {
           await deleteProduct(id);
           void renderProductsTab();
           void loadStats();
         } catch {
-          alert("Ошибка при удалении товара");
+          alert(t("admin-error-delete-product"));
         }
       });
     });
   } catch {
-    el.innerHTML = `<div class="p-8 text-center text-red-500">Ошибка загрузки товаров</div>`;
+    el.innerHTML = `<div class="p-8 text-center text-red-500">${t("admin-error-load-products")}</div>`;
   }
 };
 
@@ -521,7 +522,7 @@ const renderReviewsTab = async (): Promise<void> => {
                   data-delete-review="${r.id}"
                   class="text-[13px] px-3 py-1.5 rounded-full border border-red-300
                          bg-white text-red-500 hover:bg-red-50 transition-colors cursor-pointer">
-            Удалить
+            ${t("admin-delete")}
           </button>
         </td>
       </tr>
@@ -529,12 +530,12 @@ const renderReviewsTab = async (): Promise<void> => {
 
     el.innerHTML = `
       <div class="mb-5">
-        <h3 class="font-sans font-normal text-[20px] text-primary">Все отзывы (${reviews.length})</h3>
+        <h3 class="font-sans font-normal text-[20px] text-primary">${t("admin-all-reviews")} (${reviews.length})</h3>
       </div>
       ${TableWrap(`
-        ${ThRow("ID", "Автор", "Дата", "Оценка", "Товар", "Текст", "Действия")}
+        ${ThRow(t("admin-col-id"), t("admin-col-author"), t("admin-col-date"), t("admin-col-rating"), t("admin-col-product"), t("admin-col-text"), t("admin-col-actions"))}
         <tbody>
-          ${rows || `<tr><td colspan="7" class="px-4 py-8 text-center text-[#758499]">Нет отзывов</td></tr>`}
+          ${rows || `<tr><td colspan="7" class="px-4 py-8 text-center text-[#758499]">${t("admin-no-reviews")}</td></tr>`}
         </tbody>
       `)}
     `;
@@ -542,18 +543,18 @@ const renderReviewsTab = async (): Promise<void> => {
     el.querySelectorAll<HTMLButtonElement>("[data-delete-review]").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const id = Number(btn.dataset.deleteReview);
-        if (!confirm("Удалить этот отзыв?")) return;
+        if (!confirm(t("admin-confirm-delete-review"))) return;
         try {
           await deleteReview(id);
           void renderReviewsTab();
           void loadStats();
         } catch {
-          alert("Ошибка при удалении отзыва");
+          alert(t("admin-error-delete-review"));
         }
       });
     });
   } catch {
-    el.innerHTML = `<div class="p-8 text-center text-red-500">Ошибка загрузки отзывов</div>`;
+    el.innerHTML = `<div class="p-8 text-center text-red-500">${t("admin-error-load-reviews")}</div>`;
   }
 };
 

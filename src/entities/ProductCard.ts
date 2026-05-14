@@ -2,6 +2,7 @@ import { isAuthenticated } from "../services/auth";
 import { favorites } from "../services/favorites";
 import { showToast } from "../shared/ui/toast";
 import type { Product } from "./products";
+import { t, translateSurface, translateTitle, SPEC_LABEL_I18N_KEY } from "../services/i18n";
 
 export const COLOR_OPTIONS = [
   "RAL 3005",
@@ -21,27 +22,42 @@ export const THICKNESS_OPTIONS = ["0,35", "0,4", "0,45", "0,5", "0,55", "0,7", "
 
 export const SURFACE_OPTIONS = ["Полиэстер", "Матовая", "Глянцевая", "Структурная"];
 
+const DROPDOWN_I18N: Record<string, string> = {
+  color: "calc-color-label",
+  thickness: "calc-thickness-label",
+  surface: "calc-surface-label",
+};
+
 export const Dropdown = (label: string, value: string, options: string[], name: string): string => {
+  const isSurface = name === "surface";
+  const displayValue = isSurface ? translateSurface(value) : value;
+
   const items = options
     .map(
-      (option) => `
+      (option) => {
+        const displayOption = isSurface ? translateSurface(option) : option;
+        const surfaceAttr = isSurface ? ` data-i18n-surface="${option}"` : "";
+        return `
         <li>
           <button type="button"
                   class="product-dropdown__option block w-full text-left px-[10px] py-1.5
                          font-sans text-[13px] leading-[1.3] text-[#44444E]
                          hover:bg-[#F3F5F9] transition-colors cursor-pointer
                          ${option === value ? "bg-[#F3F5F9]" : ""}"
-                  data-value="${option}">
-            ${option}
+                  data-value="${option}"${surfaceAttr}>
+            ${displayOption}
           </button>
         </li>
-      `,
+      `;
+      },
     )
     .join("");
 
+  const labelKey = DROPDOWN_I18N[name];
+  const surfaceValueAttr = isSurface ? ` data-i18n-surface="${value}"` : "";
   return `
     <div class="product-dropdown flex flex-col gap-[6px]" data-dropdown="${name}">
-      <span class="font-sans font-normal text-[13px] leading-[1.3] text-[#44444E]">${label}</span>
+      <span class="font-sans font-normal text-[13px] leading-[1.3] text-[#44444E]"${labelKey ? ` data-i18n="${labelKey}"` : ""}>${label}</span>
       <div class="relative w-[152px]">
         <button type="button"
                 class="product-dropdown__toggle relative h-7 w-full rounded-[5px] border border-[#ddd] bg-white
@@ -50,7 +66,8 @@ export const Dropdown = (label: string, value: string, options: string[], name: 
                 aria-haspopup="listbox"
                 aria-expanded="false">
           <span class="product-dropdown__value absolute left-[10px] top-1/2 -translate-y-1/2
-                       font-sans text-[13px] leading-[1.3] text-[#44444E] whitespace-nowrap">${value}</span>
+                       font-sans text-[13px] leading-[1.3] text-[#44444E] whitespace-nowrap"
+                data-value="${value}"${surfaceValueAttr}>${displayValue}</span>
           <svg class="product-dropdown__caret absolute right-[10px] top-1/2 -translate-y-1/2 size-[9px] text-[#44444E] transition-transform"
                viewBox="0 0 9 6" fill="currentColor" aria-hidden="true">
             <path d="M0 0l4.5 6L9 0z"/>
@@ -90,7 +107,8 @@ export const ProductCard = (product: Product, index: number): string => {
                        text-[#44444E] transition-all duration-200 hover:scale-110 cursor-pointer"
                 data-action="favorite-toggle"
                 data-product-id="${index}"
-                aria-label="Добавить в избранное"
+                aria-label="${t("card-add-favorite")}"
+                data-i18n-aria-label="card-add-favorite"
                 aria-pressed="false">
           <svg class="product-favorite__icon size-5" viewBox="0 0 24 24" fill="none"
                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
@@ -100,26 +118,27 @@ export const ProductCard = (product: Product, index: number): string => {
         </button>
       </div>
 
-      <h3 class="font-sans font-normal text-[20px] leading-[1.2] tracking-[0.04em] text-primary">
-        ${product.title}
+      <h3 class="font-sans font-normal text-[20px] leading-[1.2] tracking-[0.04em] text-primary"
+          data-i18n-title="${product.title}">
+        ${translateTitle(product.title)}
       </h3>
 
       <dl class="grid grid-cols-[1fr_auto] gap-x-6 gap-y-[5px] font-sans text-[13px] leading-[1.3] text-[#44444E]">
-        <dt>Бренд</dt><dd class="text-right">${product.brand}</dd>
-        <dt>${product.specs[0].label}</dt><dd class="text-right">${product.specs[0].value}</dd>
-        <dt>${product.specs[1].label}</dt><dd class="text-right">${product.specs[1].value}</dd>
+        <dt data-i18n="card-brand">${t("card-brand")}</dt><dd class="text-right">${product.brand}</dd>
+        <dt data-i18n="${SPEC_LABEL_I18N_KEY[product.specs[0].label] ?? ""}">${t(SPEC_LABEL_I18N_KEY[product.specs[0].label] ?? product.specs[0].label)}</dt><dd class="text-right">${product.specs[0].value}</dd>
+        <dt data-i18n="${SPEC_LABEL_I18N_KEY[product.specs[1].label] ?? ""}">${t(SPEC_LABEL_I18N_KEY[product.specs[1].label] ?? product.specs[1].label)}</dt><dd class="text-right">${product.specs[1].value}</dd>
       </dl>
 
       <div class="flex items-end gap-[7px] font-sans">
-        <span class="text-[13px] leading-[1.3] text-[#758499]">от</span>
+        <span class="text-[13px] leading-[1.3] text-[#758499]" data-i18n="product-price-from">${t("product-price-from")}</span>
         <span class="text-[20px] leading-none text-[#44444E]">${product.price}</span>
         <span class="text-[20px] leading-none text-[#44444E] tracking-[-0.05em]">₽ / м²</span>
       </div>
 
       <div class="flex flex-col gap-[15px]">
-        ${Dropdown("Цвет", product.color, COLOR_OPTIONS, "color")}
-        ${Dropdown("Толщина", product.thickness, THICKNESS_OPTIONS, "thickness")}
-        ${Dropdown("Поверхность", product.surface, SURFACE_OPTIONS, "surface")}
+        ${Dropdown(t("calc-color-label"), product.color, COLOR_OPTIONS, "color")}
+        ${Dropdown(t("calc-thickness-label"), product.thickness, THICKNESS_OPTIONS, "thickness")}
+        ${Dropdown(t("calc-surface-label"), product.surface, SURFACE_OPTIONS, "surface")}
       </div>
 
       <div class="flex flex-col gap-[15px] mt-auto">
@@ -130,14 +149,14 @@ export const ProductCard = (product: Product, index: number): string => {
                        px-6 py-[15px] font-sans text-[17px] leading-[1.8] text-[#44444E]
                        transition-all duration-300 hover:scale-[1.02] cursor-pointer
                        shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]">
-          Рассчитать стоимость
+          <span data-i18n="product-calculate">${t("product-calculate")}</span>
         </button>
         <a href="#product/${index}"
            class="self-start inline-flex items-center justify-center rounded-full
                   bg-[#FAFAFA] border border-[#FFC400]
                   px-6 py-[15px] font-sans text-[17px] leading-[1.8] text-[#44444E]
                   transition-colors duration-200 hover:bg-white cursor-pointer no-underline">
-          Подробнее о товаре
+          <span data-i18n="card-more">${t("card-more")}</span>
         </a>
       </div>
 
@@ -156,13 +175,13 @@ export const syncFavoriteButtons = (): void => {
       button.classList.remove("text-[#44444E]");
       icon?.setAttribute("fill", "currentColor");
       button.setAttribute("aria-pressed", "true");
-      button.setAttribute("aria-label", "Убрать из избранного");
+      button.setAttribute("aria-label", t("card-remove-favorite"));
     } else {
       button.classList.remove("text-[#FFC400]");
       button.classList.add("text-[#44444E]");
       icon?.setAttribute("fill", "none");
       button.setAttribute("aria-pressed", "false");
-      button.setAttribute("aria-label", "Добавить в избранное");
+      button.setAttribute("aria-label", t("card-add-favorite"));
     }
   });
 };
@@ -195,9 +214,9 @@ export const initProductCards = (): void => {
       if (Number.isNaN(id)) return;
       const added = favorites.toggle(id);
       const card = favBtn.closest<HTMLElement>("article[data-product-title]");
-      const name = card?.dataset.productTitle ?? "Товар";
+      const name = translateTitle(card?.dataset.productTitle ?? t("card-product-name"));
       showToast(
-        added ? `«${name}» добавлен в избранное` : `«${name}» убран из избранного`,
+        added ? `«${name}» ${t("card-toast-added")}` : `«${name}» ${t("card-toast-removed")}`,
         { type: added ? "success" : "info" },
       );
       return;
@@ -224,7 +243,12 @@ export const initProductCards = (): void => {
       const dropdown = option.closest<HTMLElement>(".product-dropdown");
       const valueEl = dropdown?.querySelector<HTMLElement>(".product-dropdown__value");
       const value = option.dataset.value ?? "";
-      if (valueEl) valueEl.textContent = value;
+      if (valueEl) {
+        const isSurface = dropdown?.dataset.dropdown === "surface";
+        valueEl.textContent = isSurface ? translateSurface(value) : value;
+        valueEl.dataset.value = value;
+        if (isSurface) valueEl.dataset.i18nSurface = value;
+      }
       dropdown?.querySelectorAll<HTMLElement>(".product-dropdown__option").forEach((opt) => {
         opt.classList.toggle("bg-[#F3F5F9]", opt === option);
       });

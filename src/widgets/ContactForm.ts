@@ -1,3 +1,5 @@
+import { t } from "../services/i18n";
+
 export const ContactForm = (): string => {
   return `
     <section class="bg-white overflow-hidden" id="consultation" aria-labelledby="consultation-heading">
@@ -17,12 +19,14 @@ export const ContactForm = (): string => {
         <div class="flex flex-col gap-[33px] max-w-[538px] w-full">
 
           <h2 id="consultation-heading"
+              data-i18n="contact-heading"
               class="font-sans font-normal text-[32px] leading-[1.2] sm:text-[40px] xl:text-[56px] xl:leading-[68px]"
               style="background: linear-gradient(to top, #1b2836, #4e6481); -webkit-background-clip: text; background-clip: text; color: transparent;">
             ЕСТЬ ВОПРОСЫ?
           </h2>
 
-          <p class="font-sans font-normal text-[16px] lg:text-[18px] xl:text-[20px] leading-[1.5] text-secondary">
+          <p data-i18n="contact-desc"
+             class="font-sans font-normal text-[16px] lg:text-[18px] xl:text-[20px] leading-[1.5] text-secondary">
             Если у Вас есть вопросы или требуется помощь в подборе кровельных
             материалов, то оставьте свои данные, мы свяжемся с Вами и проконсультируем.
           </p>
@@ -31,6 +35,7 @@ export const ContactForm = (): string => {
           <form id="consultation-form" class="flex flex-col gap-4" novalidate>
             <button
               type="submit"
+              data-i18n="contact-btn"
               class="btn-primary text-[22px] px-9 py-6 w-fit">
               Получить консультацию
             </button>
@@ -38,7 +43,8 @@ export const ContactForm = (): string => {
 
           <!-- Мессенджеры -->
           <div class="flex items-center gap-[21px]">
-            <p class="font-sans font-normal text-[17px] leading-[1.8] text-secondary opacity-60 w-[140px]">
+            <p data-i18n="contact-messenger"
+               class="font-sans font-normal text-[17px] leading-[1.8] text-secondary opacity-60 w-[140px]">
               или напишите нам в мессенджер
             </p>
             <div class="flex gap-[13px]" aria-label="Мессенджеры">
@@ -72,6 +78,6 @@ export const initContactForm = (): void => {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    alert("Спасибо! Мы свяжемся с вами в ближайшее время.");
+    alert(t("contact-thanks"));
   });
 };
