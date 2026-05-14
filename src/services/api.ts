@@ -94,6 +94,40 @@ export const postUser = async (user: object): Promise<{ id: number }> => {
   return res.json() as Promise<{ id: number }>;
 };
 
+export const updateUser = async (id: number, data: Partial<ApiUser>): Promise<ApiUser> => {
+  const res = await fetch(`${API_BASE}/users/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Ошибка обновления пользователя");
+  return res.json() as Promise<ApiUser>;
+};
+
+export const getAllCartItems = async (): Promise<ApiCartItem[]> => {
+  const res = await fetch(`${API_BASE}/cart`);
+  if (!res.ok) throw new Error("Ошибка загрузки корзины");
+  return res.json() as Promise<ApiCartItem[]>;
+};
+
+export const postProduct = async (product: Omit<Product, "id">): Promise<Product> => {
+  const res = await fetch(`${API_BASE}/products`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(product),
+  });
+  if (!res.ok) throw new Error("Ошибка создания товара");
+  return res.json() as Promise<Product>;
+};
+
+export const deleteProduct = async (id: number): Promise<void> => {
+  await fetch(`${API_BASE}/products/${id}`, { method: "DELETE" });
+};
+
+export const deleteReview = async (id: number): Promise<void> => {
+  await fetch(`${API_BASE}/reviews/${id}`, { method: "DELETE" });
+};
+
 export const getFavoritesByUser = async (userId: string): Promise<ApiFavorite[]> => {
   const res = await fetch(`${API_BASE}/favorites?userId=${userId}`);
   if (!res.ok) throw new Error("Ошибка загрузки избранного");

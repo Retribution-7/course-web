@@ -11,6 +11,7 @@ import { ReviewsPage, initReviewsPage } from "./pages/ReviewsPage";
 import { AboutCompanyPage, initAboutCompanyPage } from "./pages/AboutCompanyPage";
 import { FavoritesPage, initFavoritesPage } from "./pages/FavoritesPage";
 import { AccountPage, initAccountPage } from "./pages/AccountPage";
+import { AdminPage, initAdminPage } from "./pages/AdminPage";
 import { Catalog, initCatalog } from "./widgets/Catalog";
 import { ContactForm, initContactForm } from "./widgets/ContactForm";
 import { Footer, initFooter } from "./widgets/Footer";
@@ -43,6 +44,7 @@ app.innerHTML = `
   ${AboutCompanyPage()}
   ${FavoritesPage()}
   ${AccountPage()}
+  ${AdminPage()}
   ${Footer()}
   ${Calculator()}
 `;
@@ -60,6 +62,7 @@ initReviewsPage();
 initAboutCompanyPage();
 initFavoritesPage();
 initAccountPage();
+initAdminPage();
 initFooter();
 
 hidePreloader();

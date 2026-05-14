@@ -5,6 +5,7 @@ import {
   generatePassword,
   getUser,
   saveUser,
+  restoreUser,
   setAuthenticated,
   validateBirthDate,
   validateEmail,
@@ -452,6 +453,7 @@ const handleRegisterSubmit = (event: Event): void => {
     nickname: (getInput("reg-nickname")?.value ?? "").trim(),
     password,
     createdAt: new Date().toISOString(),
+    role: "customer",
   });
   alert("Регистрация прошла успешно. Добро пожаловать!");
   window.location.hash = "";
@@ -465,8 +467,9 @@ const handleLoginSubmit = (event: Event): void => {
   const password = getInput("login-password")?.value ?? "";
 
   const localUser = getUser();
-  if (localUser) {
-    if (localUser.phone !== phone || localUser.password !== password) {
+  // Fast path: same user already cached locally
+  if (localUser && localUser.phone === phone) {
+    if (localUser.password !== password) {
       alert("Неверный телефон или пароль.");
       return;
     }
@@ -476,7 +479,7 @@ const handleLoginSubmit = (event: Event): void => {
     return;
   }
 
-  // Local user not found — try JSON Server
+  // Different phone or no local user — check server
   const loginBtn = document.getElementById("login-submit") as HTMLButtonElement | null;
   if (loginBtn) loginBtn.disabled = true;
 
@@ -487,7 +490,7 @@ const handleLoginSubmit = (event: Event): void => {
         alert("Пользователь не найден или неверный пароль.");
         return;
       }
-      saveUser({
+      restoreUser({
         phone: found.phone,
         email: found.email,
         firstName: found.firstName,
@@ -496,7 +499,8 @@ const handleLoginSubmit = (event: Event): void => {
         nickname: found.nickname ?? "",
         password,
         createdAt: found.createdAt,
-      });
+        role: (found.role as "customer" | "admin") ?? "customer",
+      }, found.id);
       alert("Вход выполнен.");
       window.location.hash = "";
     })
