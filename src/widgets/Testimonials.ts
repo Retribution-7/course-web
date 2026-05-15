@@ -73,8 +73,8 @@ export const Testimonials = (): string => `
       <div class="relative overflow-hidden">
         <div
           id="testimonials-track"
-          class="flex gap-[41px] transition-transform duration-500 ease-in-out min-h-[200px] items-center justify-center">
-          <span class="font-sans text-[15px] text-text-third" data-i18n="testimonials-loading">Загрузка отзывов...</span>
+          class="flex gap-[41px] transition-transform duration-500 ease-in-out min-h-[200px] items-center">
+          <span class="w-full text-center font-sans text-[15px] text-text-third" data-i18n="testimonials-loading">Загрузка отзывов...</span>
         </div>
       </div>
 
@@ -107,12 +107,12 @@ const setupSlider = (track: HTMLElement, dotsContainer: HTMLElement): void => {
   if (!slides.length) return;
 
   let current = 0;
+  const GAP = 41;
+  let autoTimer: ReturnType<typeof setInterval> | null = null;
 
-  const getSlideWidth = (): number => {
-    if (window.innerWidth >= 1024) return 0;
-    const gap = 41;
-    return (slides[0]?.offsetWidth ?? 0) + gap;
-  };
+  const getPerView = (): number => (window.innerWidth >= 1024 ? 3 : 1);
+  const getMaxIndex = (): number => Math.max(0, slides.length - getPerView());
+  const getSlidePx = (): number => (slides[0]?.offsetWidth ?? 0) + GAP;
 
   const updateDots = (idx: number): void => {
     dots.forEach((dot, i) => {
@@ -127,51 +127,65 @@ const setupSlider = (track: HTMLElement, dotsContainer: HTMLElement): void => {
   };
 
   const goTo = (idx: number): void => {
-    if (window.innerWidth >= 1024) return;
-    current = Math.max(0, Math.min(idx, slides.length - 1));
-    track.style.transform = `translateX(-${current * getSlideWidth()}px)`;
+    const total = getMaxIndex() + 1;
+    current = ((idx % total) + total) % total;
+    track.style.transform = `translateX(-${current * getSlidePx()}px)`;
     updateDots(current);
-    if (prevBtn) prevBtn.disabled = current === 0;
-    if (nextBtn) nextBtn.disabled = current === slides.length - 1;
   };
+
+  const stopAuto = (): void => {
+    if (autoTimer !== null) { clearInterval(autoTimer); autoTimer = null; }
+  };
+
+  const startAuto = (): void => {
+    autoTimer = setInterval(() => goTo(current + 1), 4000);
+  };
+
+  const manualGoTo = (idx: number): void => { stopAuto(); goTo(idx); startAuto(); };
 
   const applyLayout = (): void => {
-    if (window.innerWidth >= 1024) {
-      track.style.transform = "";
-      track.style.flexWrap = "nowrap";
-      slides.forEach((s) => { s.style.flex = "1 1 0%"; s.style.minWidth = "0"; });
-      if (prevBtn) prevBtn.disabled = true;
-      if (nextBtn) nextBtn.disabled = true;
+    const perView = getPerView();
+    if (perView > 1) {
+      slides.forEach((s) => {
+        s.style.flex = `0 0 calc((100% - ${GAP * (perView - 1)}px) / ${perView})`;
+        s.style.minWidth = "0";
+      });
     } else {
       slides.forEach((s) => { s.style.flex = "0 0 100%"; s.style.minWidth = "100%"; });
-      if (prevBtn) prevBtn.disabled = current === 0;
-      if (nextBtn) nextBtn.disabled = current === slides.length - 1;
-      goTo(current);
     }
+    current = Math.min(current, getMaxIndex());
+    void track.offsetWidth; // force reflow so offsetWidth is correct in getSlidePx
+    goTo(current);
   };
 
-  prevBtn?.addEventListener("click", () => goTo(current - 1));
-  nextBtn?.addEventListener("click", () => goTo(current + 1));
-  dots.forEach((dot, i) => dot.addEventListener("click", () => goTo(i)));
+  prevBtn?.addEventListener("click", () => manualGoTo(current - 1));
+  nextBtn?.addEventListener("click", () => manualGoTo(current + 1));
+  dots.forEach((dot, i) => dot.addEventListener("click", () => manualGoTo(i)));
   track.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft") goTo(current - 1);
-    if (e.key === "ArrowRight") goTo(current + 1);
+    if (e.key === "ArrowLeft") manualGoTo(current - 1);
+    if (e.key === "ArrowRight") manualGoTo(current + 1);
   });
 
+  const section = track.closest("section");
+  section?.addEventListener("mouseenter", stopAuto);
+  section?.addEventListener("mouseleave", startAuto);
+  section?.addEventListener("focusin", stopAuto);
+  section?.addEventListener("focusout", startAuto);
+
   applyLayout();
-  window.addEventListener("resize", applyLayout);
+  startAuto();
+  window.addEventListener("resize", () => { stopAuto(); applyLayout(); startAuto(); });
 };
 
 export const initTestimonials = (): void => {
   fetchReviews()
     .then((all) => {
-      const reviews = all.slice(0, 3);
       const track = document.getElementById("testimonials-track");
       const dotsContainer = document.getElementById("testimonials-dots");
       if (!track || !dotsContainer) return;
 
-      track.innerHTML = reviews.map(renderReviewCard).join("");
-      dotsContainer.innerHTML = reviews.map((_, i) => renderDot(i, i === 0)).join("");
+      track.innerHTML = all.map(renderReviewCard).join("");
+      dotsContainer.innerHTML = all.map((_, i) => renderDot(i, i === 0)).join("");
 
       setupSlider(track, dotsContainer);
     })
