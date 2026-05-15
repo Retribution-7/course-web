@@ -5,7 +5,7 @@ const formatRub = (value: number): string =>
   `${Math.round(value).toLocaleString("ru-RU")} ₽`;
 
 const renderItem = (item: CartItem): string => `
-  <article class="bg-white rounded-[14px] card-shadow p-5 lg:p-6
+  <article class="bg-surface rounded-[14px] card-shadow p-5 lg:p-6 transition-colors duration-300
                   grid grid-cols-1 md:grid-cols-[120px_1fr_auto] gap-5 md:gap-6 items-start"
            data-cart-id="${item.id}">
 
@@ -17,13 +17,13 @@ const renderItem = (item: CartItem): string => `
       <h3 class="font-sans font-normal text-[18px] lg:text-[20px] leading-[1.2] text-primary">
         ${translateTitle(item.title)}
       </h3>
-      <dl class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 font-sans text-[13px] leading-[1.3] text-[#44444E]">
-        <dt class="text-[#758499]">${t("cart-color")}</dt><dd>${item.color}</dd>
-        <dt class="text-[#758499]">${t("cart-thickness")}</dt><dd>${item.thickness}</dd>
-        <dt class="text-[#758499]">${t("cart-surface")}</dt><dd>${translateSurface(item.surface)}</dd>
-        <dt class="text-[#758499]">${t("cart-area")}</dt><dd>${item.area} м²</dd>
-        ${item.installation ? `<dt class="text-[#758499]">${t("cart-installation-label")}</dt><dd>${t("cart-installation-included")}</dd>` : ""}
-        ${item.delivery ? `<dt class="text-[#758499]">${t("cart-delivery-label")}</dt><dd>${t("cart-delivery-included")}</dd>` : ""}
+      <dl class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 font-sans text-[13px] leading-[1.3] text-primary">
+        <dt class="text-text-third">${t("cart-color")}</dt><dd>${item.color}</dd>
+        <dt class="text-text-third">${t("cart-thickness")}</dt><dd>${item.thickness}</dd>
+        <dt class="text-text-third">${t("cart-surface")}</dt><dd>${translateSurface(item.surface)}</dd>
+        <dt class="text-text-third">${t("cart-area")}</dt><dd>${item.area} м²</dd>
+        ${item.installation ? `<dt class="text-text-third">${t("cart-installation-label")}</dt><dd>${t("cart-installation-included")}</dd>` : ""}
+        ${item.delivery ? `<dt class="text-text-third">${t("cart-delivery-label")}</dt><dd>${t("cart-delivery-included")}</dd>` : ""}
       </dl>
     </div>
 
@@ -34,8 +34,8 @@ const renderItem = (item: CartItem): string => `
       <button type="button"
               data-action="cart-remove"
               data-id="${item.id}"
-              class="grid size-9 place-items-center rounded-full border border-[#ddd]
-                     text-[#44444E] hover:border-[#FFC400] hover:text-[#FFC400]
+              class="grid size-9 place-items-center rounded-full border border-primary/20
+                     text-primary hover:border-button-first hover:text-button-first
                      transition-colors cursor-pointer"
               aria-label="Удалить из корзины">
         <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -47,7 +47,7 @@ const renderItem = (item: CartItem): string => `
 `;
 
 const renderEmpty = (): string => `
-  <div class="bg-white rounded-[14px] card-shadow p-10 lg:p-16 text-center">
+  <div class="bg-surface rounded-[14px] card-shadow p-10 lg:p-16 text-center transition-colors duration-300">
     <div class="mx-auto mb-6 size-20 rounded-full gradient-icon grid place-items-center
                 shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)]">
       <img src="/icons/cart.svg" alt="" class="size-10" aria-hidden="true">
@@ -55,14 +55,14 @@ const renderEmpty = (): string => `
     <h3 class="font-sans font-normal text-[24px] leading-[1.2] gradient-text">
       ${t("cart-empty-title")}
     </h3>
-    <p class="mt-3 font-sans text-[15px] leading-[1.5] text-[#44444E]">
+    <p class="mt-3 font-sans text-[15px] leading-[1.5] text-primary">
       ${t("cart-empty-desc")}
     </p>
     <a href="#catalog"
        data-action="cart-back"
        class="mt-8 inline-flex items-center justify-center rounded-full
               bg-gradient-to-r from-button-first to-button-second
-              px-6 py-[15px] font-sans text-[17px] leading-[1.4] text-[#44444E]
+              px-6 py-[15px] font-sans text-[17px] leading-[1.4] text-primary
               transition-all duration-300 hover:scale-[1.02] cursor-pointer
               shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]">
       ${t("cart-to-catalog")}
@@ -72,7 +72,7 @@ const renderEmpty = (): string => `
 
 export const CartPage = (): string => `
   <section id="cart-page"
-           class="hidden bg-[#F3F5F9] py-14 lg:py-20 min-h-[60vh]"
+           class="hidden bg-bg-first py-14 lg:py-20 min-h-[60vh] transition-colors duration-300"
            aria-labelledby="cart-heading">
     <div class="container-main">
       <div class="flex items-center justify-between gap-4 flex-wrap">
@@ -84,7 +84,7 @@ export const CartPage = (): string => `
         <a href="#catalog"
            data-action="cart-back"
            data-i18n="cart-back"
-           class="font-sans text-[15px] lg:text-[17px] text-[#44444E] underline underline-offset-4 hover:text-[#FFC400] transition-colors">
+           class="font-sans text-[15px] lg:text-[17px] text-primary underline underline-offset-4 hover:text-button-first transition-colors">
           ← Продолжить покупки
         </a>
       </div>
@@ -92,29 +92,29 @@ export const CartPage = (): string => `
       <div id="cart-content" class="mt-8 lg:mt-12 flex flex-col gap-4 lg:gap-5"></div>
 
       <div id="cart-summary"
-           class="hidden mt-8 lg:mt-12 bg-white rounded-[14px] card-shadow p-6 lg:p-8
+           class="hidden mt-8 lg:mt-12 bg-surface rounded-[14px] card-shadow p-6 lg:p-8 transition-colors duration-300
                   flex flex-col md:flex-row md:items-center md:justify-between gap-5">
         <div class="flex flex-col gap-1">
-          <span class="font-sans text-[13px] leading-[1.3] text-[#758499]">
+          <span class="font-sans text-[13px] leading-[1.3] text-text-third">
             <span id="cart-count"></span>
           </span>
-          <span data-i18n="cart-total-label" class="font-sans text-[15px] text-[#44444E]">Итого к оплате</span>
+          <span data-i18n="cart-total-label" class="font-sans text-[15px] text-primary">Итого к оплате</span>
           <span id="cart-total" class="font-sans text-[28px] lg:text-[32px] leading-none gradient-text"></span>
         </div>
         <div class="flex flex-col sm:flex-row gap-3">
           <button type="button"
                   data-action="cart-clear"
                   class="inline-flex items-center justify-center rounded-full
-                         bg-[#FAFAFA] border border-[#FFC400]
-                         px-6 py-[15px] font-sans text-[15px] lg:text-[17px] text-[#44444E]
-                         transition-colors duration-200 hover:bg-white cursor-pointer">
+                         bg-bg-first border border-button-first
+                         px-6 py-[15px] font-sans text-[15px] lg:text-[17px] text-primary
+                         transition-colors duration-200 hover:bg-surface cursor-pointer">
             <span data-i18n="cart-clear">Очистить корзину</span>
           </button>
           <button type="button"
                   data-action="cart-checkout"
                   class="inline-flex items-center justify-center rounded-full
                          bg-gradient-to-r from-button-first to-button-second
-                         px-8 py-[15px] font-sans text-[15px] lg:text-[17px] text-[#44444E]
+                         px-8 py-[15px] font-sans text-[15px] lg:text-[17px] text-primary
                          transition-all duration-300 hover:scale-[1.02] cursor-pointer
                          shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]">
             <span data-i18n="cart-checkout">Оформить заказ</span>

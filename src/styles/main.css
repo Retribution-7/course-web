@@ -6,7 +6,7 @@ html {
 }
 
 body {
-	@apply bg-white text-body text-primary font-sans;
+	@apply bg-surface text-body text-primary font-sans transition-colors duration-300;
 	overflow-x: hidden;
 }
 
@@ -26,6 +26,20 @@ body {
 		color: transparent;
 	}
 
+	.heading-gradient {
+		background: linear-gradient(to top, #1b2836, #4e6481);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+
+	.dark .heading-gradient {
+		background: linear-gradient(to top, #7dd3fc, #e0f2fe);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+
 	.gradient-icon {
 		background: radial-gradient(ellipse at top, var(--color-button-first) 0%, var(--color-button-second) 100%);
 	}
@@ -37,8 +51,8 @@ body {
 
 @layer utilities {
 	.catalog-tab.active {
-		background-color: #ffc400;
-		border-color: #ffc400;
+		background-color: var(--color-button-first);
+		border-color: var(--color-button-first);
 		color: var(--color-primary);
 	}
 }

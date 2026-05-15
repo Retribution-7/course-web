@@ -12,7 +12,7 @@ const CartIcon = (extraClass = ""): string => `
     <img src="/icons/cart.svg" alt="" class="size-5" aria-hidden="true">
     <span data-cart-badge
           class="cart-badge absolute -top-1 -right-1 hidden min-w-[20px] h-5 px-1.5
-                 rounded-full bg-[#FFC400] text-primary font-sans text-[12px] leading-5
+                 rounded-full bg-button-first text-primary font-sans text-[12px] leading-5
                  text-center font-medium">0</span>
   </a>
 `;
@@ -20,7 +20,7 @@ const CartIcon = (extraClass = ""): string => `
 const FavoritesIcon = (extraClass = ""): string => `
   <a href="#favorites"
      class="favorites-link relative grid place-items-center size-11 rounded-full
-            border border-[#FFC400] bg-white shrink-0
+            border border-button-first bg-surface shrink-0
             transition-transform hover:scale-105 ${extraClass}"
      aria-label="Открыть избранное">
     <svg viewBox="0 0 24 24" class="size-5 text-primary" fill="none" stroke="currentColor"
@@ -29,7 +29,7 @@ const FavoritesIcon = (extraClass = ""): string => `
     </svg>
     <span data-favorites-badge
           class="favorites-badge absolute -top-1 -right-1 hidden min-w-[20px] h-5 px-1.5
-                 rounded-full bg-[#FFC400] text-primary font-sans text-[12px] leading-5
+                 rounded-full bg-button-first text-primary font-sans text-[12px] leading-5
                  text-center font-medium">0</span>
   </a>
 `;
@@ -38,7 +38,7 @@ const AuthIcon = (extraClass = ""): string => `
   <a href="#auth"
      data-auth-link
      class="auth-link grid place-items-center size-11 rounded-full
-            border border-[#FFC400] bg-white shrink-0
+            border border-button-first bg-surface shrink-0
             transition-transform hover:scale-105 ${extraClass}"
      aria-label="Войти или зарегистрироваться">
     <svg viewBox="0 0 24 24" class="size-5 text-primary" fill="none" stroke="currentColor" stroke-width="1.6">
@@ -63,8 +63,31 @@ const AdminIcon = (extraClass = ""): string => `
   </a>
 `;
 
+const ThemeToggle = (): string => `
+  <button type="button" data-theme-btn
+          class="relative grid place-items-center size-11 rounded-full
+                 bg-bg-first border border-button-first shrink-0
+                 transition-transform hover:scale-105"
+          aria-label="Переключить тему">
+    <svg data-theme-icon-light class="size-5 text-primary transition-opacity duration-300" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+         aria-hidden="true">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+    <svg data-theme-icon-dark class="size-5 text-primary transition-opacity duration-300 hidden" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+         aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+`;
+
 const LangToggle = (): string => `
-  <div class="relative flex items-center bg-[#F3F5F9] rounded-full p-0.5 shrink-0"
+  <div class="relative flex items-center bg-bg-first rounded-full p-0.5 shrink-0"
        role="group" aria-label="Language / Язык">
     <div data-lang-indicator
          class="absolute top-0.5 bottom-0.5 left-0.5 w-[calc(50%-2px)] rounded-full
@@ -84,7 +107,7 @@ const LangToggle = (): string => `
 
 export const Header = (): string => {
   return `
-    <header class="bg-white w-full sticky top-0 z-50 shadow-[0_2px_20px_rgba(0,0,0,0.06)]">
+    <header class="bg-surface w-full sticky top-0 z-50 shadow-[0_2px_20px_rgba(0,0,0,0.06)] transition-colors duration-300">
       <div class="container-main">
         <nav class="flex items-center justify-between gap-6 py-6 2xl:py-10" aria-label="Главная навигация">
 
@@ -95,7 +118,7 @@ export const Header = (): string => {
 
           <!-- Разделитель + Адрес -->
           <div class="hidden 2xl:flex items-end gap-6 shrink-0">
-            <div class="h-[70px] w-px bg-[#44444E] opacity-20"></div>
+            <div class="h-[70px] w-px bg-primary opacity-20"></div>
             <address class="not-italic text-[17px] leading-[1.8] text-primary font-sans">
               Санкт-Петербург, Горелово,<br>
               Волхонское шоссе, 6
@@ -118,7 +141,7 @@ export const Header = (): string => {
           <!-- Мессенджеры -->
           <div class="hidden 2xl:flex flex-col items-start gap-3 shrink-0">
             <div class="flex items-center gap-2">
-              <span class="size-[6px] rounded-full bg-[#FFC400] shrink-0"></span>
+              <span class="size-[6px] rounded-full bg-button-first shrink-0"></span>
               <span class="text-[13px] text-primary font-normal leading-[1.3]" data-i18n="header-ask-online">Задайте вопрос online</span>
             </div>
             <div class="flex items-center gap-[15px]">
@@ -142,9 +165,10 @@ export const Header = (): string => {
             </div>
           </div>
 
-          <!-- Переключатель языка + Аккаунт + избранное + корзина (десктоп) -->
+          <!-- Переключатель языка + темы + Аккаунт + избранное + корзина (десктоп) -->
           <div class="hidden 2xl:flex items-center gap-3 shrink-0">
             ${LangToggle()}
+            ${ThemeToggle()}
             ${AdminIcon()}
             ${AuthIcon()}
             ${FavoritesIcon()}
@@ -198,7 +222,7 @@ export const Header = (): string => {
             <a href="#auth" data-auth-link
                class="flex items-center gap-4 text-[17px] text-primary"
                aria-label="Войти или зарегистрироваться">
-              <div class="size-10 rounded-full border border-[#FFC400] bg-white grid place-items-center shrink-0">
+              <div class="size-10 rounded-full border border-button-first bg-surface grid place-items-center shrink-0">
                 <svg viewBox="0 0 24 24" class="size-5 text-primary" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                   <circle cx="12" cy="8" r="4"/>
                   <path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>
@@ -208,13 +232,13 @@ export const Header = (): string => {
             </a>
             <a href="#favorites"
                class="flex items-center gap-4 text-[17px] text-primary">
-              <div class="relative size-10 rounded-full border border-[#FFC400] bg-white grid place-items-center shrink-0">
+              <div class="relative size-10 rounded-full border border-button-first bg-surface grid place-items-center shrink-0">
                 <svg viewBox="0 0 24 24" class="size-5 text-primary" fill="none" stroke="currentColor"
                      stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M12 21s-7-4.5-7-10.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 7 4.5C19 16.5 12 21 12 21z"/>
                 </svg>
                 <span data-favorites-badge
-                      class="absolute -top-1 -right-1 hidden min-w-[20px] h-5 px-1.5 rounded-full bg-[#FFC400] text-primary font-sans text-[12px] leading-5 text-center font-medium">0</span>
+                      class="absolute -top-1 -right-1 hidden min-w-[20px] h-5 px-1.5 rounded-full bg-button-first text-primary font-sans text-[12px] leading-5 text-center font-medium">0</span>
               </div>
               <span data-i18n="header-favorites">Избранное</span>
             </a>
@@ -223,7 +247,7 @@ export const Header = (): string => {
               <div class="relative size-10 rounded-full gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] grid place-items-center shrink-0">
                 <img src="/icons/cart.svg" alt="" class="size-5" aria-hidden="true">
                 <span data-cart-badge
-                      class="absolute -top-1 -right-1 hidden min-w-[20px] h-5 px-1.5 rounded-full bg-[#FFC400] text-primary font-sans text-[12px] leading-5 text-center font-medium">0</span>
+                      class="absolute -top-1 -right-1 hidden min-w-[20px] h-5 px-1.5 rounded-full bg-button-first text-primary font-sans text-[12px] leading-5 text-center font-medium">0</span>
               </div>
               <span data-i18n="header-cart">Корзина</span>
             </a>
@@ -267,9 +291,10 @@ export const Header = (): string => {
             Перезвоним Вам
           </button>
 
-          <!-- Переключатель языка в мобильном меню -->
+          <!-- Переключатель языка и темы в мобильном меню -->
           <div class="flex items-center gap-3">
             ${LangToggle()}
+            ${ThemeToggle()}
           </div>
 
         </div>
@@ -319,6 +344,23 @@ const updateLangToggle = (lang: Lang): void => {
   });
 };
 
+const updateThemeIcons = (isDark: boolean): void => {
+  document.querySelectorAll<HTMLElement>("[data-theme-icon-light]").forEach((el) => {
+    el.classList.toggle("hidden", isDark);
+  });
+  document.querySelectorAll<HTMLElement>("[data-theme-icon-dark]").forEach((el) => {
+    el.classList.toggle("hidden", !isDark);
+  });
+};
+
+export const initTheme = (): void => {
+  const saved = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const isDark = saved === "dark" || (!saved && prefersDark);
+  document.documentElement.classList.toggle("dark", isDark);
+  updateThemeIcons(isDark);
+};
+
 export const initHeader = (): void => {
   syncCartBadges();
   syncFavoritesBadges();
@@ -336,6 +378,14 @@ export const initHeader = (): void => {
       const lang = btn.dataset.langBtn as Lang;
       getTranslate(lang);
       updateLangToggle(lang);
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>("[data-theme-btn]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const isDark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+      updateThemeIcons(isDark);
     });
   });
 

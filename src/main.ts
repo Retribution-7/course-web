@@ -15,7 +15,7 @@ import { AdminPage, initAdminPage } from "./pages/AdminPage";
 import { Catalog, initCatalog } from "./widgets/Catalog";
 import { ContactForm, initContactForm } from "./widgets/ContactForm";
 import { Footer, initFooter } from "./widgets/Footer";
-import { Header, initHeader } from "./widgets/Header";
+import { Header, initHeader, initTheme } from "./widgets/Header";
 import { Hero } from "./widgets/Hero";
 import { Testimonials, initTestimonials } from "./widgets/Testimonials";
 import { isAuthenticated, onAuthChange } from "./services/auth";
@@ -50,6 +50,7 @@ app.innerHTML = `
   ${Calculator()}
 `;
 
+initTheme();
 initI18n();
 initRouter();
 initHeader();

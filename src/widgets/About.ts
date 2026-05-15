@@ -59,7 +59,7 @@ const renderCard = (card: FeatureCard, idx: number): string => `
     <div class="flex flex-col gap-3 lg:gap-5">
       <h3 class="font-sans font-normal text-[18px] leading-[1.4] lg:text-[22px] lg:leading-[30px] gradient-text"
           data-i18n="about-card-${idx}-title">${card.title}</h3>
-      <p class="font-sans font-normal text-[16px] leading-[1.4] lg:text-[22px] lg:leading-[30px] text-[#69686F] opacity-80"
+      <p class="font-sans font-normal text-[16px] leading-[1.4] lg:text-[22px] lg:leading-[30px] text-secondary opacity-80"
          data-i18n="about-card-${idx}-desc">${card.description}</p>
     </div>
   </article>
@@ -67,7 +67,7 @@ const renderCard = (card: FeatureCard, idx: number): string => `
 
 export const About = (): string => {
   return `
-    <section class="bg-white py-14 lg:py-20" id="about" aria-labelledby="about-heading">
+    <section class="bg-surface py-14 lg:py-20 transition-colors duration-300" id="about" aria-labelledby="about-heading">
       <div class="container-main flex flex-col gap-14 lg:gap-[110px]">
 
         <!-- Заголовок + описание -->

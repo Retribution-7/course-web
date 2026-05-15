@@ -4,7 +4,7 @@ import { t } from "../services/i18n";
 
 const renderReviewCard = (review: Review, idx: number): string => `
   <article
-    class="testimonial-slide bg-white rounded-[14px] card-shadow p-[40px] flex flex-col gap-[25px]"
+    class="testimonial-slide bg-surface rounded-[14px] card-shadow p-[40px] flex flex-col gap-[25px] transition-colors duration-300"
     data-slide="${idx}">
 
     <div class="flex items-center gap-[25px]">
@@ -15,8 +15,8 @@ const renderReviewCard = (review: Review, idx: number): string => `
         loading="lazy"
       >
       <div class="flex flex-col">
-        <span class="font-sans font-normal text-[22px] leading-[30px] text-[#2E4156]">${review.name}</span>
-        <span class="font-sans font-normal text-[17px] leading-[1.8] text-[#69809F]">${review.date}</span>
+        <span class="font-sans font-normal text-[22px] leading-[30px] text-123-first">${review.name}</span>
+        <span class="font-sans font-normal text-[17px] leading-[1.8] text-123-second">${review.date}</span>
       </div>
     </div>
 
@@ -32,7 +32,7 @@ const renderReviewCard = (review: Review, idx: number): string => `
 const renderDot = (idx: number, active: boolean): string => `
   <button
     class="testimonial-dot h-2 rounded-full transition-all duration-300 cursor-pointer
-           ${active ? "bg-[#FFC400] w-6" : "bg-[rgba(68,68,78,0.2)] w-2"}"
+           ${active ? "bg-button-first w-6" : "bg-primary/20 w-2"}"
     data-dot="${idx}"
     aria-label="Отзыв ${idx + 1}"
     ${active ? 'aria-current="true"' : ""}>
@@ -40,7 +40,7 @@ const renderDot = (idx: number, active: boolean): string => `
 `;
 
 export const Testimonials = (): string => `
-  <section class="bg-[#F7F9FD] py-14 lg:py-20 xl:py-[100px]" id="testimonials" aria-labelledby="testimonials-heading">
+  <section class="bg-bg-second py-14 lg:py-20 xl:py-[100px] transition-colors duration-300" id="testimonials" aria-labelledby="testimonials-heading">
     <div class="container-main flex flex-col gap-8 xl:gap-[29px]">
 
       <div class="flex items-start justify-between gap-6">
@@ -55,8 +55,8 @@ export const Testimonials = (): string => `
         <div class="flex items-center gap-[10px] shrink-0 mt-4" aria-label="Навигация по отзывам">
           <button
             id="testimonials-prev"
-            class="flex items-center justify-center size-[40px] rounded-full border border-[rgba(68,68,78,0.3)]
-                   text-primary text-[18px] transition-all hover:border-[#FFC400] cursor-pointer"
+            class="flex items-center justify-center size-[40px] rounded-full border border-primary/30
+                   text-primary text-[18px] transition-all hover:border-button-first cursor-pointer"
             aria-label="Предыдущий отзыв">
             ←
           </button>
@@ -74,7 +74,7 @@ export const Testimonials = (): string => `
         <div
           id="testimonials-track"
           class="flex gap-[41px] transition-transform duration-500 ease-in-out min-h-[200px] items-center justify-center">
-          <span class="font-sans text-[15px] text-[#758499]" data-i18n="testimonials-loading">Загрузка отзывов...</span>
+          <span class="font-sans text-[15px] text-text-third" data-i18n="testimonials-loading">Загрузка отзывов...</span>
         </div>
       </div>
 
@@ -83,10 +83,10 @@ export const Testimonials = (): string => `
       <div class="flex justify-center mt-4 lg:mt-8">
         <a href="#reviews"
            class="inline-flex items-center gap-2 rounded-full
-                  bg-[#FAFAFA] border border-[#FFC400]
+                  bg-bg-first border border-button-first
                   px-6 py-3 lg:px-8 lg:py-[15px]
-                  font-sans text-[14px] sm:text-[15px] lg:text-[17px] leading-[1.4] text-[#44444E]
-                  transition-colors duration-200 hover:bg-white cursor-pointer no-underline">
+                  font-sans text-[14px] sm:text-[15px] lg:text-[17px] leading-[1.4] text-primary
+                  transition-colors duration-200 hover:bg-surface cursor-pointer no-underline">
           <span data-i18n="testimonials-all">Все отзывы</span>
           <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
             <path d="M6 3l5 5-5 5"/>
@@ -117,9 +117,9 @@ const setupSlider = (track: HTMLElement, dotsContainer: HTMLElement): void => {
   const updateDots = (idx: number): void => {
     dots.forEach((dot, i) => {
       const isActive = i === idx;
-      dot.classList.toggle("bg-[#FFC400]", isActive);
+      dot.classList.toggle("bg-button-first", isActive);
       dot.classList.toggle("w-6", isActive);
-      dot.classList.toggle("bg-[rgba(68,68,78,0.2)]", !isActive);
+      dot.classList.toggle("bg-primary/20", !isActive);
       dot.classList.toggle("w-2", !isActive);
       if (isActive) dot.setAttribute("aria-current", "true");
       else dot.removeAttribute("aria-current");
@@ -177,6 +177,6 @@ export const initTestimonials = (): void => {
     })
     .catch(() => {
       const track = document.getElementById("testimonials-track");
-      if (track) track.innerHTML = `<span class="font-sans text-[15px] text-[#758499]">${t("testimonials-error")}</span>`;
+      if (track) track.innerHTML = `<span class="font-sans text-[15px] text-text-third">${t("testimonials-error")}</span>`;
     });
 };

@@ -21,11 +21,11 @@ import { t } from "../services/i18n";
 type Tab = "login" | "register";
 
 const FIELD_INPUT =
-  "h-11 w-full rounded-[8px] border border-[#ddd] bg-white px-3 font-sans text-[15px] text-primary " +
-  "focus:outline-none focus:border-[#FFC400] transition-colors";
+  "h-11 w-full rounded-[8px] border border-primary/20 bg-surface px-3 font-sans text-[15px] text-primary " +
+  "focus:outline-none focus:border-button-first transition-colors";
 
 const FIELD_LABEL =
-  "block font-sans text-[13px] leading-[1.3] text-[#44444E] mb-1.5";
+  "block font-sans text-[13px] leading-[1.3] text-primary mb-1.5";
 
 const FIELD_ERROR =
   "field-error hidden mt-1 font-sans text-[13px] leading-[1.3] text-red-500";
@@ -50,17 +50,17 @@ const Field = (opts: {
            class="${FIELD_INPUT}"
            ${opts.placeholder ? `placeholder="${opts.placeholder}"` : ""}
            ${opts.attrs ?? ""} />
-    ${opts.hint ? `<p class="mt-1 font-sans text-[12px] leading-[1.3] text-[#758499]"${opts.hintI18nKey ? ` data-i18n="${opts.hintI18nKey}"` : ""}>${opts.hint}</p>` : ""}
+    ${opts.hint ? `<p class="mt-1 font-sans text-[12px] leading-[1.3] text-text-third"${opts.hintI18nKey ? ` data-i18n="${opts.hintI18nKey}"` : ""}>${opts.hint}</p>` : ""}
     <p class="${FIELD_ERROR}" data-error-for="${opts.id}"></p>
   </div>
 `;
 
 export const AuthPage = (): string => `
   <section id="auth-page"
-           class="hidden bg-[#F3F5F9] py-14 lg:py-20 min-h-[80vh]"
+           class="hidden bg-bg-first py-14 lg:py-20 min-h-[80vh] transition-colors duration-300"
            aria-labelledby="auth-heading">
     <div class="container-main">
-      <div class="max-w-[560px] mx-auto bg-white rounded-[14px] card-shadow p-6 lg:p-10">
+      <div class="max-w-[560px] mx-auto bg-surface rounded-[14px] card-shadow p-6 lg:p-10 transition-colors duration-300">
 
         <h2 id="auth-heading"
             data-i18n="auth-heading"
@@ -69,7 +69,7 @@ export const AuthPage = (): string => `
         </h2>
 
         <div id="auth-toggle"
-             class="auth-toggle relative grid grid-cols-2 bg-[#F3F5F9] rounded-full p-1 mt-6 lg:mt-8"
+             class="auth-toggle relative grid grid-cols-2 bg-bg-first rounded-full p-1 mt-6 lg:mt-8"
              role="tablist">
           <div id="auth-toggle-indicator"
                class="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-full
@@ -115,7 +115,7 @@ export const AuthPage = (): string => `
                   data-i18n="auth-login-btn"
                   class="mt-2 inline-flex items-center justify-center rounded-full
                          bg-gradient-to-r from-button-first to-button-second
-                         px-6 py-[15px] font-sans text-[17px] leading-[1.4] text-[#44444E]
+                         px-6 py-[15px] font-sans text-[17px] leading-[1.4] text-primary
                          transition-all duration-300 hover:scale-[1.02] cursor-pointer
                          shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]
                          disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
@@ -127,7 +127,7 @@ export const AuthPage = (): string => `
         <form id="auth-register-form" class="hidden mt-8 flex flex-col gap-4" novalidate>
 
           <p data-i18n="auth-required-fields"
-             class="font-sans text-[12px] leading-[1.3] text-[#758499]">
+             class="font-sans text-[12px] leading-[1.3] text-text-third">
             Поля, помеченные <span class="text-red-500">*</span>, обязательны
           </p>
 
@@ -166,19 +166,19 @@ export const AuthPage = (): string => `
           ${Field({ id: "reg-middlename", label: "Отчество", labelI18nKey: "auth-middlename" })}
 
           <fieldset class="mt-2">
-            <legend class="font-sans text-[13px] leading-[1.3] text-[#44444E] mb-2">
+            <legend class="font-sans text-[13px] leading-[1.3] text-primary mb-2">
               <span data-i18n="auth-pwd-label">Пароль</span> <span class="text-red-500" aria-hidden="true">*</span>
             </legend>
             <div class="flex flex-col sm:flex-row gap-3 mb-3">
               <label class="flex items-center gap-2 cursor-pointer">
                 <input type="radio" name="pwd-mode" value="manual" checked
                        class="size-4 accent-[#FFC400]" />
-                <span data-i18n="auth-pwd-manual" class="font-sans text-[14px] text-[#44444E]">Задать самостоятельно</span>
+                <span data-i18n="auth-pwd-manual" class="font-sans text-[14px] text-primary">Задать самостоятельно</span>
               </label>
               <label class="flex items-center gap-2 cursor-pointer">
                 <input type="radio" name="pwd-mode" value="auto"
                        class="size-4 accent-[#FFC400]" />
-                <span data-i18n="auth-pwd-auto" class="font-sans text-[14px] text-[#44444E]">Сгенерировать</span>
+                <span data-i18n="auth-pwd-auto" class="font-sans text-[14px] text-primary">Сгенерировать</span>
               </label>
             </div>
 
@@ -189,7 +189,7 @@ export const AuthPage = (): string => `
                        class="${FIELD_INPUT}"
                        placeholder="${t("auth-pwd-placeholder")}"
                        data-i18n-placeholder="auth-pwd-placeholder" />
-                <p data-i18n="auth-pwd-hint" class="mt-1 font-sans text-[12px] leading-[1.3] text-[#758499]">
+                <p data-i18n="auth-pwd-hint" class="mt-1 font-sans text-[12px] leading-[1.3] text-text-third">
                   Заглавная и строчная буквы, цифра и спецсимвол
                 </p>
                 <p class="${FIELD_ERROR}" data-error-for="reg-password"></p>
@@ -209,13 +209,13 @@ export const AuthPage = (): string => `
                 <input id="reg-password-auto"
                        type="text"
                        readonly
-                       class="${FIELD_INPUT} font-mono tracking-wide bg-[#FAFAFA]" />
+                       class="${FIELD_INPUT} font-mono tracking-wide bg-bg-first" />
                 <button type="button"
                         id="pwd-regen"
                         data-i18n="auth-pwd-refresh"
-                        class="shrink-0 px-4 rounded-[8px] border border-[#FFC400]
-                               bg-white font-sans text-[14px] text-[#44444E]
-                               hover:bg-[#FAFAFA] transition-colors cursor-pointer"
+                        class="shrink-0 px-4 rounded-[8px] border border-button-first
+                               bg-surface font-sans text-[14px] text-primary
+                               hover:bg-bg-first transition-colors cursor-pointer"
                         aria-label="Сгенерировать заново">
                   Обновить
                 </button>
@@ -231,18 +231,18 @@ export const AuthPage = (): string => `
               <input id="reg-nickname"
                      type="text"
                      readonly
-                     class="${FIELD_INPUT} bg-[#FAFAFA]" />
+                     class="${FIELD_INPUT} bg-bg-first" />
               <button type="button"
                       id="nick-regen"
                       data-i18n="auth-nickname-another"
-                      class="shrink-0 px-4 rounded-[8px] border border-[#FFC400]
-                             bg-white font-sans text-[14px] text-[#44444E]
-                             hover:bg-[#FAFAFA] transition-colors cursor-pointer">
+                      class="shrink-0 px-4 rounded-[8px] border border-button-first
+                             bg-surface font-sans text-[14px] text-primary
+                             hover:bg-bg-first transition-colors cursor-pointer">
                 Другой
               </button>
             </div>
             <p id="nick-hint" data-i18n="auth-nickname-hint"
-               class="mt-1 font-sans text-[12px] leading-[1.3] text-[#758499]">
+               class="mt-1 font-sans text-[12px] leading-[1.3] text-text-third">
               Сгенерирован автоматически. Не нравится — нажмите «Другой».
             </p>
             <p class="${FIELD_ERROR}" data-error-for="reg-nickname"></p>
@@ -250,10 +250,10 @@ export const AuthPage = (): string => `
 
           <label class="flex items-start gap-2 mt-2 cursor-pointer">
             <input id="reg-agree" type="checkbox" class="size-4 mt-0.5 accent-[#FFC400]" />
-            <span class="font-sans text-[13px] leading-[1.4] text-[#44444E]">
+            <span class="font-sans text-[13px] leading-[1.4] text-primary">
               <span data-i18n="auth-agree-text">Я прочитал(а) и согласен(а) с</span>
               <a href="#" id="agreement-link"
-                 class="text-[#FFC400] underline underline-offset-2 hover:opacity-80">
+                 class="text-button-first underline underline-offset-2 hover:opacity-80">
                 <span data-i18n="auth-agreement-link">Соглашением пользователя</span></a>
               <span class="text-red-500" aria-hidden="true">*</span>
             </span>
@@ -264,7 +264,7 @@ export const AuthPage = (): string => `
                   data-i18n="auth-register-btn"
                   class="mt-4 inline-flex items-center justify-center rounded-full
                          bg-gradient-to-r from-button-first to-button-second
-                         px-6 py-[15px] font-sans text-[17px] leading-[1.4] text-[#44444E]
+                         px-6 py-[15px] font-sans text-[17px] leading-[1.4] text-primary
                          transition-all duration-300 hover:scale-[1.02] cursor-pointer
                          shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]
                          disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
@@ -425,7 +425,7 @@ const regenerateNickname = (): void => {
   if (regState.nicknameAttempts >= NICKNAME_REGEN_LIMIT) {
     regState.nicknameEditable = true;
     input.readOnly = false;
-    input.classList.remove("bg-[#FAFAFA]");
+    input.classList.remove("bg-bg-first");
     input.value = "";
     input.placeholder = t("auth-nickname-input-placeholder");
     if (hint) hint.textContent = t("auth-nickname-limit");

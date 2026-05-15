@@ -6,6 +6,7 @@ export const initFooter = (): void => {
     if (!btn) return;
     if (confirm(t("footer-reset-confirm"))) {
       localStorage.clear();
+      localStorage.setItem("theme", "light");
       window.location.hash = "";
       window.location.reload();
     }
@@ -14,7 +15,7 @@ export const initFooter = (): void => {
 
 export const Footer = (): string => {
   return `
-    <footer class="bg-white border-t border-[rgba(68,68,78,0.1)]" aria-label="Подвал сайта">
+    <footer class="bg-surface border-t border-primary/10 transition-colors duration-300" aria-label="Подвал сайта">
       <div class="container-main py-[37px]">
 
         <!-- Основная строка -->
@@ -43,7 +44,7 @@ export const Footer = (): string => {
           <!-- Мессенджеры -->
           <div class="flex flex-col items-start gap-3 shrink-0">
             <div class="flex items-center gap-2">
-              <span class="size-[6px] rounded-full bg-[#FFC400] shrink-0"></span>
+              <span class="size-[6px] rounded-full bg-button-first shrink-0"></span>
               <span class="text-[13px] text-primary font-normal leading-[1.3]" data-i18n="footer-ask-online">Задайте вопрос online</span>
             </div>
             <div class="flex items-center gap-[15px]">
@@ -83,25 +84,25 @@ export const Footer = (): string => {
         </div>
 
         <!-- Нижняя строка: ссылки + копирайт -->
-        <div class="mt-[18px] flex flex-col items-center gap-2 border-t border-[rgba(68,68,78,0.1)] pt-[18px]">
+        <div class="mt-[18px] flex flex-col items-center gap-2 border-t border-primary/10 pt-[18px]">
           <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2" aria-label="Дополнительные ссылки">
             <a href="#company" class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary hover:underline"
                data-i18n="footer-company">
               О компании
             </a>
-            <span class="hidden sm:inline-block size-1 rounded-full bg-[rgba(68,68,78,0.3)]" aria-hidden="true"></span>
+            <span class="hidden sm:inline-block size-1 rounded-full bg-primary/30" aria-hidden="true"></span>
             <a href="#reviews" class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary hover:underline"
                data-i18n="footer-reviews">
               Отзывы
             </a>
-            <span class="hidden sm:inline-block size-1 rounded-full bg-[rgba(68,68,78,0.3)]" aria-hidden="true"></span>
+            <span class="hidden sm:inline-block size-1 rounded-full bg-primary/30" aria-hidden="true"></span>
             <a href="#" class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-primary hover:underline"
                data-i18n="footer-privacy">
               Политика конфиденциальности
             </a>
-            <span class="hidden sm:inline-block size-1 rounded-full bg-[rgba(68,68,78,0.3)]" aria-hidden="true"></span>
+            <span class="hidden sm:inline-block size-1 rounded-full bg-primary/30" aria-hidden="true"></span>
             <button type="button" data-action="reset-settings" data-i18n="footer-reset"
-                    class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-[#758499] hover:text-[#FFC400] hover:underline cursor-pointer transition-colors">
+                    class="font-sans font-normal text-[15px] sm:text-[17px] leading-[1.8] text-text-third hover:text-button-first hover:underline cursor-pointer transition-colors">
               Сбросить настройки
             </button>
           </nav>

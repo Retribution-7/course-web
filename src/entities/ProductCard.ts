@@ -41,9 +41,9 @@ export const Dropdown = (label: string, value: string, options: string[], name: 
         <li>
           <button type="button"
                   class="product-dropdown__option block w-full text-left px-[10px] py-1.5
-                         font-sans text-[13px] leading-[1.3] text-[#44444E]
-                         hover:bg-[#F3F5F9] transition-colors cursor-pointer
-                         ${option === value ? "bg-[#F3F5F9]" : ""}"
+                         font-sans text-[13px] leading-[1.3] text-primary
+                         hover:bg-bg-first transition-colors cursor-pointer
+                         ${option === value ? "bg-bg-first" : ""}"
                   data-value="${option}"${surfaceAttr}>
             ${displayOption}
           </button>
@@ -57,24 +57,24 @@ export const Dropdown = (label: string, value: string, options: string[], name: 
   const surfaceValueAttr = isSurface ? ` data-i18n-surface="${value}"` : "";
   return `
     <div class="product-dropdown flex flex-col gap-[6px]" data-dropdown="${name}">
-      <span class="font-sans font-normal text-[13px] leading-[1.3] text-[#44444E]"${labelKey ? ` data-i18n="${labelKey}"` : ""}>${label}</span>
+      <span class="font-sans font-normal text-[13px] leading-[1.3] text-primary"${labelKey ? ` data-i18n="${labelKey}"` : ""}>${label}</span>
       <div class="relative w-[152px]">
         <button type="button"
-                class="product-dropdown__toggle relative h-7 w-full rounded-[5px] border border-[#ddd] bg-white
-                       text-left cursor-pointer transition-colors hover:border-[#FFC400]
-                       focus:outline-none focus:border-[#FFC400]"
+                class="product-dropdown__toggle relative h-7 w-full rounded-[5px] border border-primary/20 bg-surface
+                       text-left cursor-pointer transition-colors hover:border-button-first
+                       focus:outline-none focus:border-button-first"
                 aria-haspopup="listbox"
                 aria-expanded="false">
           <span class="product-dropdown__value absolute left-[10px] top-1/2 -translate-y-1/2
-                       font-sans text-[13px] leading-[1.3] text-[#44444E] whitespace-nowrap"
+                       font-sans text-[13px] leading-[1.3] text-primary whitespace-nowrap"
                 data-value="${value}"${surfaceValueAttr}>${displayValue}</span>
-          <svg class="product-dropdown__caret absolute right-[10px] top-1/2 -translate-y-1/2 size-[9px] text-[#44444E] transition-transform"
+          <svg class="product-dropdown__caret absolute right-[10px] top-1/2 -translate-y-1/2 size-[9px] text-primary transition-transform"
                viewBox="0 0 9 6" fill="currentColor" aria-hidden="true">
             <path d="M0 0l4.5 6L9 0z"/>
           </svg>
         </button>
         <ul class="product-dropdown__menu hidden absolute left-0 right-0 top-[calc(100%+4px)] z-10
-                   max-h-[180px] overflow-y-auto rounded-[5px] border border-[#ddd] bg-white
+                   max-h-[180px] overflow-y-auto rounded-[5px] border border-primary/20 bg-surface
                    shadow-[0_4px_12px_rgba(0,0,0,0.08)] py-1"
             role="listbox">
           ${items}
@@ -86,7 +86,7 @@ export const Dropdown = (label: string, value: string, options: string[], name: 
 
 export const ProductCard = (product: Product, index: number): string => {
   return `
-    <article class="bg-white rounded-[14px] card-shadow p-6 flex flex-col gap-[23px]"
+    <article class="bg-surface rounded-[14px] card-shadow p-6 flex flex-col gap-[23px] transition-colors duration-300"
              data-category="${product.category}"
              data-product-id="${index}"
              data-product-title="${product.title}"
@@ -102,9 +102,9 @@ export const ProductCard = (product: Product, index: number): string => {
         >
         <button type="button"
                 class="product-favorite absolute top-3 right-3 grid size-10 place-items-center
-                       rounded-full bg-white/95 backdrop-blur-sm
+                       rounded-full bg-surface/95 backdrop-blur-sm
                        shadow-[0_2px_8px_rgba(0,0,0,0.12)]
-                       text-[#44444E] transition-all duration-200 hover:scale-110 cursor-pointer"
+                       text-primary transition-all duration-200 hover:scale-110 cursor-pointer"
                 data-action="favorite-toggle"
                 data-product-id="${index}"
                 aria-label="${t("card-add-favorite")}"
@@ -123,16 +123,16 @@ export const ProductCard = (product: Product, index: number): string => {
         ${translateTitle(product.title)}
       </h3>
 
-      <dl class="grid grid-cols-[1fr_auto] gap-x-6 gap-y-[5px] font-sans text-[13px] leading-[1.3] text-[#44444E]">
+      <dl class="grid grid-cols-[1fr_auto] gap-x-6 gap-y-[5px] font-sans text-[13px] leading-[1.3] text-primary">
         <dt data-i18n="card-brand">${t("card-brand")}</dt><dd class="text-right">${product.brand}</dd>
         <dt data-i18n="${SPEC_LABEL_I18N_KEY[product.specs[0].label] ?? ""}">${t(SPEC_LABEL_I18N_KEY[product.specs[0].label] ?? product.specs[0].label)}</dt><dd class="text-right">${product.specs[0].value}</dd>
         <dt data-i18n="${SPEC_LABEL_I18N_KEY[product.specs[1].label] ?? ""}">${t(SPEC_LABEL_I18N_KEY[product.specs[1].label] ?? product.specs[1].label)}</dt><dd class="text-right">${product.specs[1].value}</dd>
       </dl>
 
       <div class="flex items-end gap-[7px] font-sans">
-        <span class="text-[13px] leading-[1.3] text-[#758499]" data-i18n="product-price-from">${t("product-price-from")}</span>
-        <span class="text-[20px] leading-none text-[#44444E]">${product.price}</span>
-        <span class="text-[20px] leading-none text-[#44444E] tracking-[-0.05em]">₽ / м²</span>
+        <span class="text-[13px] leading-[1.3] text-text-third" data-i18n="product-price-from">${t("product-price-from")}</span>
+        <span class="text-[20px] leading-none text-primary">${product.price}</span>
+        <span class="text-[20px] leading-none text-primary tracking-[-0.05em]">₽ / м²</span>
       </div>
 
       <div class="flex flex-col gap-[15px]">
@@ -146,16 +146,16 @@ export const ProductCard = (product: Product, index: number): string => {
                 data-action="calculate"
                 class="self-start inline-flex items-center justify-center rounded-full
                        bg-gradient-to-r from-button-first to-button-second
-                       px-6 py-[15px] font-sans text-[17px] leading-[1.8] text-[#44444E]
+                       px-6 py-[15px] font-sans text-[17px] leading-[1.8] text-primary
                        transition-all duration-300 hover:scale-[1.02] cursor-pointer
                        shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]">
           <span data-i18n="product-calculate">${t("product-calculate")}</span>
         </button>
         <a href="#product/${index}"
            class="self-start inline-flex items-center justify-center rounded-full
-                  bg-[#FAFAFA] border border-[#FFC400]
-                  px-6 py-[15px] font-sans text-[17px] leading-[1.8] text-[#44444E]
-                  transition-colors duration-200 hover:bg-white cursor-pointer no-underline">
+                  bg-bg-first border border-button-first
+                  px-6 py-[15px] font-sans text-[17px] leading-[1.8] text-primary
+                  transition-colors duration-200 hover:bg-surface cursor-pointer no-underline">
           <span data-i18n="card-more">${t("card-more")}</span>
         </a>
       </div>
@@ -171,14 +171,14 @@ export const syncFavoriteButtons = (): void => {
     const isFav = favorites.has(id);
     const icon = button.querySelector<SVGElement>(".product-favorite__icon");
     if (isFav) {
-      button.classList.add("text-[#FFC400]");
-      button.classList.remove("text-[#44444E]");
+      button.classList.add("text-button-first");
+      button.classList.remove("text-primary");
       icon?.setAttribute("fill", "currentColor");
       button.setAttribute("aria-pressed", "true");
       button.setAttribute("aria-label", t("card-remove-favorite"));
     } else {
-      button.classList.remove("text-[#FFC400]");
-      button.classList.add("text-[#44444E]");
+      button.classList.remove("text-button-first");
+      button.classList.add("text-primary");
       icon?.setAttribute("fill", "none");
       button.setAttribute("aria-pressed", "false");
       button.setAttribute("aria-label", t("card-add-favorite"));
@@ -250,7 +250,7 @@ export const initProductCards = (): void => {
         if (isSurface) valueEl.dataset.i18nSurface = value;
       }
       dropdown?.querySelectorAll<HTMLElement>(".product-dropdown__option").forEach((opt) => {
-        opt.classList.toggle("bg-[#F3F5F9]", opt === option);
+        opt.classList.toggle("bg-bg-first", opt === option);
       });
       closeAll();
       return;

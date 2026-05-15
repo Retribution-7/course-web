@@ -32,13 +32,13 @@ const fullName = (user: RegisteredUser): string => {
 
 export const AccountPage = (): string => `
   <section id="account-page"
-           class="hidden bg-[#F3F5F9] py-10 lg:py-16 min-h-[60vh]"
+           class="hidden bg-bg-first py-10 lg:py-16 min-h-[60vh] transition-colors duration-300"
            aria-labelledby="account-heading">
     <div class="container-main">
 
       <a href="#"
          class="inline-flex items-center gap-2 font-sans text-[14px] lg:text-[15px]
-                text-[#44444E] hover:text-[#FFC400] transition-colors mb-6 lg:mb-10">
+                text-primary hover:text-button-first transition-colors mb-6 lg:mb-10">
         <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
           <path d="M10 3l-5 5 5 5"/>
         </svg>
@@ -57,7 +57,7 @@ export const AccountPage = (): string => `
 `;
 
 const renderProfileCard = (user: RegisteredUser): string => `
-  <div class="bg-white rounded-[14px] card-shadow p-6 sm:p-8 lg:p-10
+  <div class="bg-surface rounded-[14px] card-shadow p-6 sm:p-8 lg:p-10 transition-colors duration-300
               grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-5 sm:gap-8 items-start sm:items-center">
     <div class="grid size-[88px] sm:size-[100px] lg:size-[120px] place-items-center
                 rounded-full gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]
@@ -67,13 +67,13 @@ const renderProfileCard = (user: RegisteredUser): string => `
       ${getInitials(user)}
     </div>
     <div class="flex flex-col gap-2">
-      <span class="font-sans text-[13px] uppercase tracking-[0.08em] text-[#FFC400]">
+      <span class="font-sans text-[13px] uppercase tracking-[0.08em] text-button-first">
         @${user.nickname}
       </span>
       <h2 class="font-sans font-normal text-[24px] leading-[1.2] sm:text-[28px] lg:text-[32px] gradient-text">
         ${fullName(user)}
       </h2>
-      <p class="font-sans text-[14px] lg:text-[15px] leading-[1.4] text-[#758499]">
+      <p class="font-sans text-[14px] lg:text-[15px] leading-[1.4] text-text-third">
         ${t("account-member-since")} ${formatCreatedAt(user.createdAt)}
       </p>
     </div>
@@ -81,26 +81,26 @@ const renderProfileCard = (user: RegisteredUser): string => `
 `;
 
 const renderInfoCard = (user: RegisteredUser): string => `
-  <div class="bg-white rounded-[14px] card-shadow p-6 sm:p-8 lg:p-10">
+  <div class="bg-surface rounded-[14px] card-shadow p-6 sm:p-8 lg:p-10 transition-colors duration-300">
     <h3 class="font-sans font-normal text-[20px] lg:text-[24px] leading-[1.2] text-primary mb-5 lg:mb-6">
       ${t("account-personal-data")}
     </h3>
     <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 lg:gap-x-10 gap-y-4 lg:gap-y-5
                font-sans text-[14px] lg:text-[15px] leading-[1.4]">
       <div class="flex flex-col gap-1">
-        <dt class="text-[13px] uppercase tracking-[0.04em] text-[#758499]">${t("account-phone")}</dt>
+        <dt class="text-[13px] uppercase tracking-[0.04em] text-text-third">${t("account-phone")}</dt>
         <dd class="text-primary">${user.phone}</dd>
       </div>
       <div class="flex flex-col gap-1">
-        <dt class="text-[13px] uppercase tracking-[0.04em] text-[#758499]">${t("account-email")}</dt>
+        <dt class="text-[13px] uppercase tracking-[0.04em] text-text-third">${t("account-email")}</dt>
         <dd class="text-primary break-all">${user.email}</dd>
       </div>
       <div class="flex flex-col gap-1">
-        <dt class="text-[13px] uppercase tracking-[0.04em] text-[#758499]">${t("account-birthdate")}</dt>
+        <dt class="text-[13px] uppercase tracking-[0.04em] text-text-third">${t("account-birthdate")}</dt>
         <dd class="text-primary">${formatBirthDate(user.birthDate)}</dd>
       </div>
       <div class="flex flex-col gap-1">
-        <dt class="text-[13px] uppercase tracking-[0.04em] text-[#758499]">${t("account-nickname")}</dt>
+        <dt class="text-[13px] uppercase tracking-[0.04em] text-text-third">${t("account-nickname")}</dt>
         <dd class="text-primary">${user.nickname}</dd>
       </div>
     </dl>
@@ -114,7 +114,7 @@ const renderStatTile = (
   icon: string,
 ): string => `
   <a href="${href}"
-     class="flex items-center gap-4 lg:gap-5 bg-white rounded-[14px] card-shadow p-5 lg:p-6
+     class="flex items-center gap-4 lg:gap-5 bg-surface rounded-[14px] card-shadow p-5 lg:p-6 transition-colors duration-300
             hover:scale-[1.02] transition-transform no-underline cursor-pointer">
     <div class="grid size-12 lg:size-14 place-items-center rounded-[12px]
                 gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]
@@ -122,12 +122,12 @@ const renderStatTile = (
       ${icon}
     </div>
     <div class="flex flex-col">
-      <span class="font-sans text-[13px] text-[#758499]">${label}</span>
+      <span class="font-sans text-[13px] text-text-third">${label}</span>
       <span class="font-sans text-[22px] lg:text-[26px] leading-none text-primary mt-1">
         ${count}
       </span>
     </div>
-    <svg viewBox="0 0 16 16" class="ml-auto size-4 text-[#758499]" fill="none"
+    <svg viewBox="0 0 16 16" class="ml-auto size-4 text-text-third" fill="none"
          stroke="currentColor" stroke-width="1.6" aria-hidden="true">
       <path d="M6 3l5 5-5 5"/>
     </svg>
@@ -155,22 +155,22 @@ const renderStats = (): string => `
 `;
 
 const renderActions = (): string => `
-  <div class="bg-white rounded-[14px] card-shadow p-6 sm:p-8 lg:p-10
+  <div class="bg-surface rounded-[14px] card-shadow p-6 sm:p-8 lg:p-10 transition-colors duration-300
               flex flex-col sm:flex-row sm:items-center justify-between gap-5">
     <div>
       <h3 class="font-sans font-normal text-[20px] lg:text-[24px] leading-[1.2] text-primary">
         ${t("account-logout-title")}
       </h3>
-      <p class="mt-2 font-sans text-[14px] lg:text-[15px] leading-[1.5] text-[#44444E] max-w-[480px]">
+      <p class="mt-2 font-sans text-[14px] lg:text-[15px] leading-[1.5] text-primary max-w-[480px]">
         ${t("account-logout-desc")}
       </p>
     </div>
     <button type="button"
             data-action="logout"
             class="self-start sm:self-auto inline-flex items-center justify-center rounded-full
-                   bg-[#FAFAFA] border border-[#FFC400]
-                   px-6 lg:px-8 py-[15px] font-sans text-[15px] lg:text-[17px] text-[#44444E]
-                   hover:bg-white transition-colors cursor-pointer">
+                   bg-bg-first border border-button-first
+                   px-6 lg:px-8 py-[15px] font-sans text-[15px] lg:text-[17px] text-primary
+                   hover:bg-surface transition-colors cursor-pointer">
       ${t("account-logout-btn")}
     </button>
   </div>
@@ -183,12 +183,12 @@ const render = (): void => {
   const user = getUser();
   if (!user) {
     content.innerHTML = `
-      <div class="bg-white rounded-[14px] card-shadow p-10 text-center">
+      <div class="bg-surface rounded-[14px] card-shadow p-10 text-center transition-colors duration-300">
         <h3 class="font-sans text-[20px] gradient-text">${t("account-login-first")}</h3>
         <a href="#auth"
            class="mt-4 inline-flex items-center justify-center rounded-full
                   bg-gradient-to-r from-button-first to-button-second
-                  px-6 py-[15px] font-sans text-[15px] text-[#44444E]
+                  px-6 py-[15px] font-sans text-[15px] text-primary
                   shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)] cursor-pointer">
           ${t("account-login-link")}
         </a>

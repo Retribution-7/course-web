@@ -5,7 +5,7 @@ import type { Product } from "../entities/products";
 import { t, getCurrentLang } from "../services/i18n";
 
 const renderEmpty = (): string => `
-  <div class="bg-white rounded-[14px] card-shadow p-10 lg:p-16 text-center">
+  <div class="bg-surface rounded-[14px] card-shadow p-10 lg:p-16 text-center transition-colors duration-300">
     <div class="mx-auto mb-6 grid size-20 place-items-center rounded-full gradient-icon
                 shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)]
                 border border-[rgba(255,196,0,0.3)]">
@@ -17,13 +17,13 @@ const renderEmpty = (): string => `
     <h3 class="font-sans font-normal text-[24px] leading-[1.2] gradient-text">
       ${t("favorites-empty-title")}
     </h3>
-    <p class="mt-3 font-sans text-[14px] sm:text-[15px] leading-[1.5] text-[#44444E]">
+    <p class="mt-3 font-sans text-[14px] sm:text-[15px] leading-[1.5] text-primary">
       ${t("favorites-empty-desc")}
     </p>
     <a href="#catalog"
        class="mt-8 inline-flex items-center justify-center rounded-full
               bg-gradient-to-r from-button-first to-button-second
-              px-6 py-[15px] font-sans text-[15px] lg:text-[17px] leading-[1.4] text-[#44444E]
+              px-6 py-[15px] font-sans text-[15px] lg:text-[17px] leading-[1.4] text-primary
               transition-all duration-300 hover:scale-[1.02] cursor-pointer
               shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)] no-underline">
       ${t("favorites-to-catalog")}
@@ -42,13 +42,13 @@ const pluralItems = (n: number): string => {
 
 export const FavoritesPage = (): string => `
   <section id="favorites-page"
-           class="hidden bg-[#F3F5F9] py-10 lg:py-16 min-h-[60vh]"
+           class="hidden bg-bg-first py-10 lg:py-16 min-h-[60vh] transition-colors duration-300"
            aria-labelledby="favorites-heading">
     <div class="container-main">
 
       <a href="#catalog"
          class="inline-flex items-center gap-2 font-sans text-[14px] lg:text-[15px]
-                text-[#44444E] hover:text-[#FFC400] transition-colors mb-6 lg:mb-10">
+                text-primary hover:text-button-first transition-colors mb-6 lg:mb-10">
         <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
           <path d="M10 3l-5 5 5 5"/>
         </svg>
@@ -63,15 +63,15 @@ export const FavoritesPage = (): string => `
             ИЗБРАННОЕ
           </h1>
           <p id="favorites-summary"
-             class="mt-2 font-sans text-[14px] sm:text-[15px] leading-[1.4] text-[#44444E]"></p>
+             class="mt-2 font-sans text-[14px] sm:text-[15px] leading-[1.4] text-primary"></p>
         </div>
         <button type="button"
                 id="favorites-clear"
                 data-i18n="favorites-clear-btn"
                 class="hidden self-start sm:self-auto inline-flex items-center justify-center rounded-full
-                       bg-[#FAFAFA] border border-[#FFC400]
-                       px-5 lg:px-6 py-2.5 lg:py-3 font-sans text-[14px] lg:text-[15px] text-[#44444E]
-                       hover:bg-white transition-colors cursor-pointer">
+                       bg-bg-first border border-button-first
+                       px-5 lg:px-6 py-2.5 lg:py-3 font-sans text-[14px] lg:text-[15px] text-primary
+                       hover:bg-surface transition-colors cursor-pointer">
           Очистить
         </button>
       </div>
@@ -98,7 +98,7 @@ const render = async (): Promise<void> => {
 
   content.innerHTML = `
     <div class="col-span-full flex justify-center py-16">
-      <span class="font-sans text-[15px] text-[#758499]">${t("favorites-loading")}</span>
+      <span class="font-sans text-[15px] text-text-third">${t("favorites-loading")}</span>
     </div>
   `;
 
@@ -107,7 +107,7 @@ const render = async (): Promise<void> => {
     items = await fetchProductsByIds(ids);
   } catch {
     content.innerHTML = `
-      <div class="col-span-full text-center py-16 font-sans text-[15px] text-[#758499]">
+      <div class="col-span-full text-center py-16 font-sans text-[15px] text-text-third">
         ${t("favorites-error")}
       </div>
     `;

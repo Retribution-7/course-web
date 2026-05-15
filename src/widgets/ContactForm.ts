@@ -2,7 +2,7 @@ import { t } from "../services/i18n";
 
 export const ContactForm = (): string => {
   return `
-    <section class="bg-white overflow-hidden" id="consultation" aria-labelledby="consultation-heading">
+    <section class="bg-surface overflow-hidden transition-colors duration-300" id="consultation" aria-labelledby="consultation-heading">
       <div class="container-main flex flex-col lg:flex-row items-center justify-between gap-10 py-12 lg:py-14">
 
         <!-- Фото консультанта -->
@@ -20,8 +20,7 @@ export const ContactForm = (): string => {
 
           <h2 id="consultation-heading"
               data-i18n="contact-heading"
-              class="font-sans font-normal text-[32px] leading-[1.2] sm:text-[40px] xl:text-[56px] xl:leading-[68px]"
-              style="background: linear-gradient(to top, #1b2836, #4e6481); -webkit-background-clip: text; background-clip: text; color: transparent;">
+              class="heading-gradient font-sans font-normal text-[32px] leading-[1.2] sm:text-[40px] xl:text-[56px] xl:leading-[68px]">
             ЕСТЬ ВОПРОСЫ?
           </h2>
 
@@ -50,14 +49,14 @@ export const ContactForm = (): string => {
             <div class="flex gap-[13px]" aria-label="Мессенджеры">
               <a href="https://wa.me/78123255055"
                  target="_blank" rel="noopener noreferrer"
-                 class="flex items-center justify-center size-[49px] rounded-full border border-[#FFC400]
+                 class="flex items-center justify-center size-[49px] rounded-full border border-button-first
                         transition-opacity hover:opacity-70"
                  aria-label="Написать в WhatsApp">
                 <img src="/icons/whats-app-logo-2.svg" alt="WhatsApp" class="size-[21px] object-contain">
               </a>
               <a href="https://t.me/metallobaza"
                  target="_blank" rel="noopener noreferrer"
-                 class="flex items-center justify-center size-[49px] rounded-full border border-[#FFC400]
+                 class="flex items-center justify-center size-[49px] rounded-full border border-button-first
                         transition-opacity hover:opacity-70"
                  aria-label="Написать в Telegram">
                 <img src="/icons/telegram-logo.svg" alt="Telegram" class="size-[21px] object-contain">

@@ -39,13 +39,13 @@ const formatPrice = (n: number): string =>
 
 export const AdminPage = (): string => `
   <section id="admin-page"
-           class="hidden bg-[#F3F5F9] py-10 lg:py-16 min-h-screen"
+           class="hidden bg-bg-first py-10 lg:py-16 min-h-screen transition-colors duration-300"
            aria-labelledby="admin-heading">
     <div class="container-main">
 
       <a href="#"
-         class="inline-flex items-center gap-2 font-sans text-[14px] text-[#44444E]
-                hover:text-[#FFC400] transition-colors mb-6 lg:mb-10">
+         class="inline-flex items-center gap-2 font-sans text-[14px] text-primary
+                hover:text-button-first transition-colors mb-6 lg:mb-10">
         <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
           <path d="M10 3l-5 5 5 5"/>
         </svg>
@@ -86,12 +86,12 @@ export const AdminPage = (): string => `
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 const StatCard = (label: string, value: string | number, iconHtml: string, bgClass: string): string => `
-  <div class="bg-white rounded-[14px] card-shadow p-5 lg:p-6 flex items-center gap-4">
+  <div class="bg-surface rounded-[14px] card-shadow p-5 lg:p-6 flex items-center gap-4 transition-colors duration-300">
     <div class="grid size-12 lg:size-14 place-items-center rounded-[12px] shrink-0 ${bgClass}">
       ${iconHtml}
     </div>
     <div>
-      <p class="font-sans text-[13px] text-[#758499]">${label}</p>
+      <p class="font-sans text-[13px] text-text-third">${label}</p>
       <p class="font-sans text-[24px] lg:text-[28px] leading-none text-primary mt-0.5">${value}</p>
     </div>
   </div>
@@ -99,12 +99,12 @@ const StatCard = (label: string, value: string | number, iconHtml: string, bgCla
 
 const Spinner = (): string => `
   <div class="flex items-center justify-center py-20">
-    <div class="w-10 h-10 rounded-full border-2 border-[#FFC400] border-t-transparent animate-spin"></div>
+    <div class="w-10 h-10 rounded-full border-2 border-button-first border-t-transparent animate-spin"></div>
   </div>
 `;
 
 const TableWrap = (content: string): string => `
-  <div class="bg-white rounded-[14px] card-shadow overflow-hidden">
+  <div class="bg-surface rounded-[14px] card-shadow overflow-hidden transition-colors duration-300">
     <div class="overflow-x-auto">
       <table class="w-full font-sans text-[14px]">${content}</table>
     </div>
@@ -113,8 +113,8 @@ const TableWrap = (content: string): string => `
 
 const ThRow = (...cols: string[]): string => `
   <thead>
-    <tr class="bg-[#F3F5F9]">
-      ${cols.map((c) => `<th class="px-4 py-3 text-left font-sans text-[12px] uppercase tracking-[0.06em] text-[#758499] whitespace-nowrap">${c}</th>`).join("")}
+    <tr class="bg-bg-first">
+      ${cols.map((c) => `<th class="px-4 py-3 text-left font-sans text-[12px] uppercase tracking-[0.06em] text-text-third whitespace-nowrap">${c}</th>`).join("")}
     </tr>
   </thead>
 `;
@@ -178,7 +178,7 @@ const updateTabStyles = (active: AdminTab): void => {
       "admin-tab-btn shrink-0 px-5 py-2.5 rounded-full font-sans text-[15px] cursor-pointer transition-all",
       isActive
         ? "bg-gradient-to-r from-button-first to-button-second shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)] text-primary border border-[rgba(255,196,0,0.4)]"
-        : "bg-white border border-[#ddd] text-[#44444E] hover:border-[#FFC400]",
+        : "bg-surface border border-primary/20 text-primary hover:border-button-first",
     ].join(" ");
   });
 };
@@ -206,16 +206,16 @@ const renderUsersTab = async (): Promise<void> => {
       const nextRole = u.role === "admin" ? "customer" : "admin";
       const btnLabel = u.role === "admin" ? t("admin-make-customer") : t("admin-make-admin");
       return `
-        <tr class="border-t border-[#F0F0F0] hover:bg-[#FAFAFA] transition-colors">
-          <td class="px-4 py-3 text-[#758499]">#${u.id}</td>
+        <tr class="border-t border-primary/10 hover:bg-bg-first transition-colors">
+          <td class="px-4 py-3 text-text-third">#${u.id}</td>
           <td class="px-4 py-3">
             <div class="text-primary">${u.lastName} ${u.firstName}</div>
-            <div class="text-[12px] text-[#758499]">@${u.nickname ?? "—"}</div>
+            <div class="text-[12px] text-text-third">@${u.nickname ?? "—"}</div>
           </td>
-          <td class="px-4 py-3 text-[#44444E] whitespace-nowrap">${u.phone}</td>
-          <td class="px-4 py-3 text-[#44444E] break-all">${u.email}</td>
+          <td class="px-4 py-3 text-primary whitespace-nowrap">${u.phone}</td>
+          <td class="px-4 py-3 text-primary break-all">${u.email}</td>
           <td class="px-4 py-3">${RoleBadge(u.role ?? "customer")}</td>
-          <td class="px-4 py-3 text-[#758499] whitespace-nowrap">
+          <td class="px-4 py-3 text-text-third whitespace-nowrap">
             ${u.createdAt ? new Date(u.createdAt).toLocaleDateString(locale) : "—"}
           </td>
           <td class="px-4 py-3">
@@ -225,8 +225,8 @@ const renderUsersTab = async (): Promise<void> => {
                 : `<button type="button"
                            data-change-role="${u.id}"
                            data-next-role="${nextRole}"
-                           class="text-[13px] px-3 py-1.5 rounded-full border border-[#FFC400]
-                                  bg-white text-[#44444E] hover:bg-[#FFFBEF] transition-colors cursor-pointer">
+                           class="text-[13px] px-3 py-1.5 rounded-full border border-button-first
+                                  bg-surface text-primary hover:bg-bg-first transition-colors cursor-pointer">
                      ${btnLabel}
                    </button>`
             }
@@ -241,7 +241,7 @@ const renderUsersTab = async (): Promise<void> => {
       ${TableWrap(`
         ${ThRow(t("admin-col-id"), t("admin-col-user"), t("admin-col-phone"), t("admin-col-email"), t("admin-col-role"), t("admin-col-reg-date"), t("admin-col-actions"))}
         <tbody>
-          ${rows || `<tr><td colspan="7" class="px-4 py-8 text-center text-[#758499]">${t("admin-no-users")}</td></tr>`}
+          ${rows || `<tr><td colspan="7" class="px-4 py-8 text-center text-text-third">${t("admin-no-users")}</td></tr>`}
         </tbody>
       `)}
     `;
@@ -268,23 +268,23 @@ const renderUsersTab = async (): Promise<void> => {
 // ── Products Tab ──────────────────────────────────────────────────────────────
 
 const INPUT_CLS =
-  "h-11 rounded-[8px] border border-[#ddd] px-3 font-sans text-[14px] " +
-  "focus:outline-none focus:border-[#FFC400] transition-colors bg-white w-full";
+  "h-11 rounded-[8px] border border-primary/20 px-3 font-sans text-[14px] text-primary " +
+  "focus:outline-none focus:border-button-first transition-colors bg-surface w-full";
 
 const ProductAddFormHTML = (): string => `
-  <div id="product-add-form" class="hidden bg-white rounded-[14px] card-shadow p-6 mb-5">
+  <div id="product-add-form" class="hidden bg-surface rounded-[14px] card-shadow p-6 mb-5 transition-colors duration-300">
     <h3 class="font-sans font-normal text-[20px] text-primary mb-5">${t("admin-new-product")}</h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-title")} <span class="text-red-500">*</span></label>
+        <label class="font-sans text-[13px] text-primary">${t("admin-form-title")} <span class="text-red-500">*</span></label>
         <input id="pf-title" type="text" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-brand")}</label>
+        <label class="font-sans text-[13px] text-primary">${t("admin-form-brand")}</label>
         <input id="pf-brand" type="text" value="Grande Line" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-category")} <span class="text-red-500">*</span></label>
+        <label class="font-sans text-[13px] text-primary">${t("admin-form-category")} <span class="text-red-500">*</span></label>
         <select id="pf-category" class="${INPUT_CLS}">
           <option value="metal-tile">${t("cat-label-metal-tile")}</option>
           <option value="corrugated-sheet">${t("cat-label-corrugated")}</option>
@@ -292,39 +292,39 @@ const ProductAddFormHTML = (): string => `
         </select>
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-price")} <span class="text-red-500">*</span></label>
+        <label class="font-sans text-[13px] text-primary">${t("admin-form-price")} <span class="text-red-500">*</span></label>
         <input id="pf-price" type="number" min="1" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-color")}</label>
+        <label class="font-sans text-[13px] text-primary">${t("admin-form-color")}</label>
         <input id="pf-color" type="text" placeholder="RAL 3005" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-thickness")}</label>
+        <label class="font-sans text-[13px] text-primary">${t("admin-form-thickness")}</label>
         <input id="pf-thickness" type="text" placeholder="0,5" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-surface")}</label>
+        <label class="font-sans text-[13px] text-primary">${t("admin-form-surface")}</label>
         <input id="pf-surface" type="text" placeholder="Полиэстер" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-image")} <span class="text-red-500">*</span></label>
+        <label class="font-sans text-[13px] text-primary">${t("admin-form-image")} <span class="text-red-500">*</span></label>
         <input id="pf-image" type="text" placeholder="/images/metal-tiles/..." class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-spec1-label")}</label>
+        <label class="font-sans text-[13px] text-primary">${t("admin-form-spec1-label")}</label>
         <input id="pf-spec1-label" type="text" placeholder="Высота волны, мм" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-spec1-value")}</label>
+        <label class="font-sans text-[13px] text-primary">${t("admin-form-spec1-value")}</label>
         <input id="pf-spec1-value" type="text" placeholder="39" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-spec2-label")}</label>
+        <label class="font-sans text-[13px] text-primary">${t("admin-form-spec2-label")}</label>
         <input id="pf-spec2-label" type="text" placeholder="Высота ступеньки, мм" class="${INPUT_CLS}" />
       </div>
       <div class="flex flex-col gap-1.5">
-        <label class="font-sans text-[13px] text-[#44444E]">${t("admin-form-spec2-value")}</label>
+        <label class="font-sans text-[13px] text-primary">${t("admin-form-spec2-value")}</label>
         <input id="pf-spec2-value" type="text" placeholder="14" class="${INPUT_CLS}" />
       </div>
     </div>
@@ -333,7 +333,7 @@ const ProductAddFormHTML = (): string => `
       <button type="button" id="save-product-btn"
               class="inline-flex items-center justify-center rounded-full
                      bg-gradient-to-r from-button-first to-button-second
-                     px-6 py-3 font-sans text-[15px] text-[#44444E]
+                     px-6 py-3 font-sans text-[15px] text-primary
                      shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]
                      hover:scale-[1.02] transition-all cursor-pointer
                      disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
@@ -341,9 +341,9 @@ const ProductAddFormHTML = (): string => `
       </button>
       <button type="button" id="cancel-product-btn"
               class="inline-flex items-center justify-center rounded-full
-                     border border-[#ddd] bg-white px-6 py-3
-                     font-sans text-[15px] text-[#44444E]
-                     hover:border-[#FFC400] transition-colors cursor-pointer">
+                     border border-primary/20 bg-surface px-6 py-3
+                     font-sans text-[15px] text-primary
+                     hover:border-button-first transition-colors cursor-pointer">
         ${t("admin-cancel")}
       </button>
     </div>
@@ -418,24 +418,24 @@ const renderProductsTab = async (): Promise<void> => {
     const products = await fetchProducts();
 
     const rows = products.map((p) => `
-      <tr class="border-t border-[#F0F0F0] hover:bg-[#FAFAFA] transition-colors">
-        <td class="px-4 py-3 text-[#758499]">#${p.id ?? "—"}</td>
+      <tr class="border-t border-primary/10 hover:bg-bg-first transition-colors">
+        <td class="px-4 py-3 text-text-third">#${p.id ?? "—"}</td>
         <td class="px-4 py-3">
           <img src="${p.image}" alt="${p.title}"
                class="w-12 h-12 object-cover rounded-[8px]" loading="lazy">
         </td>
         <td class="px-4 py-3 text-primary whitespace-nowrap">${p.title}</td>
-        <td class="px-4 py-3 text-[#44444E] whitespace-nowrap">${t(catLabelKey(p.category))}</td>
+        <td class="px-4 py-3 text-primary whitespace-nowrap">${t(catLabelKey(p.category))}</td>
         <td class="px-4 py-3 text-primary whitespace-nowrap">${p.price} ₽/м²</td>
-        <td class="px-4 py-3 text-[#44444E]">${p.brand}</td>
-        <td class="px-4 py-3 text-[#44444E]">${p.color}</td>
-        <td class="px-4 py-3 text-[#44444E]">${p.thickness}</td>
-        <td class="px-4 py-3 text-[#44444E]">${p.surface}</td>
+        <td class="px-4 py-3 text-primary">${p.brand}</td>
+        <td class="px-4 py-3 text-primary">${p.color}</td>
+        <td class="px-4 py-3 text-primary">${p.thickness}</td>
+        <td class="px-4 py-3 text-primary">${p.surface}</td>
         <td class="px-4 py-3">
           <button type="button"
                   data-delete-product="${p.id}"
                   class="text-[13px] px-3 py-1.5 rounded-full border border-red-300
-                         bg-white text-red-500 hover:bg-red-50 transition-colors cursor-pointer">
+                         bg-surface text-red-500 hover:bg-red-50 transition-colors cursor-pointer">
             ${t("admin-delete")}
           </button>
         </td>
@@ -448,7 +448,7 @@ const renderProductsTab = async (): Promise<void> => {
         <button type="button" id="toggle-add-product"
                 class="inline-flex items-center gap-2 rounded-full
                        bg-gradient-to-r from-button-first to-button-second
-                       px-5 py-2.5 font-sans text-[15px] text-[#44444E]
+                       px-5 py-2.5 font-sans text-[15px] text-primary
                        shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]
                        hover:scale-[1.02] transition-all cursor-pointer">
           <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="2"
@@ -462,7 +462,7 @@ const renderProductsTab = async (): Promise<void> => {
       ${TableWrap(`
         ${ThRow(t("admin-col-id"), t("admin-col-photo"), t("admin-col-name"), t("admin-col-category"), t("admin-col-price"), t("admin-col-brand"), t("admin-col-color"), t("admin-col-thickness"), t("admin-col-surface"), t("admin-col-actions"))}
         <tbody>
-          ${rows || `<tr><td colspan="10" class="px-4 py-8 text-center text-[#758499]">${t("admin-no-products")}</td></tr>`}
+          ${rows || `<tr><td colspan="10" class="px-4 py-8 text-center text-text-third">${t("admin-no-products")}</td></tr>`}
         </tbody>
       `)}
     `;
@@ -502,8 +502,8 @@ const renderReviewsTab = async (): Promise<void> => {
     const reviews = await fetchReviews();
 
     const rows = reviews.map((r) => `
-      <tr class="border-t border-[#F0F0F0] hover:bg-[#FAFAFA] transition-colors">
-        <td class="px-4 py-3 text-[#758499]">#${r.id}</td>
+      <tr class="border-t border-primary/10 hover:bg-bg-first transition-colors">
+        <td class="px-4 py-3 text-text-third">#${r.id}</td>
         <td class="px-4 py-3">
           <div class="flex items-center gap-3">
             <img src="${r.avatar}" alt=""
@@ -511,17 +511,17 @@ const renderReviewsTab = async (): Promise<void> => {
             <span class="text-primary whitespace-nowrap">${r.name}</span>
           </div>
         </td>
-        <td class="px-4 py-3 text-[#44444E] whitespace-nowrap">${r.date}</td>
+        <td class="px-4 py-3 text-primary whitespace-nowrap">${r.date}</td>
         <td class="px-4 py-3 text-[16px] leading-none">${Stars(r.rating)}</td>
-        <td class="px-4 py-3 text-[#44444E] whitespace-nowrap">${r.product ?? "—"}</td>
-        <td class="px-4 py-3 text-[#44444E] max-w-[260px]">
+        <td class="px-4 py-3 text-primary whitespace-nowrap">${r.product ?? "—"}</td>
+        <td class="px-4 py-3 text-primary max-w-[260px]">
           <span class="line-clamp-2">${r.text}</span>
         </td>
         <td class="px-4 py-3">
           <button type="button"
                   data-delete-review="${r.id}"
                   class="text-[13px] px-3 py-1.5 rounded-full border border-red-300
-                         bg-white text-red-500 hover:bg-red-50 transition-colors cursor-pointer">
+                         bg-surface text-red-500 hover:bg-red-50 transition-colors cursor-pointer">
             ${t("admin-delete")}
           </button>
         </td>
@@ -535,7 +535,7 @@ const renderReviewsTab = async (): Promise<void> => {
       ${TableWrap(`
         ${ThRow(t("admin-col-id"), t("admin-col-author"), t("admin-col-date"), t("admin-col-rating"), t("admin-col-product"), t("admin-col-text"), t("admin-col-actions"))}
         <tbody>
-          ${rows || `<tr><td colspan="7" class="px-4 py-8 text-center text-[#758499]">${t("admin-no-reviews")}</td></tr>`}
+          ${rows || `<tr><td colspan="7" class="px-4 py-8 text-center text-text-third">${t("admin-no-reviews")}</td></tr>`}
         </tbody>
       `)}
     `;
