@@ -2,6 +2,7 @@ import { isAuthenticated, isAdmin, onAuthChange } from "../services/auth";
 import { cart } from "../services/cart";
 import { favorites } from "../services/favorites";
 import { getCurrentLang, getTranslate, type Lang } from "../services/i18n";
+import { A11yToggle } from "./A11yPanel";
 
 const CartIcon = (extraClass = ""): string => `
   <a href="#cart"
@@ -165,8 +166,9 @@ export const Header = (): string => {
             </div>
           </div>
 
-          <!-- Переключатель языка + темы + Аккаунт + избранное + корзина (десктоп) -->
+          <!-- Переключатель языка + темы + Доступность + Аккаунт + избранное + корзина (десктоп) -->
           <div class="hidden 2xl:flex items-center gap-3 shrink-0">
+            ${A11yToggle()}
             ${LangToggle()}
             ${ThemeToggle()}
             ${AdminIcon()}
@@ -291,8 +293,9 @@ export const Header = (): string => {
             Перезвоним Вам
           </button>
 
-          <!-- Переключатель языка и темы в мобильном меню -->
-          <div class="flex items-center gap-3">
+          <!-- Переключатель языка, темы и доступности в мобильном меню -->
+          <div class="flex items-center gap-3 flex-wrap">
+            ${A11yToggle()}
             ${LangToggle()}
             ${ThemeToggle()}
           </div>
@@ -341,6 +344,9 @@ const updateLangToggle = (lang: Lang): void => {
   const isEn = lang === "en";
   document.querySelectorAll<HTMLElement>("[data-lang-indicator]").forEach((el) => {
     el.style.transform = isEn ? "translateX(100%)" : "translateX(0)";
+  });
+  document.querySelectorAll<HTMLButtonElement>("[data-lang-btn]").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.langBtn === lang);
   });
 };
 

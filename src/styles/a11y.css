@@ -1,0 +1,316 @@
+/* =====================================================
+   ACCESSIBILITY MODE — версия для слабовидящих
+   ===================================================== */
+
+/* =====================================================
+   ТИПОГРАФИКА — только для контентной зоны (<main>)
+   ===================================================== */
+.a11y main p,
+.a11y main li,
+.a11y main address,
+.a11y main dt,
+.a11y main dd {
+	line-height: 1.5 !important;
+	letter-spacing: 0.12em !important;
+	word-spacing: 0.16em !important;
+	text-align: left !important;
+	max-width: 80ch;
+}
+
+.a11y main p,
+.a11y main li {
+	margin-bottom: 2.25em !important;
+}
+
+.a11y main h1,
+.a11y main h2,
+.a11y main h3,
+.a11y main h4,
+.a11y main h5,
+.a11y main h6 {
+	line-height: 1.5 !important;
+	letter-spacing: 0.12em !important;
+	text-align: left !important;
+}
+
+/* Ограничение ширины строки — только для текстовых абзацев, не для контейнера */
+
+/* =====================================================
+   РАЗМЕРЫ ШРИФТА
+   ===================================================== */
+.a11y.a11y-font-large {
+	font-size: 20px;
+}
+
+.a11y.a11y-font-xlarge {
+	font-size: 24px;
+}
+
+/* =====================================================
+   ГРАДИЕНТНЫЙ ТЕКСТ — заменяем на плоский цвет
+   ===================================================== */
+.a11y .gradient-text,
+.a11y .heading-gradient {
+	background: none !important;
+	-webkit-background-clip: unset !important;
+	background-clip: unset !important;
+	color: var(--color-primary) !important;
+}
+
+/* =====================================================
+   КНОПКИ С ЗАЛИВКОЙ — текст контрастирует с фоном
+   В схемах --color-button-first совпадает с --color-primary,
+   поэтому явно задаём противоположный цвет (surface).
+   ===================================================== */
+
+/* Кнопки с классом btn-primary (использует @apply from-button-first) */
+.a11y .btn-primary {
+	background: var(--color-primary) !important;
+	background-image: none !important;
+	color: var(--color-surface) !important;
+	box-shadow: none !important;
+}
+
+/* Все кнопки с градиентом from-button-first/to-button-second (inline Tailwind) */
+.a11y [class*="from-button-first"] {
+	background: var(--color-primary) !important;
+	background-image: none !important;
+	color: var(--color-surface) !important;
+	box-shadow: none !important;
+}
+
+/* Элементы с bg-button-first (бейджи корзины/избранного и др.) */
+.a11y [class*="bg-button-first"] {
+	background: var(--color-primary) !important;
+	background-image: none !important;
+	color: var(--color-surface) !important;
+}
+
+/* =====================================================
+   ХЕДЕР — SVG-изображения (img-теги, цвет через filter)
+   ===================================================== */
+
+/* Логотип белый → делаем тёмным на светлых фонах шапки */
+.a11y.a11y-scheme-white-black header img[alt="Металлобаза Волхонка"],
+.a11y.a11y-scheme-beige-brown header img[alt="Металлобаза Волхонка"],
+.a11y.a11y-scheme-blue-darkblue header img[alt="Металлобаза Волхонка"] {
+	filter: brightness(0);
+}
+
+/* Иконка корзины белая → делаем тёмной на белом кружке (схема Чёрный/Белый) */
+.a11y.a11y-scheme-black-white .gradient-icon img {
+	filter: brightness(0);
+}
+
+/* Активный язык в переключателе языка */
+.a11y .lang-btn.active {
+	color: var(--color-surface) !important;
+}
+
+/* Активная вкладка тоггла авторизации (индикатор становится var(--color-primary)) */
+.a11y .auth-tab[aria-selected="true"] {
+	color: var(--color-surface) !important;
+}
+
+/* Активная вкладка категорий в каталоге */
+.a11y .catalog-tab.active {
+	background-color: var(--color-primary) !important;
+	border-color: var(--color-primary) !important;
+	color: var(--color-surface) !important;
+}
+
+/* Иконки-кружки с градиентом (корзина, телефон, PDF) */
+.a11y .gradient-icon {
+	background: var(--color-primary) !important;
+	background-image: none !important;
+	box-shadow: none !important;
+	color: var(--color-surface) !important;
+}
+
+.a11y .gradient-icon * {
+	color: var(--color-surface) !important;
+}
+
+/* =====================================================
+   ЦВЕТОВЫЕ СХЕМЫ — переопределяем CSS-переменные на <html>
+   ===================================================== */
+
+/* Схема 1: белый фон — чёрный текст */
+.a11y.a11y-scheme-white-black {
+	--color-surface: #ffffff;
+	--color-primary: #000000;
+	--color-secondary: #222222;
+	--color-bg-first: #f0f0f0;
+	--color-bg-second: #f8f8f8;
+	--color-text-first: #000000;
+	--color-text-second: #222222;
+	--color-text-third: #444444;
+	--color-button-first: #000000;
+	--color-button-second: #333333;
+}
+
+.a11y.a11y-scheme-white-black body {
+	background-color: #ffffff !important;
+	color: #000000 !important;
+}
+
+/* Схема 2: чёрный фон — белый текст */
+.a11y.a11y-scheme-black-white {
+	--color-surface: #111111;
+	--color-primary: #ffffff;
+	--color-secondary: #dddddd;
+	--color-bg-first: #000000;
+	--color-bg-second: #1a1a1a;
+	--color-text-first: #ffffff;
+	--color-text-second: #dddddd;
+	--color-text-third: #bbbbbb;
+	--color-button-first: #ffffff;
+	--color-button-second: #cccccc;
+}
+
+.a11y.a11y-scheme-black-white body {
+	background-color: #000000 !important;
+	color: #ffffff !important;
+}
+
+/* Схема 3: чёрный фон — зелёный текст */
+.a11y.a11y-scheme-black-green {
+	--color-surface: #0a0a0a;
+	--color-primary: #00ee00;
+	--color-secondary: #00cc00;
+	--color-bg-first: #000000;
+	--color-bg-second: #0d0d0d;
+	--color-text-first: #00ee00;
+	--color-text-second: #00cc00;
+	--color-text-third: #009900;
+	--color-button-first: #00cc00;
+	--color-button-second: #009900;
+}
+
+.a11y.a11y-scheme-black-green body {
+	background-color: #000000 !important;
+	color: #00ee00 !important;
+}
+
+/* Схема 4: бежевый фон — коричневый текст */
+.a11y.a11y-scheme-beige-brown {
+	--color-surface: #f5f0e8;
+	--color-primary: #5c3317;
+	--color-secondary: #7a4429;
+	--color-bg-first: #ede8db;
+	--color-bg-second: #f5f0e8;
+	--color-text-first: #5c3317;
+	--color-text-second: #7a4429;
+	--color-text-third: #8b5a2b;
+	--color-button-first: #7a4429;
+	--color-button-second: #5c3317;
+}
+
+.a11y.a11y-scheme-beige-brown body {
+	background-color: #f5f0e8 !important;
+	color: #5c3317 !important;
+}
+
+/* Схема 5: голубой фон — тёмно-синий текст */
+.a11y.a11y-scheme-blue-darkblue {
+	--color-surface: #d6eaf8;
+	--color-primary: #1a2e4a;
+	--color-secondary: #1f3a5f;
+	--color-bg-first: #c5dff4;
+	--color-bg-second: #d6eaf8;
+	--color-text-first: #1a2e4a;
+	--color-text-second: #1f3a5f;
+	--color-text-third: #2c4a7c;
+	--color-button-first: #1f3a5f;
+	--color-button-second: #1a2e4a;
+}
+
+.a11y.a11y-scheme-blue-darkblue body {
+	background-color: #d6eaf8 !important;
+	color: #1a2e4a !important;
+}
+
+/* Общая передача цвета всем текстовым элементам в main */
+.a11y main {
+	color: var(--color-primary);
+}
+
+/* Hero: gradient-text поверх светлого фото — оставляем тёмным, схема не применяется */
+.a11y section[aria-label="Главный баннер"] .gradient-text {
+	color: #1a1a1a !important;
+}
+
+/* =====================================================
+   СКРЫТИЕ ИЗОБРАЖЕНИЙ
+   ===================================================== */
+.a11y-img-placeholder {
+	display: block;
+	border: 2px dashed #888;
+	border-radius: 6px;
+	padding: 0.75em 1em;
+	font-size: 0.9em;
+	color: #555;
+	background: #f5f5f5;
+	text-align: center;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+#a11y-images-banner {
+	display: none;
+}
+
+.a11y #a11y-images-banner[data-active] {
+	display: block;
+	padding: 10px 20px;
+	background: #fff3cd;
+	color: #856404;
+	border-bottom: 2px solid #ffc107;
+	text-align: center;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+/* =====================================================
+   ПАНЕЛЬ ДОСТУПНОСТИ
+   Полная изоляция от цветовых схем — всегда читаема
+   ===================================================== */
+.a11y-panel-popup {
+	position: fixed;
+	z-index: 9100;
+	width: 320px;
+	max-height: calc(100vh - 80px);
+	overflow-y: auto;
+
+	/* Собственная цветовая схема — не зависит от a11y-схем страницы */
+	background: #ffffff;
+	color: #1a1a1a;
+	border: 1px solid rgba(0, 0, 0, 0.12);
+	border-radius: 16px;
+	box-shadow:
+		0 4px 6px rgba(0, 0, 0, 0.05),
+		0 20px 40px rgba(0, 0, 0, 0.15);
+
+	/* Сбрасываем CSS-переменные внутри панели на светлую тему */
+	--color-surface: #ffffff;
+	--color-primary: #1a1a1a;
+	--color-secondary: #666666;
+	--color-bg-first: #f5f5f5;
+	--color-button-first: #ffc400;
+	--color-button-second: #ff9900;
+}
+
+/* Защита от типографических переопределений a11y */
+.a11y-panel-popup,
+.a11y-panel-popup * {
+	letter-spacing: normal !important;
+	word-spacing: normal !important;
+	line-height: normal !important;
+	text-align: left !important;
+	margin-bottom: 0 !important;
+	max-width: none !important;
+}
+
+.a11y-panel-hidden {
+	display: none !important;
+}

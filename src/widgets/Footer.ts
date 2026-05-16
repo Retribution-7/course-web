@@ -28,10 +28,8 @@ export const Footer = (): string => {
 
           <!-- PDF прайс-лист -->
           <a href="#" class="flex items-center gap-5 shrink-0 group" aria-label="Скачать прайс-лист PDF">
-            <div class="relative size-[61px] shrink-0">
-              <div class="size-full rounded-full gradient-icon flex items-center justify-center shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)]">
-              </div>
-              <span class="absolute inset-0 flex items-center justify-center text-[17px] font-sans text-primary font-normal">PDF</span>
+            <div class="size-[61px] rounded-full gradient-icon flex items-center justify-center shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] shrink-0">
+              <span class="text-[17px] font-sans text-primary font-normal">PDF</span>
             </div>
             <span class="text-[17px] text-primary font-normal group-hover:underline" data-i18n="footer-pdf-download">Скачать прайс-лист</span>
           </a>

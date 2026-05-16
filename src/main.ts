@@ -22,6 +22,8 @@ import { isAuthenticated, onAuthChange } from "./services/auth";
 import { favorites } from "./services/favorites";
 import { cart } from "./services/cart";
 import { initI18n } from "./services/i18n";
+import { a11y } from "./services/a11y";
+import { initA11yPanel } from "./widgets/A11yPanel";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -51,9 +53,11 @@ app.innerHTML = `
 `;
 
 initTheme();
+a11y.applyFromStorage();
 initI18n();
 initRouter();
 initHeader();
+initA11yPanel();
 initCatalog();
 initContactForm();
 initTestimonials();
@@ -69,6 +73,7 @@ initAdminPage();
 initFooter();
 
 hidePreloader();
+a11y.observeImages();
 
 // Sync favorites and cart from JSON Server when user is authenticated
 const syncFromServer = (): void => {
