@@ -3,13 +3,19 @@
    ===================================================== */
 
 /* =====================================================
-   ТИПОГРАФИКА — только для контентной зоны (<main>)
+   ТИПОГРАФИКА — для контентных секций (<main>, страницы, футер)
    ===================================================== */
-.a11y main p,
-.a11y main li,
-.a11y main address,
-.a11y main dt,
-.a11y main dd {
+.a11y section p,
+.a11y section li,
+.a11y section address,
+.a11y section dt,
+.a11y section dd,
+.a11y footer p,
+.a11y footer li,
+.a11y footer address,
+.a11y footer span,
+.a11y footer a,
+.a11y footer button {
 	line-height: 1.5 !important;
 	letter-spacing: 0.12em !important;
 	word-spacing: 0.16em !important;
@@ -17,17 +23,17 @@
 	max-width: 80ch;
 }
 
-.a11y main p,
-.a11y main li {
+.a11y section p,
+.a11y section li {
 	margin-bottom: 2.25em !important;
 }
 
-.a11y main h1,
-.a11y main h2,
-.a11y main h3,
-.a11y main h4,
-.a11y main h5,
-.a11y main h6 {
+.a11y section h1,
+.a11y section h2,
+.a11y section h3,
+.a11y section h4,
+.a11y section h5,
+.a11y section h6 {
 	line-height: 1.5 !important;
 	letter-spacing: 0.12em !important;
 	text-align: left !important;
@@ -230,8 +236,9 @@
 	color: #1a2e4a !important;
 }
 
-/* Общая передача цвета всем текстовым элементам в main */
-.a11y main {
+/* Общая передача цвета всем текстовым элементам в секциях и футере */
+.a11y section,
+.a11y footer {
 	color: var(--color-primary);
 }
 
