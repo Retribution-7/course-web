@@ -205,7 +205,7 @@ export const Header = (): string => {
         </nav>
 
         <!-- Мобильное меню (drawer) -->
-        <div id="mobile-menu" class="hidden 3xl:hidden border-t border-gray-100 py-6 flex flex-col gap-5">
+        <div id="mobile-menu" class="hidden 3xl:hidden border-t border-gray-100 py-6 flex flex-col gap-5 overflow-y-auto max-h-[calc(100vh-80px)]">
 
           <!-- Аккаунт + избранное + корзина (только когда не помещаются в шапку, т.е. ниже 440px) -->
           <div class="min-[440px]:hidden flex flex-col gap-3">
