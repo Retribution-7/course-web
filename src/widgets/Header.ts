@@ -1,4 +1,4 @@
-import { isAuthenticated, isAdmin, onAuthChange } from "../services/auth";
+import { isAdmin, isAuthenticated, onAuthChange } from "../services/auth";
 import { cart } from "../services/cart";
 import { favorites } from "../services/favorites";
 import { getCurrentLang, getTranslate, type Lang } from "../services/i18n";
@@ -118,7 +118,7 @@ export const Header = (): string => {
           </a>
 
           <!-- Разделитель + Адрес -->
-          <div class="hidden 2xl:flex items-end gap-6 shrink-0">
+          <div class="hidden 3xl:flex items-end gap-6 shrink-0">
             <div class="h-[70px] w-px bg-primary opacity-20"></div>
             <address class="not-italic text-[17px] leading-[1.8] text-primary font-sans">
               Санкт-Петербург, Горелово,<br>
@@ -127,7 +127,7 @@ export const Header = (): string => {
           </div>
 
           <!-- PDF прайс-лист -->
-          <a href="#" class="hidden 2xl:flex items-center gap-5 shrink-0 group" aria-label="Скачать прайс-лист PDF">
+          <a href="#" class="hidden 3xl:flex items-center gap-5 shrink-0 group" aria-label="Скачать прайс-лист PDF">
             <div class="size-[61px] rounded-full gradient-icon flex items-center justify-center shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] shrink-0">
               <span class="text-[17px] font-sans text-primary font-normal">PDF</span>
             </div>
@@ -195,7 +195,7 @@ export const Header = (): string => {
           </a>
 
           <!-- Мобильное меню (hamburger) -->
-          <button id="mobile-menu-btn" class="2xl:hidden flex flex-col gap-[5px] p-2 shrink-0"
+          <button id="mobile-menu-btn" class="3xl:hidden flex flex-col gap-[5px] p-2 shrink-0"
                   aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
             <span class="block w-6 h-0.5 bg-primary transition-all"></span>
             <span class="block w-6 h-0.5 bg-primary transition-all"></span>
@@ -205,7 +205,7 @@ export const Header = (): string => {
         </nav>
 
         <!-- Мобильное меню (drawer) -->
-        <div id="mobile-menu" class="hidden 2xl:hidden border-t border-gray-100 py-6 flex flex-col gap-5">
+        <div id="mobile-menu" class="hidden 3xl:hidden border-t border-gray-100 py-6 flex flex-col gap-5">
 
           <!-- Аккаунт + избранное + корзина (только когда не помещаются в шапку, т.е. ниже 440px) -->
           <div class="min-[440px]:hidden flex flex-col gap-3">
@@ -308,29 +308,35 @@ export const Header = (): string => {
 
 const syncCartBadges = (): void => {
   const count = cart.count();
-  document.querySelectorAll<HTMLElement>("[data-cart-badge]").forEach((badge) => {
-    badge.textContent = String(count);
-    badge.classList.toggle("hidden", count === 0);
-  });
+  document
+    .querySelectorAll<HTMLElement>("[data-cart-badge]")
+    .forEach((badge) => {
+      badge.textContent = String(count);
+      badge.classList.toggle("hidden", count === 0);
+    });
 };
 
 const syncFavoritesBadges = (): void => {
   const count = favorites.count();
-  document.querySelectorAll<HTMLElement>("[data-favorites-badge]").forEach((badge) => {
-    badge.textContent = String(count);
-    badge.classList.toggle("hidden", count === 0);
-  });
+  document
+    .querySelectorAll<HTMLElement>("[data-favorites-badge]")
+    .forEach((badge) => {
+      badge.textContent = String(count);
+      badge.classList.toggle("hidden", count === 0);
+    });
 };
 
 const syncAuthLink = (): void => {
   const auth = isAuthenticated();
-  document.querySelectorAll<HTMLAnchorElement>("[data-auth-link]").forEach((link) => {
-    link.href = auth ? "#account" : "#auth";
-    link.setAttribute(
-      "aria-label",
-      auth ? "Личный кабинет" : "Войти или зарегистрироваться",
-    );
-  });
+  document
+    .querySelectorAll<HTMLAnchorElement>("[data-auth-link]")
+    .forEach((link) => {
+      link.href = auth ? "#account" : "#auth";
+      link.setAttribute(
+        "aria-label",
+        auth ? "Личный кабинет" : "Войти или зарегистрироваться",
+      );
+    });
 };
 
 const syncAdminLink = (): void => {
@@ -342,21 +348,29 @@ const syncAdminLink = (): void => {
 
 const updateLangToggle = (lang: Lang): void => {
   const isEn = lang === "en";
-  document.querySelectorAll<HTMLElement>("[data-lang-indicator]").forEach((el) => {
-    el.style.transform = isEn ? "translateX(100%)" : "translateX(0)";
-  });
-  document.querySelectorAll<HTMLButtonElement>("[data-lang-btn]").forEach((btn) => {
-    btn.classList.toggle("active", btn.dataset.langBtn === lang);
-  });
+  document
+    .querySelectorAll<HTMLElement>("[data-lang-indicator]")
+    .forEach((el) => {
+      el.style.transform = isEn ? "translateX(100%)" : "translateX(0)";
+    });
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-lang-btn]")
+    .forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.langBtn === lang);
+    });
 };
 
 const updateThemeIcons = (isDark: boolean): void => {
-  document.querySelectorAll<HTMLElement>("[data-theme-icon-light]").forEach((el) => {
-    el.classList.toggle("hidden", isDark);
-  });
-  document.querySelectorAll<HTMLElement>("[data-theme-icon-dark]").forEach((el) => {
-    el.classList.toggle("hidden", !isDark);
-  });
+  document
+    .querySelectorAll<HTMLElement>("[data-theme-icon-light]")
+    .forEach((el) => {
+      el.classList.toggle("hidden", isDark);
+    });
+  document
+    .querySelectorAll<HTMLElement>("[data-theme-icon-dark]")
+    .forEach((el) => {
+      el.classList.toggle("hidden", !isDark);
+    });
 };
 
 export const initTheme = (): void => {
@@ -379,21 +393,25 @@ export const initHeader = (): void => {
 
   updateLangToggle(getCurrentLang());
 
-  document.querySelectorAll<HTMLButtonElement>("[data-lang-btn]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const lang = btn.dataset.langBtn as Lang;
-      getTranslate(lang);
-      updateLangToggle(lang);
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-lang-btn]")
+    .forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const lang = btn.dataset.langBtn as Lang;
+        getTranslate(lang);
+        updateLangToggle(lang);
+      });
     });
-  });
 
-  document.querySelectorAll<HTMLButtonElement>("[data-theme-btn]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const isDark = document.documentElement.classList.toggle("dark");
-      localStorage.setItem("theme", isDark ? "dark" : "light");
-      updateThemeIcons(isDark);
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-theme-btn]")
+    .forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const isDark = document.documentElement.classList.toggle("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+        updateThemeIcons(isDark);
+      });
     });
-  });
 
   const btn = document.getElementById("mobile-menu-btn");
   const menu = document.getElementById("mobile-menu");

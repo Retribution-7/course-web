@@ -55,6 +55,8 @@
 	--text-xs: 0.625rem;
 	--text-xs--line-height: 1;
 	--text-xs--font-weight: 400;
+
+	--breakpoint-3xl: 1660px;
 }
 
 .dark {

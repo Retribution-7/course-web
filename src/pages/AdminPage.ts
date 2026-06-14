@@ -1,17 +1,16 @@
-import { isAdmin, getUser, onAuthChange } from "../services/auth";
+import type { Product } from "../entities/products";
 import {
-  fetchUsers,
-  fetchProducts,
-  fetchReviews,
-  updateUser,
-  getAllCartItems,
-  postProduct,
   deleteProduct,
   deleteReview,
-  type ApiUser,
+  fetchProducts,
+  fetchReviews,
+  fetchUsers,
+  getAllCartItems,
+  postProduct,
+  updateUser,
 } from "../services/api";
-import type { Product } from "../entities/products";
-import { t, getCurrentLang } from "../services/i18n";
+import { getUser, isAdmin, onAuthChange } from "../services/auth";
+import { getCurrentLang, t } from "../services/i18n";
 
 type AdminTab = "users" | "products" | "reviews";
 
@@ -63,7 +62,7 @@ export const AdminPage = (): string => `
            class="mt-6 lg:mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 lg:mb-10">
       </div>
 
-      <div class="flex gap-2 mb-6 overflow-x-auto pb-1" role="tablist">
+      <div class="max-sm:flex-wrap flex gap-2 mb-6 overflow-x-auto pb-1" role="tablist">
         <button type="button" data-admin-tab="users" role="tab" aria-selected="true"
                 class="admin-tab-btn shrink-0 px-5 py-2.5 rounded-full font-sans text-[15px] cursor-pointer transition-all">
           <span data-i18n="admin-tab-users">Пользователи</span>
@@ -85,9 +84,14 @@ export const AdminPage = (): string => `
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-const StatCard = (label: string, value: string | number, iconHtml: string, bgClass: string): string => `
+const StatCard = (
+  label: string,
+  value: string | number,
+  iconHtml: string,
+  bgClass: string,
+): string => `
   <div class="bg-surface rounded-[14px] card-shadow p-5 lg:p-6 flex items-center gap-4 transition-colors duration-300">
-    <div class="grid size-12 lg:size-14 place-items-center rounded-[12px] shrink-0 ${bgClass}">
+    <div class="max-sm:hidden grid size-12 lg:size-14 place-items-center rounded-[12px] shrink-0 ${bgClass}">
       ${iconHtml}
     </div>
     <div>
@@ -171,16 +175,18 @@ const loadStats = async (): Promise<void> => {
 // ── Tab Styles ────────────────────────────────────────────────────────────────
 
 const updateTabStyles = (active: AdminTab): void => {
-  document.querySelectorAll<HTMLButtonElement>("[data-admin-tab]").forEach((btn) => {
-    const isActive = btn.dataset.adminTab === active;
-    btn.setAttribute("aria-selected", String(isActive));
-    btn.className = [
-      "admin-tab-btn shrink-0 px-5 py-2.5 rounded-full font-sans text-[15px] cursor-pointer transition-all",
-      isActive
-        ? "bg-gradient-to-r from-button-first to-button-second shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)] text-primary border border-[rgba(255,196,0,0.4)]"
-        : "bg-surface border border-primary/20 text-primary hover:border-button-first",
-    ].join(" ");
-  });
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-admin-tab]")
+    .forEach((btn) => {
+      const isActive = btn.dataset.adminTab === active;
+      btn.setAttribute("aria-selected", String(isActive));
+      btn.className = [
+        "admin-tab-btn shrink-0 px-5 py-2.5 rounded-full font-sans text-[15px] cursor-pointer transition-all",
+        isActive
+          ? "bg-gradient-to-r from-button-first to-button-second shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)] text-primary border border-[rgba(255,196,0,0.4)]"
+          : "bg-surface border border-primary/20 text-primary hover:border-button-first",
+      ].join(" ");
+    });
 };
 
 // ── Users Tab ─────────────────────────────────────────────────────────────────
@@ -201,11 +207,13 @@ const renderUsersTab = async (): Promise<void> => {
     const currentPhone = getUser()?.phone ?? "";
     const locale = getCurrentLang() === "en" ? "en-US" : "ru-RU";
 
-    const rows = users.map((u) => {
-      const isSelf = u.phone === currentPhone;
-      const nextRole = u.role === "admin" ? "customer" : "admin";
-      const btnLabel = u.role === "admin" ? t("admin-make-customer") : t("admin-make-admin");
-      return `
+    const rows = users
+      .map((u) => {
+        const isSelf = u.phone === currentPhone;
+        const nextRole = u.role === "admin" ? "customer" : "admin";
+        const btnLabel =
+          u.role === "admin" ? t("admin-make-customer") : t("admin-make-admin");
+        return `
         <tr class="border-t border-primary/10 hover:bg-bg-first transition-colors">
           <td class="px-4 py-3 text-text-third">#${u.id}</td>
           <td class="px-4 py-3">
@@ -232,7 +240,8 @@ const renderUsersTab = async (): Promise<void> => {
             }
           </td>
         </tr>`;
-    }).join("");
+      })
+      .join("");
 
     el.innerHTML = `
       <div class="mb-5">
@@ -246,20 +255,22 @@ const renderUsersTab = async (): Promise<void> => {
       `)}
     `;
 
-    el.querySelectorAll<HTMLButtonElement>("[data-change-role]").forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const id = Number(btn.dataset.changeRole);
-        const nextRole = btn.dataset.nextRole ?? "customer";
-        btn.disabled = true;
-        try {
-          await updateUser(id, { role: nextRole });
-          void renderUsersTab();
-        } catch {
-          alert(t("admin-error-role"));
-          btn.disabled = false;
-        }
-      });
-    });
+    el.querySelectorAll<HTMLButtonElement>("[data-change-role]").forEach(
+      (btn) => {
+        btn.addEventListener("click", async () => {
+          const id = Number(btn.dataset.changeRole);
+          const nextRole = btn.dataset.nextRole ?? "customer";
+          btn.disabled = true;
+          try {
+            await updateUser(id, { role: nextRole });
+            void renderUsersTab();
+          } catch {
+            alert(t("admin-error-role"));
+            btn.disabled = false;
+          }
+        });
+      },
+    );
   } catch {
     el.innerHTML = `<div class="p-8 text-center text-red-500">${t("admin-error-load-users")}</div>`;
   }
@@ -354,7 +365,9 @@ const wireProductForm = (): void => {
   const form = document.getElementById("product-add-form");
   const toggleBtn = document.getElementById("toggle-add-product");
   const cancelBtn = document.getElementById("cancel-product-btn");
-  const saveBtn = document.getElementById("save-product-btn") as HTMLButtonElement | null;
+  const saveBtn = document.getElementById(
+    "save-product-btn",
+  ) as HTMLButtonElement | null;
   const errEl = document.getElementById("product-form-error");
 
   toggleBtn?.addEventListener("click", () => {
@@ -367,7 +380,8 @@ const wireProductForm = (): void => {
 
   saveBtn?.addEventListener("click", async () => {
     const val = (id: string): string =>
-      (document.getElementById(id) as HTMLInputElement | null)?.value.trim() ?? "";
+      (document.getElementById(id) as HTMLInputElement | null)?.value.trim() ??
+      "";
 
     const title = val("pf-title");
     const price = val("pf-price");
@@ -393,8 +407,14 @@ const wireProductForm = (): void => {
       thickness: val("pf-thickness") || "0,5",
       surface: val("pf-surface") || "Полиэстер",
       specs: [
-        { label: val("pf-spec1-label") || "Характеристика 1", value: val("pf-spec1-value") || "—" },
-        { label: val("pf-spec2-label") || "Характеристика 2", value: val("pf-spec2-value") || "—" },
+        {
+          label: val("pf-spec1-label") || "Характеристика 1",
+          value: val("pf-spec1-value") || "—",
+        },
+        {
+          label: val("pf-spec2-label") || "Характеристика 2",
+          value: val("pf-spec2-value") || "—",
+        },
       ],
     };
 
@@ -417,7 +437,9 @@ const renderProductsTab = async (): Promise<void> => {
   try {
     const products = await fetchProducts();
 
-    const rows = products.map((p) => `
+    const rows = products
+      .map(
+        (p) => `
       <tr class="border-t border-primary/10 hover:bg-bg-first transition-colors">
         <td class="px-4 py-3 text-text-third">#${p.id ?? "—"}</td>
         <td class="px-4 py-3">
@@ -440,7 +462,9 @@ const renderProductsTab = async (): Promise<void> => {
           </button>
         </td>
       </tr>
-    `).join("");
+    `,
+      )
+      .join("");
 
     el.innerHTML = `
       <div class="flex flex-wrap items-center justify-between gap-4 mb-5">
@@ -469,19 +493,21 @@ const renderProductsTab = async (): Promise<void> => {
 
     wireProductForm();
 
-    el.querySelectorAll<HTMLButtonElement>("[data-delete-product]").forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const id = Number(btn.dataset.deleteProduct);
-        if (!confirm(t("admin-confirm-delete-product"))) return;
-        try {
-          await deleteProduct(id);
-          void renderProductsTab();
-          void loadStats();
-        } catch {
-          alert(t("admin-error-delete-product"));
-        }
-      });
-    });
+    el.querySelectorAll<HTMLButtonElement>("[data-delete-product]").forEach(
+      (btn) => {
+        btn.addEventListener("click", async () => {
+          const id = Number(btn.dataset.deleteProduct);
+          if (!confirm(t("admin-confirm-delete-product"))) return;
+          try {
+            await deleteProduct(id);
+            void renderProductsTab();
+            void loadStats();
+          } catch {
+            alert(t("admin-error-delete-product"));
+          }
+        });
+      },
+    );
   } catch {
     el.innerHTML = `<div class="p-8 text-center text-red-500">${t("admin-error-load-products")}</div>`;
   }
@@ -490,8 +516,10 @@ const renderProductsTab = async (): Promise<void> => {
 // ── Reviews Tab ───────────────────────────────────────────────────────────────
 
 const Stars = (rating: number): string =>
-  Array.from({ length: 5 }, (_, i) =>
-    `<span class="${i < Math.round(rating) ? "text-[#FFC400]" : "text-gray-300"}">★</span>`,
+  Array.from(
+    { length: 5 },
+    (_, i) =>
+      `<span class="${i < Math.round(rating) ? "text-[#FFC400]" : "text-gray-300"}">★</span>`,
   ).join("");
 
 const renderReviewsTab = async (): Promise<void> => {
@@ -501,7 +529,9 @@ const renderReviewsTab = async (): Promise<void> => {
   try {
     const reviews = await fetchReviews();
 
-    const rows = reviews.map((r) => `
+    const rows = reviews
+      .map(
+        (r) => `
       <tr class="border-t border-primary/10 hover:bg-bg-first transition-colors">
         <td class="px-4 py-3 text-text-third">#${r.id}</td>
         <td class="px-4 py-3">
@@ -526,7 +556,9 @@ const renderReviewsTab = async (): Promise<void> => {
           </button>
         </td>
       </tr>
-    `).join("");
+    `,
+      )
+      .join("");
 
     el.innerHTML = `
       <div class="mb-5">
@@ -540,19 +572,21 @@ const renderReviewsTab = async (): Promise<void> => {
       `)}
     `;
 
-    el.querySelectorAll<HTMLButtonElement>("[data-delete-review]").forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const id = Number(btn.dataset.deleteReview);
-        if (!confirm(t("admin-confirm-delete-review"))) return;
-        try {
-          await deleteReview(id);
-          void renderReviewsTab();
-          void loadStats();
-        } catch {
-          alert(t("admin-error-delete-review"));
-        }
-      });
-    });
+    el.querySelectorAll<HTMLButtonElement>("[data-delete-review]").forEach(
+      (btn) => {
+        btn.addEventListener("click", async () => {
+          const id = Number(btn.dataset.deleteReview);
+          if (!confirm(t("admin-confirm-delete-review"))) return;
+          try {
+            await deleteReview(id);
+            void renderReviewsTab();
+            void loadStats();
+          } catch {
+            alert(t("admin-error-delete-review"));
+          }
+        });
+      },
+    );
   } catch {
     el.innerHTML = `<div class="p-8 text-center text-red-500">${t("admin-error-load-reviews")}</div>`;
   }
@@ -599,9 +633,11 @@ export const initAdminPage = (): void => {
     }
   });
 
-  document.querySelectorAll<HTMLButtonElement>("[data-admin-tab]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      switchTab(btn.dataset.adminTab as AdminTab);
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-admin-tab]")
+    .forEach((btn) => {
+      btn.addEventListener("click", () => {
+        switchTab(btn.dataset.adminTab as AdminTab);
+      });
     });
-  });
 };

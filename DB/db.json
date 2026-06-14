@@ -572,6 +572,11 @@
       "userId": "100",
       "productId": 1,
       "id": 1
+    },
+    {
+      "userId": "100",
+      "productId": 18,
+      "id": 2
     }
   ],
   "cart": [
@@ -586,7 +591,7 @@
       "installation": false,
       "delivery": false,
       "total": 70150,
-      "clientId": "c887af72-8084-44dd-961a-aee48407a181",
+      "clientId": "a4046b5a-5739-401c-8b9c-a78a6f103550",
       "userId": "100",
       "id": 1
     }

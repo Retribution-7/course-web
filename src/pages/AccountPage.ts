@@ -1,7 +1,7 @@
+import { getUser, logout, onAuthChange, type RegisteredUser } from "../services/auth";
 import { cart } from "../services/cart";
 import { favorites } from "../services/favorites";
-import { getUser, logout, onAuthChange, type RegisteredUser } from "../services/auth";
-import { t, getCurrentLang } from "../services/i18n";
+import { getCurrentLang, t } from "../services/i18n";
 
 const getInitials = (user: RegisteredUser): string => {
   const f = user.firstName.charAt(0).toUpperCase();
