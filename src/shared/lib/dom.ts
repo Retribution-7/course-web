@@ -1,17 +1,17 @@
 export const createElement = (
-  tag: string,
-  className?: string,
-  content?: string,
+	tag: string,
+	className?: string,
+	content?: string,
 ): HTMLElement => {
-  const element = document.createElement(tag);
+	const element = document.createElement(tag);
 
-  if (className) {
-    element.className = className;
-  }
+	if (className) {
+		element.className = className;
+	}
 
-  if (content) {
-    element.innerHTML = content;
-  }
+	if (content) {
+		element.innerHTML = content;
+	}
 
-  return element;
+	return element;
 };

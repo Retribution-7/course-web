@@ -1,3 +1,4 @@
+/* biome-ignore-all lint/complexity/noImportantStyles: !important is intentional for a11y overrides */
 .a11y section p,
 .a11y section li,
 .a11y section address,

@@ -1,19 +1,26 @@
-import { getUser, logout, onAuthChange, type RegisteredUser } from "../services/auth";
+import {
+	getUser,
+	logout,
+	onAuthChange,
+	type RegisteredUser,
+} from "../services/auth";
 import { cart } from "../services/cart";
 import { favorites } from "../services/favorites";
 import { t } from "../services/i18n";
-import { formatDate } from "../shared/utils/format";
 import { BackLink } from "../shared/ui/BackLink";
+import { formatDate } from "../shared/utils/format";
 
 const getInitials = (user: RegisteredUser): string => {
-  const f = user.firstName.charAt(0).toUpperCase();
-  const l = user.lastName.charAt(0).toUpperCase();
-  return `${l}${f}` || "?";
+	const f = user.firstName.charAt(0).toUpperCase();
+	const l = user.lastName.charAt(0).toUpperCase();
+	return `${l}${f}` || "?";
 };
 
 const fullName = (user: RegisteredUser): string => {
-  const parts = [user.lastName, user.firstName, user.middleName].filter(Boolean);
-  return parts.join(" ").trim() || user.nickname;
+	const parts = [user.lastName, user.firstName, user.middleName].filter(
+		Boolean,
+	);
+	return parts.join(" ").trim() || user.nickname;
 };
 
 export const AccountPage = (): string => `
@@ -87,10 +94,10 @@ const renderInfoCard = (user: RegisteredUser): string => `
 `;
 
 const renderStatTile = (
-  label: string,
-  count: number,
-  href: string,
-  icon: string,
+	label: string,
+	count: number,
+	href: string,
+	icon: string,
 ): string => `
   <a href="${href}"
      class="flex items-center gap-4 lg:gap-5 bg-surface rounded-[14px] card-shadow p-5 lg:p-6 transition-colors duration-300
@@ -116,20 +123,20 @@ const renderStatTile = (
 const renderStats = (): string => `
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
     ${renderStatTile(
-      t("account-favorites-stat"),
-      favorites.count(),
-      "#favorites",
-      `<svg viewBox="0 0 24 24" class="size-6 text-primary" fill="none" stroke="currentColor"
+			t("account-favorites-stat"),
+			favorites.count(),
+			"#favorites",
+			`<svg viewBox="0 0 24 24" class="size-6 text-primary" fill="none" stroke="currentColor"
             stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
          <path d="M12 21s-7-4.5-7-10.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 7 4.5C19 16.5 12 21 12 21z"/>
        </svg>`,
-    )}
+		)}
     ${renderStatTile(
-      t("account-cart-stat"),
-      cart.count(),
-      "#cart",
-      `<img src="/icons/cart.svg" alt="" class="size-6" aria-hidden="true">`,
-    )}
+			t("account-cart-stat"),
+			cart.count(),
+			"#cart",
+			`<img src="/icons/cart.svg" alt="" class="size-6" aria-hidden="true">`,
+		)}
   </div>
 `;
 
@@ -156,12 +163,12 @@ const renderActions = (): string => `
 `;
 
 const render = (): void => {
-  const content = document.getElementById("account-content");
-  if (!content) return;
+	const content = document.getElementById("account-content");
+	if (!content) return;
 
-  const user = getUser();
-  if (!user) {
-    content.innerHTML = `
+	const user = getUser();
+	if (!user) {
+		content.innerHTML = `
       <div class="bg-surface rounded-[14px] card-shadow p-10 text-center transition-colors duration-300">
         <h3 class="font-sans text-[20px] gradient-text">${t("account-login-first")}</h3>
         <a href="#auth"
@@ -173,10 +180,10 @@ const render = (): void => {
         </a>
       </div>
     `;
-    return;
-  }
+		return;
+	}
 
-  content.innerHTML = `
+	content.innerHTML = `
     <div class="flex flex-col gap-5 lg:gap-6">
       ${renderProfileCard(user)}
       ${renderInfoCard(user)}
@@ -187,39 +194,39 @@ const render = (): void => {
 };
 
 const showPage = (show: boolean): void => {
-  const page = document.getElementById("account-page");
-  if (!page) return;
-  page.classList.toggle("hidden", !show);
-  if (show) {
-    render();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
+	const page = document.getElementById("account-page");
+	if (!page) return;
+	page.classList.toggle("hidden", !show);
+	if (show) {
+		render();
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	}
 };
 
 const handleRoute = (): void => {
-  showPage(window.location.hash === "#account");
+	showPage(window.location.hash === "#account");
 };
 
 export const initAccountPage = (): void => {
-  handleRoute();
-  window.addEventListener("hashchange", handleRoute);
-  onAuthChange(() => {
-    if (window.location.hash === "#account") render();
-  });
-  cart.onChange(() => {
-    if (window.location.hash === "#account") render();
-  });
-  favorites.onChange(() => {
-    if (window.location.hash === "#account") render();
-  });
+	handleRoute();
+	window.addEventListener("hashchange", handleRoute);
+	onAuthChange(() => {
+		if (window.location.hash === "#account") render();
+	});
+	cart.onChange(() => {
+		if (window.location.hash === "#account") render();
+	});
+	favorites.onChange(() => {
+		if (window.location.hash === "#account") render();
+	});
 
-  document.addEventListener("click", (event) => {
-    const target = event.target as HTMLElement;
-    if (target.closest('[data-action="logout"]')) {
-      if (confirm(t("account-logout-confirm"))) {
-        logout();
-        window.location.hash = "";
-      }
-    }
-  });
+	document.addEventListener("click", (event) => {
+		const target = event.target as HTMLElement;
+		if (target.closest('[data-action="logout"]')) {
+			if (confirm(t("account-logout-confirm"))) {
+				logout();
+				window.location.hash = "";
+			}
+		}
+	});
 };

@@ -1,65 +1,65 @@
 import { isAuthenticated } from "../services/auth";
 import { favorites } from "../services/favorites";
 import {
-  SPEC_LABEL_I18N_KEY,
-  t,
-  translateSurface,
-  translateTitle,
+	SPEC_LABEL_I18N_KEY,
+	t,
+	translateSurface,
+	translateTitle,
 } from "../services/i18n";
 import { showToast } from "../shared/ui/toast";
 import type { Product } from "./products";
 
 export const COLOR_OPTIONS = [
-  "RAL 3005",
-  "RAL 3011",
-  "RAL 5005",
-  "RAL 6005",
-  "RAL 6020",
-  "RAL 7004",
-  "RAL 7024",
-  "RAL 8017",
-  "RAL 9005",
-  "Оцинкованный",
-  "Антрацит",
+	"RAL 3005",
+	"RAL 3011",
+	"RAL 5005",
+	"RAL 6005",
+	"RAL 6020",
+	"RAL 7004",
+	"RAL 7024",
+	"RAL 8017",
+	"RAL 9005",
+	"Оцинкованный",
+	"Антрацит",
 ] as const;
 
 export const THICKNESS_OPTIONS = [
-  "0,35",
-  "0,4",
-  "0,45",
-  "0,5",
-  "0,55",
-  "0,7",
-  "0,8",
+	"0,35",
+	"0,4",
+	"0,45",
+	"0,5",
+	"0,55",
+	"0,7",
+	"0,8",
 ] as const;
 
 export const SURFACE_OPTIONS = [
-  "Полиэстер",
-  "Матовая",
-  "Глянцевая",
-  "Структурная",
+	"Полиэстер",
+	"Матовая",
+	"Глянцевая",
+	"Структурная",
 ] as const;
 
 const DROPDOWN_I18N: Record<string, string> = {
-  color: "calc-color-label",
-  thickness: "calc-thickness-label",
-  surface: "calc-surface-label",
+	color: "calc-color-label",
+	thickness: "calc-thickness-label",
+	surface: "calc-surface-label",
 };
 
 export const Dropdown = (
-  label: string,
-  value: string,
-  options: readonly string[],
-  name: string,
+	label: string,
+	value: string,
+	options: readonly string[],
+	name: string,
 ): string => {
-  const isSurface = name === "surface";
-  const displayValue = isSurface ? translateSurface(value) : value;
+	const isSurface = name === "surface";
+	const displayValue = isSurface ? translateSurface(value) : value;
 
-  const items = options
-    .map((option) => {
-      const displayOption = isSurface ? translateSurface(option) : option;
-      const surfaceAttr = isSurface ? ` data-i18n-surface="${option}"` : "";
-      return `
+	const items = options
+		.map((option) => {
+			const displayOption = isSurface ? translateSurface(option) : option;
+			const surfaceAttr = isSurface ? ` data-i18n-surface="${option}"` : "";
+			return `
         <li>
           <button type="button"
                   class="product-dropdown__option block w-full text-left px-[10px] py-1.5
@@ -71,12 +71,12 @@ export const Dropdown = (
           </button>
         </li>
       `;
-    })
-    .join("");
+		})
+		.join("");
 
-  const labelKey = DROPDOWN_I18N[name];
-  const surfaceValueAttr = isSurface ? ` data-i18n-surface="${value}"` : "";
-  return `
+	const labelKey = DROPDOWN_I18N[name];
+	const surfaceValueAttr = isSurface ? ` data-i18n-surface="${value}"` : "";
+	return `
     <div class="product-dropdown flex flex-col gap-[6px]" data-dropdown="${name}">
       <span class="font-sans font-normal text-[13px] leading-[1.3] text-primary"${labelKey ? ` data-i18n="${labelKey}"` : ""}>${label}</span>
       <div class="relative w-[152px]">
@@ -106,7 +106,7 @@ export const Dropdown = (
 };
 
 export const ProductCard = (product: Product, index: number): string => {
-  return `
+	return `
     <article class="bg-surface rounded-[14px] card-shadow p-6 flex flex-col gap-[23px] transition-colors duration-300"
              data-category="${product.category}"
              data-product-id="${index}"
@@ -186,129 +186,129 @@ export const ProductCard = (product: Product, index: number): string => {
 };
 
 export const syncFavoriteButtons = (): void => {
-  document
-    .querySelectorAll<HTMLElement>(".product-favorite")
-    .forEach((button) => {
-      const id = Number.parseInt(button.dataset.productId ?? "", 10);
-      if (Number.isNaN(id)) return;
-      const isFav = favorites.has(id);
-      const icon = button.querySelector<SVGElement>(".product-favorite__icon");
-      if (isFav) {
-        button.classList.add("text-button-first");
-        button.classList.remove("text-primary");
-        icon?.setAttribute("fill", "currentColor");
-        button.setAttribute("aria-pressed", "true");
-        button.setAttribute("aria-label", t("card-remove-favorite"));
-      } else {
-        button.classList.remove("text-button-first");
-        button.classList.add("text-primary");
-        icon?.setAttribute("fill", "none");
-        button.setAttribute("aria-pressed", "false");
-        button.setAttribute("aria-label", t("card-add-favorite"));
-      }
-    });
+	document
+		.querySelectorAll<HTMLElement>(".product-favorite")
+		.forEach((button) => {
+			const id = Number.parseInt(button.dataset.productId ?? "", 10);
+			if (Number.isNaN(id)) return;
+			const isFav = favorites.has(id);
+			const icon = button.querySelector<SVGElement>(".product-favorite__icon");
+			if (isFav) {
+				button.classList.add("text-button-first");
+				button.classList.remove("text-primary");
+				icon?.setAttribute("fill", "currentColor");
+				button.setAttribute("aria-pressed", "true");
+				button.setAttribute("aria-label", t("card-remove-favorite"));
+			} else {
+				button.classList.remove("text-button-first");
+				button.classList.add("text-primary");
+				icon?.setAttribute("fill", "none");
+				button.setAttribute("aria-pressed", "false");
+				button.setAttribute("aria-label", t("card-add-favorite"));
+			}
+		});
 };
 
 export const initProductCards = (): void => {
-  const closeAll = (except?: Element) => {
-    document
-      .querySelectorAll<HTMLElement>(".product-dropdown")
-      .forEach((dropdown) => {
-        if (dropdown === except) return;
-        const menu = dropdown.querySelector<HTMLElement>(
-          ".product-dropdown__menu",
-        );
-        const toggle = dropdown.querySelector<HTMLElement>(
-          ".product-dropdown__toggle",
-        );
-        const caret = dropdown.querySelector<HTMLElement>(
-          ".product-dropdown__caret",
-        );
-        menu?.classList.add("hidden");
-        toggle?.setAttribute("aria-expanded", "false");
-        caret?.classList.remove("rotate-180");
-      });
-  };
+	const closeAll = (except?: Element) => {
+		document
+			.querySelectorAll<HTMLElement>(".product-dropdown")
+			.forEach((dropdown) => {
+				if (dropdown === except) return;
+				const menu = dropdown.querySelector<HTMLElement>(
+					".product-dropdown__menu",
+				);
+				const toggle = dropdown.querySelector<HTMLElement>(
+					".product-dropdown__toggle",
+				);
+				const caret = dropdown.querySelector<HTMLElement>(
+					".product-dropdown__caret",
+				);
+				menu?.classList.add("hidden");
+				toggle?.setAttribute("aria-expanded", "false");
+				caret?.classList.remove("rotate-180");
+			});
+	};
 
-  document.addEventListener("click", (event) => {
-    const target = event.target as HTMLElement;
+	document.addEventListener("click", (event) => {
+		const target = event.target as HTMLElement;
 
-    const favBtn = target.closest<HTMLElement>(
-      '[data-action="favorite-toggle"]',
-    );
-    if (favBtn) {
-      event.preventDefault();
-      event.stopPropagation();
-      if (!isAuthenticated()) {
-        window.location.hash = "#auth";
-        return;
-      }
-      const id = Number.parseInt(favBtn.dataset.productId ?? "", 10);
-      if (Number.isNaN(id)) return;
-      const card = favBtn.closest<HTMLElement>("article[data-product-title]");
-      const name = translateTitle(
-        card?.dataset.productTitle ?? t("card-product-name"),
-      );
-      void favorites.toggle(id).then((added) => {
-        showToast(
-          added
-            ? `«${name}» ${t("card-toast-added")}`
-            : `«${name}» ${t("card-toast-removed")}`,
-          { type: added ? "success" : "info" },
-        );
-      });
-      return;
-    }
+		const favBtn = target.closest<HTMLElement>(
+			'[data-action="favorite-toggle"]',
+		);
+		if (favBtn) {
+			event.preventDefault();
+			event.stopPropagation();
+			if (!isAuthenticated()) {
+				window.location.hash = "#auth";
+				return;
+			}
+			const id = Number.parseInt(favBtn.dataset.productId ?? "", 10);
+			if (Number.isNaN(id)) return;
+			const card = favBtn.closest<HTMLElement>("article[data-product-title]");
+			const name = translateTitle(
+				card?.dataset.productTitle ?? t("card-product-name"),
+			);
+			void favorites.toggle(id).then((added) => {
+				showToast(
+					added
+						? `«${name}» ${t("card-toast-added")}`
+						: `«${name}» ${t("card-toast-removed")}`,
+					{ type: added ? "success" : "info" },
+				);
+			});
+			return;
+		}
 
-    const toggle = target.closest<HTMLElement>(".product-dropdown__toggle");
-    if (toggle) {
-      const dropdown = toggle.closest<HTMLElement>(".product-dropdown");
-      if (!dropdown) return;
-      const menu = dropdown.querySelector<HTMLElement>(
-        ".product-dropdown__menu",
-      );
-      const caret = dropdown.querySelector<HTMLElement>(
-        ".product-dropdown__caret",
-      );
-      const willOpen = menu?.classList.contains("hidden") ?? false;
-      closeAll(willOpen ? dropdown : undefined);
-      if (willOpen) {
-        menu?.classList.remove("hidden");
-        toggle.setAttribute("aria-expanded", "true");
-        caret?.classList.add("rotate-180");
-      }
-      return;
-    }
+		const toggle = target.closest<HTMLElement>(".product-dropdown__toggle");
+		if (toggle) {
+			const dropdown = toggle.closest<HTMLElement>(".product-dropdown");
+			if (!dropdown) return;
+			const menu = dropdown.querySelector<HTMLElement>(
+				".product-dropdown__menu",
+			);
+			const caret = dropdown.querySelector<HTMLElement>(
+				".product-dropdown__caret",
+			);
+			const willOpen = menu?.classList.contains("hidden") ?? false;
+			closeAll(willOpen ? dropdown : undefined);
+			if (willOpen) {
+				menu?.classList.remove("hidden");
+				toggle.setAttribute("aria-expanded", "true");
+				caret?.classList.add("rotate-180");
+			}
+			return;
+		}
 
-    const option = target.closest<HTMLElement>(".product-dropdown__option");
-    if (option) {
-      const dropdown = option.closest<HTMLElement>(".product-dropdown");
-      const valueEl = dropdown?.querySelector<HTMLElement>(
-        ".product-dropdown__value",
-      );
-      const value = option.dataset.value ?? "";
-      if (valueEl) {
-        const isSurface = dropdown?.dataset.dropdown === "surface";
-        valueEl.textContent = isSurface ? translateSurface(value) : value;
-        valueEl.dataset.value = value;
-        if (isSurface) valueEl.dataset.i18nSurface = value;
-      }
-      dropdown
-        ?.querySelectorAll<HTMLElement>(".product-dropdown__option")
-        .forEach((opt) => {
-          opt.classList.toggle("bg-bg-first", opt === option);
-        });
-      closeAll();
-      return;
-    }
+		const option = target.closest<HTMLElement>(".product-dropdown__option");
+		if (option) {
+			const dropdown = option.closest<HTMLElement>(".product-dropdown");
+			const valueEl = dropdown?.querySelector<HTMLElement>(
+				".product-dropdown__value",
+			);
+			const value = option.dataset.value ?? "";
+			if (valueEl) {
+				const isSurface = dropdown?.dataset.dropdown === "surface";
+				valueEl.textContent = isSurface ? translateSurface(value) : value;
+				valueEl.dataset.value = value;
+				if (isSurface) valueEl.dataset.i18nSurface = value;
+			}
+			dropdown
+				?.querySelectorAll<HTMLElement>(".product-dropdown__option")
+				.forEach((opt) => {
+					opt.classList.toggle("bg-bg-first", opt === option);
+				});
+			closeAll();
+			return;
+		}
 
-    closeAll();
-  });
+		closeAll();
+	});
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeAll();
-  });
+	document.addEventListener("keydown", (event) => {
+		if (event.key === "Escape") closeAll();
+	});
 
-  syncFavoriteButtons();
-  favorites.onChange(syncFavoriteButtons);
+	syncFavoriteButtons();
+	favorites.onChange(syncFavoriteButtons);
 };

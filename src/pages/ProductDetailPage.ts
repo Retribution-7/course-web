@@ -1,10 +1,10 @@
 import {
-  COLOR_OPTIONS,
-  Dropdown,
-  ProductCard,
-  SURFACE_OPTIONS,
-  syncFavoriteButtons,
-  THICKNESS_OPTIONS,
+	COLOR_OPTIONS,
+	Dropdown,
+	ProductCard,
+	SURFACE_OPTIONS,
+	syncFavoriteButtons,
+	THICKNESS_OPTIONS,
 } from "../entities/ProductCard";
 import type { Product } from "../entities/products";
 import { fetchProductById, fetchProducts } from "../services/api";
@@ -14,25 +14,25 @@ import { RELATED_PRODUCTS_LIMIT } from "../shared/lib/constants";
 import { BackLink } from "../shared/ui/BackLink";
 
 const renderDetail = (
-  product: Product,
-  index: number,
-  related: Product[],
+	product: Product,
+	index: number,
+	related: Product[],
 ): string => {
-  const key = catKey(product.category);
-  const advantages = [0, 1, 2, 3]
-    .map(
-      (i) => `
+	const key = catKey(product.category);
+	const advantages = [0, 1, 2, 3]
+		.map(
+			(i) => `
         <li class="flex items-start gap-3">
           <span class="mt-1 size-2 rounded-full bg-button-first shrink-0"></span>
           <span class="font-sans text-[14px] lg:text-[15px] leading-[1.5] text-text-secondary">${t(`cat-adv-${key}-${i}`)}</span>
         </li>`,
-    )
-    .join("");
+		)
+		.join("");
 
-  const relatedHtml =
-    related.length === 0
-      ? ""
-      : `
+	const relatedHtml =
+		related.length === 0
+			? ""
+			: `
         <section class="mt-14 lg:mt-20">
           <h3 class="font-sans font-normal text-[24px] leading-[1.2] sm:text-[28px] lg:text-[32px] gradient-text">
             ${t("product-related")}
@@ -43,7 +43,7 @@ const renderDetail = (
         </section>
       `;
 
-  return `
+	return `
     ${BackLink("#catalog", "product-to-catalog", t("product-to-catalog"), "text-text-secondary")}
 
     <article class="bg-surface rounded-[14px] card-shadow p-5 sm:p-6 lg:p-10 transition-colors duration-300"
@@ -147,25 +147,25 @@ export const ProductDetailPage = (): string => `
 `;
 
 const showPage = async (show: boolean, productIdx?: number): Promise<void> => {
-  const page = document.getElementById("product-page");
-  const content = document.getElementById("product-detail-content");
-  if (!page || !content) return;
-  page.classList.toggle("hidden", !show);
+	const page = document.getElementById("product-page");
+	const content = document.getElementById("product-detail-content");
+	if (!page || !content) return;
+	page.classList.toggle("hidden", !show);
 
-  if (!show || productIdx === undefined) return;
+	if (!show || productIdx === undefined) return;
 
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  content.innerHTML = `
+	window.scrollTo({ top: 0, behavior: "smooth" });
+	content.innerHTML = `
     <div class="flex justify-center py-20">
       <span class="font-sans text-[15px] text-text-third">${t("product-loading")}</span>
     </div>
   `;
 
-  try {
-    const product = await fetchProductById(productIdx);
+	try {
+		const product = await fetchProductById(productIdx);
 
-    if (!product) {
-      content.innerHTML = `
+		if (!product) {
+			content.innerHTML = `
         <div class="bg-surface rounded-[14px] card-shadow p-10 text-center transition-colors duration-300">
           <h3 class="font-sans text-[20px] gradient-text">${t("product-not-found")}</h3>
           <a href="#catalog"
@@ -177,33 +177,33 @@ const showPage = async (show: boolean, productIdx?: number): Promise<void> => {
           </a>
         </div>
       `;
-      return;
-    }
+			return;
+		}
 
-    const allInCategory = await fetchProducts({ category: product.category });
-    const related = allInCategory
-      .filter((p) => p.id !== productIdx)
-      .slice(0, RELATED_PRODUCTS_LIMIT);
+		const allInCategory = await fetchProducts({ category: product.category });
+		const related = allInCategory
+			.filter((p) => p.id !== productIdx)
+			.slice(0, RELATED_PRODUCTS_LIMIT);
 
-    content.innerHTML = renderDetail(product, productIdx, related);
-    syncFavoriteButtons();
-  } catch {
-    content.innerHTML = `
+		content.innerHTML = renderDetail(product, productIdx, related);
+		syncFavoriteButtons();
+	} catch {
+		content.innerHTML = `
       <div class="bg-surface rounded-[14px] card-shadow p-10 text-center transition-colors duration-300">
         <h3 class="font-sans text-[20px] gradient-text">${t("product-error")}</h3>
         <p class="mt-2 font-sans text-[15px] text-text-secondary">${t("product-error-desc")}</p>
       </div>
     `;
-  }
+	}
 };
 
 const handleRoute = (): void => {
-  const match = window.location.hash.match(/^#product\/(\d+)$/);
-  if (match) void showPage(true, Number.parseInt(match[1], 10));
-  else void showPage(false);
+	const match = window.location.hash.match(/^#product\/(\d+)$/);
+	if (match) void showPage(true, Number.parseInt(match[1], 10));
+	else void showPage(false);
 };
 
 export const initProductDetailPage = (): void => {
-  handleRoute();
-  window.addEventListener("hashchange", handleRoute);
+	handleRoute();
+	window.addEventListener("hashchange", handleRoute);
 };

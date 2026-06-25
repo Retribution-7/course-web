@@ -2,7 +2,7 @@ import { t } from "../services/i18n";
 import { showToast } from "../shared/ui/toast";
 
 export const ContactForm = (): string => {
-  return `
+	return `
     <section class="bg-surface overflow-hidden transition-colors duration-300" id="consultation" aria-labelledby="consultation-heading">
       <div class="container-main flex flex-col lg:flex-row items-center justify-between gap-10 py-12 lg:py-14">
 
@@ -73,13 +73,13 @@ export const ContactForm = (): string => {
 };
 
 export const initContactForm = (): void => {
-  const form = document.getElementById(
-    "consultation-form",
-  ) as HTMLFormElement | null;
-  if (!form) return;
+	const form = document.getElementById(
+		"consultation-form",
+	) as HTMLFormElement | null;
+	if (!form) return;
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    showToast(t("contact-thanks"), { type: "success" });
-  });
+	form.addEventListener("submit", (e) => {
+		e.preventDefault();
+		showToast(t("contact-thanks"), { type: "success" });
+	});
 };

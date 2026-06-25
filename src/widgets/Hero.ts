@@ -1,5 +1,5 @@
 export const Hero = (): string => {
-  return `
+	return `
     <section class="relative min-h-[500px] lg:min-h-[700px] xl:min-h-[961px] overflow-hidden" aria-label="Главный баннер">
 
       <!-- Фоновое изображение -->

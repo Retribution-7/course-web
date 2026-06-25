@@ -108,7 +108,7 @@ const LangToggle = (): string => `
 `;
 
 export const Header = (): string => {
-  return `
+	return `
     <header class="bg-surface w-full sticky top-0 z-50 shadow-[0_2px_20px_rgba(0,0,0,0.06)] transition-colors duration-300">
       <div class="container-main">
         <nav class="flex items-center justify-between gap-6 py-6 2xl:py-10" aria-label="Главная навигация">
@@ -278,119 +278,119 @@ export const Header = (): string => {
 };
 
 const syncCartBadges = (): void => {
-  const count = cart.count();
-  document
-    .querySelectorAll<HTMLElement>("[data-cart-badge]")
-    .forEach((badge) => {
-      badge.textContent = String(count);
-      badge.classList.toggle("hidden", count === 0);
-    });
+	const count = cart.count();
+	document
+		.querySelectorAll<HTMLElement>("[data-cart-badge]")
+		.forEach((badge) => {
+			badge.textContent = String(count);
+			badge.classList.toggle("hidden", count === 0);
+		});
 };
 
 const syncFavoritesBadges = (): void => {
-  const count = favorites.count();
-  document
-    .querySelectorAll<HTMLElement>("[data-favorites-badge]")
-    .forEach((badge) => {
-      badge.textContent = String(count);
-      badge.classList.toggle("hidden", count === 0);
-    });
+	const count = favorites.count();
+	document
+		.querySelectorAll<HTMLElement>("[data-favorites-badge]")
+		.forEach((badge) => {
+			badge.textContent = String(count);
+			badge.classList.toggle("hidden", count === 0);
+		});
 };
 
 const syncAuthLink = (): void => {
-  const auth = isAuthenticated();
-  document
-    .querySelectorAll<HTMLAnchorElement>("[data-auth-link]")
-    .forEach((link) => {
-      link.href = auth ? "#account" : "#auth";
-      link.setAttribute(
-        "aria-label",
-        auth ? "Личный кабинет" : "Войти или зарегистрироваться",
-      );
-    });
+	const auth = isAuthenticated();
+	document
+		.querySelectorAll<HTMLAnchorElement>("[data-auth-link]")
+		.forEach((link) => {
+			link.href = auth ? "#account" : "#auth";
+			link.setAttribute(
+				"aria-label",
+				auth ? "Личный кабинет" : "Войти или зарегистрироваться",
+			);
+		});
 };
 
 const syncAdminLink = (): void => {
-  const admin = isAdmin();
-  document.querySelectorAll<HTMLElement>("[data-admin-link]").forEach((el) => {
-    el.style.display = admin ? "grid" : "none";
-  });
+	const admin = isAdmin();
+	document.querySelectorAll<HTMLElement>("[data-admin-link]").forEach((el) => {
+		el.style.display = admin ? "grid" : "none";
+	});
 };
 
 const updateLangToggle = (lang: Lang): void => {
-  const isEn = lang === "en";
-  document
-    .querySelectorAll<HTMLElement>("[data-lang-indicator]")
-    .forEach((el) => {
-      el.style.transform = isEn ? "translateX(100%)" : "translateX(0)";
-    });
-  document
-    .querySelectorAll<HTMLButtonElement>("[data-lang-btn]")
-    .forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.langBtn === lang);
-    });
+	const isEn = lang === "en";
+	document
+		.querySelectorAll<HTMLElement>("[data-lang-indicator]")
+		.forEach((el) => {
+			el.style.transform = isEn ? "translateX(100%)" : "translateX(0)";
+		});
+	document
+		.querySelectorAll<HTMLButtonElement>("[data-lang-btn]")
+		.forEach((btn) => {
+			btn.classList.toggle("active", btn.dataset.langBtn === lang);
+		});
 };
 
 const updateThemeIcons = (isDark: boolean): void => {
-  document
-    .querySelectorAll<HTMLElement>("[data-theme-icon-light]")
-    .forEach((el) => {
-      el.classList.toggle("hidden", isDark);
-    });
-  document
-    .querySelectorAll<HTMLElement>("[data-theme-icon-dark]")
-    .forEach((el) => {
-      el.classList.toggle("hidden", !isDark);
-    });
+	document
+		.querySelectorAll<HTMLElement>("[data-theme-icon-light]")
+		.forEach((el) => {
+			el.classList.toggle("hidden", isDark);
+		});
+	document
+		.querySelectorAll<HTMLElement>("[data-theme-icon-dark]")
+		.forEach((el) => {
+			el.classList.toggle("hidden", !isDark);
+		});
 };
 
 export const initTheme = (): void => {
-  const saved = localStorage.getItem("theme");
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const isDark = saved === "dark" || (!saved && prefersDark);
-  document.documentElement.classList.toggle("dark", isDark);
-  updateThemeIcons(isDark);
+	const saved = localStorage.getItem("theme");
+	const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+	const isDark = saved === "dark" || (!saved && prefersDark);
+	document.documentElement.classList.toggle("dark", isDark);
+	updateThemeIcons(isDark);
 };
 
 export const initHeader = (): void => {
-  syncCartBadges();
-  syncFavoritesBadges();
-  syncAuthLink();
-  syncAdminLink();
-  cart.onChange(syncCartBadges);
-  favorites.onChange(syncFavoritesBadges);
-  onAuthChange(syncAuthLink);
-  onAuthChange(syncAdminLink);
+	syncCartBadges();
+	syncFavoritesBadges();
+	syncAuthLink();
+	syncAdminLink();
+	cart.onChange(syncCartBadges);
+	favorites.onChange(syncFavoritesBadges);
+	onAuthChange(syncAuthLink);
+	onAuthChange(syncAdminLink);
 
-  updateLangToggle(getCurrentLang());
+	updateLangToggle(getCurrentLang());
 
-  document
-    .querySelectorAll<HTMLButtonElement>("[data-lang-btn]")
-    .forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const lang = btn.dataset.langBtn as Lang;
-        getTranslate(lang);
-        updateLangToggle(lang);
-      });
-    });
+	document
+		.querySelectorAll<HTMLButtonElement>("[data-lang-btn]")
+		.forEach((btn) => {
+			btn.addEventListener("click", () => {
+				const lang = btn.dataset.langBtn as Lang;
+				getTranslate(lang);
+				updateLangToggle(lang);
+			});
+		});
 
-  document
-    .querySelectorAll<HTMLButtonElement>("[data-theme-btn]")
-    .forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const isDark = document.documentElement.classList.toggle("dark");
-        localStorage.setItem("theme", isDark ? "dark" : "light");
-        updateThemeIcons(isDark);
-      });
-    });
+	document
+		.querySelectorAll<HTMLButtonElement>("[data-theme-btn]")
+		.forEach((btn) => {
+			btn.addEventListener("click", () => {
+				const isDark = document.documentElement.classList.toggle("dark");
+				localStorage.setItem("theme", isDark ? "dark" : "light");
+				updateThemeIcons(isDark);
+			});
+		});
 
-  const btn = document.getElementById("mobile-menu-btn");
-  const menu = document.getElementById("mobile-menu");
-  if (!btn || !menu) return;
+	const btn = document.getElementById("mobile-menu-btn");
+	const menu = document.getElementById("mobile-menu");
+	if (!btn || !menu) return;
 
-  btn.addEventListener("click", () => {
-    const isOpen = !menu.classList.contains("hidden");
-    menu.classList.toggle("hidden", isOpen);
-    btn.setAttribute("aria-expanded", String(!isOpen));
-  });
+	btn.addEventListener("click", () => {
+		const isOpen = !menu.classList.contains("hidden");
+		menu.classList.toggle("hidden", isOpen);
+		btn.setAttribute("aria-expanded", String(!isOpen));
+	});
 };

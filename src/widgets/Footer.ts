@@ -2,22 +2,22 @@ import { t } from "../services/i18n";
 import { MessengerLinks } from "../shared/ui/MessengerLinks";
 
 export const initFooter = (): void => {
-  document.addEventListener("click", (event) => {
-    const btn = (event.target as HTMLElement).closest(
-      '[data-action="reset-settings"]',
-    );
-    if (!btn) return;
-    if (confirm(t("footer-reset-confirm"))) {
-      localStorage.clear();
-      localStorage.setItem("theme", "light");
-      window.location.hash = "";
-      window.location.reload();
-    }
-  });
+	document.addEventListener("click", (event) => {
+		const btn = (event.target as HTMLElement).closest(
+			'[data-action="reset-settings"]',
+		);
+		if (!btn) return;
+		if (confirm(t("footer-reset-confirm"))) {
+			localStorage.clear();
+			localStorage.setItem("theme", "light");
+			window.location.hash = "";
+			window.location.reload();
+		}
+	});
 };
 
 export const Footer = (): string => {
-  return `
+	return `
     <footer class="bg-surface border-t border-primary/10 transition-colors duration-300" aria-label="Подвал сайта">
       <div class="container-main py-[37px]">
 

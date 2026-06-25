@@ -1,44 +1,44 @@
 import { type Review, reviewDateMs } from "../entities/reviews";
 import { fetchReviews, postReview } from "../services/api";
-import { isAuthenticated, getUser } from "../services/auth";
+import { getUser, isAuthenticated } from "../services/auth";
 import { getCurrentLang, t } from "../services/i18n";
-import { pluralize } from "../shared/utils/pluralize";
 import { BackLink } from "../shared/ui/BackLink";
 import { EmptyState } from "../shared/ui/EmptyState";
 import { showToast } from "../shared/ui/toast";
+import { pluralize } from "../shared/utils/pluralize";
 
 type SortOrder = "newest" | "oldest" | "rating";
 type RatingFilter = "all" | "5" | "4plus" | "3plus";
 
 interface FilterState {
-  search: string;
-  sort: SortOrder;
-  rating: RatingFilter;
-  page: number;
+	search: string;
+	sort: SortOrder;
+	rating: RatingFilter;
+	page: number;
 }
 
 const PAGE_SIZE = 6;
 
 const state: FilterState = {
-  search: "",
-  sort: "newest",
-  rating: "all",
-  page: 1,
+	search: "",
+	sort: "newest",
+	rating: "all",
+	page: 1,
 };
 
 let cachedReviews: Review[] = [];
 
 const Stars = (rating: number): string => {
-  const full = Math.max(0, Math.min(5, Math.round(rating)));
-  const ariaLabel =
-    getCurrentLang() === "en"
-      ? `Rating: ${full} out of 5`
-      : `Оценка: ${full} из 5`;
-  return `
+	const full = Math.max(0, Math.min(5, Math.round(rating)));
+	const ariaLabel =
+		getCurrentLang() === "en"
+			? `Rating: ${full} out of 5`
+			: `Оценка: ${full} из 5`;
+	return `
     <div class="flex items-center gap-0.5" aria-label="${ariaLabel}">
       ${Array.from({ length: 5 })
-        .map(
-          (_, i) => `
+				.map(
+					(_, i) => `
         <svg viewBox="0 0 20 20"
              class="size-[14px] sm:size-4 ${i < full ? "text-button-first" : "text-border-light dark:text-border-dark"}"
              fill="currentColor"
@@ -46,8 +46,8 @@ const Stars = (rating: number): string => {
           <path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.2 1 5.8L10 14.9l-5.2 2.8 1-5.8L1.5 7.7l5.9-.9z"/>
         </svg>
       `,
-        )
-        .join("")}
+				)
+				.join("")}
     </div>
   `;
 };
@@ -75,23 +75,23 @@ const renderCard = (review: Review): string => `
     </p>
 
     ${
-      review.product
-        ? `<div class="pt-3 border-t border-border-light dark:border-border-dark">
+			review.product
+				? `<div class="pt-3 border-t border-border-light dark:border-border-dark">
              <span class="inline-flex items-center gap-1.5 font-sans text-[12px] text-text-third">
                <span class="size-1.5 rounded-full bg-button-first"></span>
                ${review.product}
              </span>
            </div>`
-        : ""
-    }
+				: ""
+		}
   </article>
 `;
 
 const renderEmpty = (): string =>
-  EmptyState({
-    title: t("reviews-empty-title"),
-    description: t("reviews-empty-desc"),
-    action: `<button type="button"
+	EmptyState({
+		title: t("reviews-empty-title"),
+		description: t("reviews-empty-desc"),
+		action: `<button type="button"
             data-action="reviews-reset"
             class="inline-flex items-center justify-center rounded-full
                    bg-surface-hover border border-button-first
@@ -99,7 +99,7 @@ const renderEmpty = (): string =>
                    hover:bg-surface transition-colors cursor-pointer">
       ${t("reviews-reset")}
     </button>`,
-  });
+	});
 
 export const ReviewsPage = (): string => `
   <section id="reviews-page"
@@ -235,291 +235,291 @@ export const ReviewsPage = (): string => `
 `;
 
 const pluralReviews = (n: number): string =>
-  pluralize(n, ["отзыв", "отзыва", "отзывов"], "review");
+	pluralize(n, ["отзыв", "отзыва", "отзывов"], "review");
 
 const matchesFilters = (review: Review): boolean => {
-  if (state.search) {
-    const q = state.search.toLowerCase();
-    if (
-      !review.name.toLowerCase().includes(q) &&
-      !review.text.toLowerCase().includes(q) &&
-      !(review.product?.toLowerCase().includes(q) ?? false)
-    ) {
-      return false;
-    }
-  }
-  if (state.rating === "5" && review.rating !== 5) return false;
-  if (state.rating === "4plus" && review.rating < 4) return false;
-  if (state.rating === "3plus" && review.rating < 3) return false;
-  return true;
+	if (state.search) {
+		const q = state.search.toLowerCase();
+		if (
+			!review.name.toLowerCase().includes(q) &&
+			!review.text.toLowerCase().includes(q) &&
+			!(review.product?.toLowerCase().includes(q) ?? false)
+		) {
+			return false;
+		}
+	}
+	if (state.rating === "5" && review.rating !== 5) return false;
+	if (state.rating === "4plus" && review.rating < 4) return false;
+	if (state.rating === "3plus" && review.rating < 3) return false;
+	return true;
 };
 
 const sortReviews = (list: Review[]): Review[] => {
-  const sorted = [...list];
-  if (state.sort === "newest") {
-    sorted.sort((a, b) => reviewDateMs(b) - reviewDateMs(a));
-  } else if (state.sort === "oldest") {
-    sorted.sort((a, b) => reviewDateMs(a) - reviewDateMs(b));
-  } else {
-    sorted.sort(
-      (a, b) => b.rating - a.rating || reviewDateMs(b) - reviewDateMs(a),
-    );
-  }
-  return sorted;
+	const sorted = [...list];
+	if (state.sort === "newest") {
+		sorted.sort((a, b) => reviewDateMs(b) - reviewDateMs(a));
+	} else if (state.sort === "oldest") {
+		sorted.sort((a, b) => reviewDateMs(a) - reviewDateMs(b));
+	} else {
+		sorted.sort(
+			(a, b) => b.rating - a.rating || reviewDateMs(b) - reviewDateMs(a),
+		);
+	}
+	return sorted;
 };
 
 const renderPagination = (totalPages: number, currentPage: number): string => {
-  if (totalPages <= 1) return "";
-  const pageBtn = (
-    label: string,
-    page: number,
-    isActive = false,
-    isDisabled = false,
-  ) => `
+	if (totalPages <= 1) return "";
+	const pageBtn = (
+		label: string,
+		page: number,
+		isActive = false,
+		isDisabled = false,
+	) => `
     <button type="button"
             data-page="${page}"
             ${isDisabled ? "disabled" : ""}
             class="min-w-[40px] h-10 px-3 rounded-full font-sans text-[14px] lg:text-[15px]
                    transition-colors duration-200 cursor-pointer
                    ${
-                     isActive
-                       ? "bg-gradient-to-r from-button-first to-button-second text-primary shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]"
-                       : "bg-surface border border-button-first text-text-secondary hover:bg-surface-hover"
-                   }
+											isActive
+												? "bg-gradient-to-r from-button-first to-button-second text-primary shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]"
+												: "bg-surface border border-button-first text-text-secondary hover:bg-surface-hover"
+}
                    disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-surface">
       ${label}
     </button>
   `;
 
-  const pages: string[] = [];
-  pages.push(pageBtn("←", currentPage - 1, false, currentPage === 1));
-  for (let p = 1; p <= totalPages; p++) {
-    pages.push(pageBtn(String(p), p, p === currentPage));
-  }
-  pages.push(pageBtn("→", currentPage + 1, false, currentPage === totalPages));
-  return pages.join("");
+	const pages: string[] = [];
+	pages.push(pageBtn("←", currentPage - 1, false, currentPage === 1));
+	for (let p = 1; p <= totalPages; p++) {
+		pages.push(pageBtn(String(p), p, p === currentPage));
+	}
+	pages.push(pageBtn("→", currentPage + 1, false, currentPage === totalPages));
+	return pages.join("");
 };
 
 const renderGrid = (): void => {
-  const grid = document.getElementById("reviews-grid");
-  const summary = document.getElementById("reviews-summary");
-  const avg = document.getElementById("reviews-avg-rating");
-  const pagination = document.getElementById("reviews-pagination");
-  if (!grid || !summary || !avg || !pagination) return;
+	const grid = document.getElementById("reviews-grid");
+	const summary = document.getElementById("reviews-summary");
+	const avg = document.getElementById("reviews-avg-rating");
+	const pagination = document.getElementById("reviews-pagination");
+	if (!grid || !summary || !avg || !pagination) return;
 
-  const filtered = sortReviews(cachedReviews.filter(matchesFilters));
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  state.page = Math.max(1, Math.min(state.page, totalPages));
-  const start = (state.page - 1) * PAGE_SIZE;
-  const pageItems = filtered.slice(start, start + PAGE_SIZE);
+	const filtered = sortReviews(cachedReviews.filter(matchesFilters));
+	const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+	state.page = Math.max(1, Math.min(state.page, totalPages));
+	const start = (state.page - 1) * PAGE_SIZE;
+	const pageItems = filtered.slice(start, start + PAGE_SIZE);
 
-  if (filtered.length === 0) {
-    grid.innerHTML = "";
-    grid.classList.add("hidden");
-    pagination.classList.add("hidden");
-    pagination.innerHTML = "";
-    let empty = document.getElementById("reviews-empty");
-    if (!empty) {
-      empty = document.createElement("div");
-      empty.id = "reviews-empty";
-      grid.parentElement?.insertBefore(empty, grid);
-    }
-    empty.innerHTML = renderEmpty();
-  } else {
-    grid.classList.remove("hidden");
-    document.getElementById("reviews-empty")?.remove();
-    grid.innerHTML = pageItems.map(renderCard).join("");
+	if (filtered.length === 0) {
+		grid.innerHTML = "";
+		grid.classList.add("hidden");
+		pagination.classList.add("hidden");
+		pagination.innerHTML = "";
+		let empty = document.getElementById("reviews-empty");
+		if (!empty) {
+			empty = document.createElement("div");
+			empty.id = "reviews-empty";
+			grid.parentElement?.insertBefore(empty, grid);
+		}
+		empty.innerHTML = renderEmpty();
+	} else {
+		grid.classList.remove("hidden");
+		document.getElementById("reviews-empty")?.remove();
+		grid.innerHTML = pageItems.map(renderCard).join("");
 
-    const paginationHtml = renderPagination(totalPages, state.page);
-    if (paginationHtml) {
-      pagination.classList.remove("hidden");
-      pagination.innerHTML = paginationHtml;
-    } else {
-      pagination.classList.add("hidden");
-      pagination.innerHTML = "";
-    }
-  }
+		const paginationHtml = renderPagination(totalPages, state.page);
+		if (paginationHtml) {
+			pagination.classList.remove("hidden");
+			pagination.innerHTML = paginationHtml;
+		} else {
+			pagination.classList.add("hidden");
+			pagination.innerHTML = "";
+		}
+	}
 
-  const fn = filtered.length;
-  const total = cachedReviews.length;
-  summary.textContent =
-    getCurrentLang() === "en"
-      ? `Showing ${fn} of ${total} ${fn !== 1 ? "reviews" : "review"}`
-      : `Показано ${pluralReviews(fn)} из ${total}`;
-  const sum = cachedReviews.reduce((acc, r) => acc + r.rating, 0);
-  avg.textContent =
-    cachedReviews.length > 0 ? (sum / cachedReviews.length).toFixed(1) : "";
+	const fn = filtered.length;
+	const total = cachedReviews.length;
+	summary.textContent =
+		getCurrentLang() === "en"
+			? `Showing ${fn} of ${total} ${fn !== 1 ? "reviews" : "review"}`
+			: `Показано ${pluralReviews(fn)} из ${total}`;
+	const sum = cachedReviews.reduce((acc, r) => acc + r.rating, 0);
+	avg.textContent =
+		cachedReviews.length > 0 ? (sum / cachedReviews.length).toFixed(1) : "";
 };
 
 const showLoadingState = (): void => {
-  const grid = document.getElementById("reviews-grid");
-  if (grid) {
-    grid.classList.remove("hidden");
-    grid.innerHTML = `
+	const grid = document.getElementById("reviews-grid");
+	if (grid) {
+		grid.classList.remove("hidden");
+		grid.innerHTML = `
       <div class="col-span-full flex justify-center py-16">
         <span class="font-sans text-[15px] text-text-third">${t("reviews-loading")}</span>
       </div>
     `;
-  }
+	}
 };
 
 const showPage = (show: boolean): void => {
-  const page = document.getElementById("reviews-page");
-  if (!page) return;
-  page.classList.toggle("hidden", !show);
-  if (!show) return;
+	const page = document.getElementById("reviews-page");
+	if (!page) return;
+	page.classList.toggle("hidden", !show);
+	if (!show) return;
 
-  const formWrapper = document.getElementById("reviews-form-wrapper");
-  if (formWrapper) formWrapper.classList.toggle("hidden", !isAuthenticated());
+	const formWrapper = document.getElementById("reviews-form-wrapper");
+	if (formWrapper) formWrapper.classList.toggle("hidden", !isAuthenticated());
 
-  window.scrollTo({ top: 0, behavior: "smooth" });
+	window.scrollTo({ top: 0, behavior: "smooth" });
 
-  if (cachedReviews.length > 0) {
-    renderGrid();
-    return;
-  }
+	if (cachedReviews.length > 0) {
+		renderGrid();
+		return;
+	}
 
-  showLoadingState();
-  fetchReviews()
-    .then((reviews) => {
-      cachedReviews = reviews;
-      renderGrid();
-    })
-    .catch(() => {
-      const grid = document.getElementById("reviews-grid");
-      if (grid)
-        grid.innerHTML = `
+	showLoadingState();
+	fetchReviews()
+		.then((reviews) => {
+			cachedReviews = reviews;
+			renderGrid();
+		})
+		.catch(() => {
+			const grid = document.getElementById("reviews-grid");
+			if (grid)
+				grid.innerHTML = `
           <div class="col-span-full text-center py-16 font-sans text-[15px] text-text-third">
             ${t("reviews-error")}
           </div>
         `;
-    });
+		});
 };
 
 const handleRoute = (): void => {
-  showPage(window.location.hash === "#reviews");
+	showPage(window.location.hash === "#reviews");
 };
 
 const resetFilters = (): void => {
-  state.search = "";
-  state.rating = "all";
-  state.sort = "newest";
-  state.page = 1;
-  const search = document.getElementById(
-    "reviews-search",
-  ) as HTMLInputElement | null;
-  const rating = document.getElementById(
-    "reviews-rating",
-  ) as HTMLSelectElement | null;
-  const sort = document.getElementById(
-    "reviews-sort",
-  ) as HTMLSelectElement | null;
-  if (search) search.value = "";
-  if (rating) rating.value = "all";
-  if (sort) sort.value = "newest";
-  renderGrid();
+	state.search = "";
+	state.rating = "all";
+	state.sort = "newest";
+	state.page = 1;
+	const search = document.getElementById(
+		"reviews-search",
+	) as HTMLInputElement | null;
+	const rating = document.getElementById(
+		"reviews-rating",
+	) as HTMLSelectElement | null;
+	const sort = document.getElementById(
+		"reviews-sort",
+	) as HTMLSelectElement | null;
+	if (search) search.value = "";
+	if (rating) rating.value = "all";
+	if (sort) sort.value = "newest";
+	renderGrid();
 };
 
 export const initReviewsPage = (): void => {
-  handleRoute();
-  window.addEventListener("hashchange", handleRoute);
+	handleRoute();
+	window.addEventListener("hashchange", handleRoute);
 
-  document.getElementById("reviews-search")?.addEventListener("input", (e) => {
-    state.search = (e.target as HTMLInputElement).value.trim();
-    state.page = 1;
-    renderGrid();
-  });
+	document.getElementById("reviews-search")?.addEventListener("input", (e) => {
+		state.search = (e.target as HTMLInputElement).value.trim();
+		state.page = 1;
+		renderGrid();
+	});
 
-  document.getElementById("reviews-rating")?.addEventListener("change", (e) => {
-    state.rating = (e.target as HTMLSelectElement).value as RatingFilter;
-    state.page = 1;
-    renderGrid();
-  });
+	document.getElementById("reviews-rating")?.addEventListener("change", (e) => {
+		state.rating = (e.target as HTMLSelectElement).value as RatingFilter;
+		state.page = 1;
+		renderGrid();
+	});
 
-  document.getElementById("reviews-sort")?.addEventListener("change", (e) => {
-    state.sort = (e.target as HTMLSelectElement).value as SortOrder;
-    state.page = 1;
-    renderGrid();
-  });
+	document.getElementById("reviews-sort")?.addEventListener("change", (e) => {
+		state.sort = (e.target as HTMLSelectElement).value as SortOrder;
+		state.page = 1;
+		renderGrid();
+	});
 
-  document
-    .getElementById("reviews-pagination")
-    ?.addEventListener("click", (event) => {
-      const btn = (event.target as HTMLElement).closest<HTMLButtonElement>(
-        "[data-page]",
-      );
-      if (!btn || btn.disabled) return;
-      const page = Number.parseInt(btn.dataset.page ?? "", 10);
-      if (Number.isNaN(page)) return;
-      state.page = page;
-      renderGrid();
-      document
-        .getElementById("reviews-grid")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+	document
+		.getElementById("reviews-pagination")
+		?.addEventListener("click", (event) => {
+			const btn = (event.target as HTMLElement).closest<HTMLButtonElement>(
+				"[data-page]",
+			);
+			if (!btn || btn.disabled) return;
+			const page = Number.parseInt(btn.dataset.page ?? "", 10);
+			if (Number.isNaN(page)) return;
+			state.page = page;
+			renderGrid();
+			document
+				.getElementById("reviews-grid")
+				?.scrollIntoView({ behavior: "smooth", block: "start" });
+		});
 
-  document.addEventListener("click", (event) => {
-    const target = event.target as HTMLElement;
-    if (target.closest('[data-action="reviews-reset"]')) {
-      resetFilters();
-    }
-  });
+	document.addEventListener("click", (event) => {
+		const target = event.target as HTMLElement;
+		if (target.closest('[data-action="reviews-reset"]')) {
+			resetFilters();
+		}
+	});
 
-  document.getElementById("reviews-form")?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    if (!isAuthenticated()) {
-      window.location.hash = "#auth";
-      return;
-    }
-    const user = getUser();
-    const text = (
-      document.getElementById("review-text") as HTMLTextAreaElement
-    ).value.trim();
-    const rating = Number.parseInt(
-      (document.getElementById("review-rating") as HTMLSelectElement).value,
-      10,
-    );
-    const product = (
-      document.getElementById("review-product") as HTMLInputElement
-    ).value.trim();
+	document.getElementById("reviews-form")?.addEventListener("submit", (e) => {
+		e.preventDefault();
+		if (!isAuthenticated()) {
+			window.location.hash = "#auth";
+			return;
+		}
+		const user = getUser();
+		const text = (
+			document.getElementById("review-text") as HTMLTextAreaElement
+		).value.trim();
+		const rating = Number.parseInt(
+			(document.getElementById("review-rating") as HTMLSelectElement).value,
+			10,
+		);
+		const product = (
+			document.getElementById("review-product") as HTMLInputElement
+		).value.trim();
 
-    if (!text) {
-      showToast(t("reviews-form-error-empty"), { type: "error" });
-      return;
-    }
+		if (!text) {
+			showToast(t("reviews-form-error-empty"), { type: "error" });
+			return;
+		}
 
-    const now = new Date();
-    const dd = String(now.getDate()).padStart(2, "0");
-    const mm = String(now.getMonth() + 1).padStart(2, "0");
-    const yyyy = now.getFullYear();
+		const now = new Date();
+		const dd = String(now.getDate()).padStart(2, "0");
+		const mm = String(now.getMonth() + 1).padStart(2, "0");
+		const yyyy = now.getFullYear();
 
-    const newReview: Omit<Review, "id"> = {
-      name: user ? `${user.firstName} ${user.lastName}` : "Пользователь",
-      date: `${dd}.${mm}.${yyyy}`,
-      avatar: "/images/customers/customer-1.svg",
-      text,
-      rating,
-      ...(product ? { product } : {}),
-    };
+		const newReview: Omit<Review, "id"> = {
+			name: user ? `${user.firstName} ${user.lastName}` : "Пользователь",
+			date: `${dd}.${mm}.${yyyy}`,
+			avatar: "/images/customers/customer-1.svg",
+			text,
+			rating,
+			...(product ? { product } : {}),
+		};
 
-    const btn = (e.target as HTMLFormElement).querySelector(
-      '[type="submit"]',
-    ) as HTMLButtonElement | null;
-    if (btn) btn.disabled = true;
+		const btn = (e.target as HTMLFormElement).querySelector(
+			'[type="submit"]',
+		) as HTMLButtonElement | null;
+		if (btn) btn.disabled = true;
 
-    void postReview(newReview)
-      .then((saved) => {
-        cachedReviews.unshift(saved);
-        (e.target as HTMLFormElement).reset();
-        state.page = 1;
-        renderGrid();
-        showToast(t("reviews-form-success"), { type: "success" });
-      })
-      .catch(() => {
-        showToast(t("reviews-form-error"), { type: "error" });
-      })
-      .finally(() => {
-        if (btn) btn.disabled = false;
-      });
-  });
+		void postReview(newReview)
+			.then((saved) => {
+				cachedReviews.unshift(saved);
+				(e.target as HTMLFormElement).reset();
+				state.page = 1;
+				renderGrid();
+				showToast(t("reviews-form-success"), { type: "success" });
+			})
+			.catch(() => {
+				showToast(t("reviews-form-error"), { type: "error" });
+			})
+			.finally(() => {
+				if (btn) btn.disabled = false;
+			});
+	});
 };

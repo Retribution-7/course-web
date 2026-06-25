@@ -1,32 +1,37 @@
 import { isAuthenticated } from "../services/auth";
 import { cart } from "../services/cart";
 import { t, translateTitle } from "../services/i18n";
-import { AREA_DEFAULT, AREA_MAX, AREA_MIN, AREA_STEP } from "../shared/lib/constants";
+import {
+	AREA_DEFAULT,
+	AREA_MAX,
+	AREA_MIN,
+	AREA_STEP,
+} from "../shared/lib/constants";
 import { showToast } from "../shared/ui/toast";
 import { formatRub } from "../shared/utils/format";
 
 const THICKNESS_MULTIPLIER: Record<string, number> = {
-  "0,35": 0.85,
-  "0,4": 0.9,
-  "0,45": 0.95,
-  "0,5": 1.0,
-  "0,55": 1.08,
-  "0,7": 1.25,
-  "0,8": 1.4,
+	"0,35": 0.85,
+	"0,4": 0.9,
+	"0,45": 0.95,
+	"0,5": 1.0,
+	"0,55": 1.08,
+	"0,7": 1.25,
+	"0,8": 1.4,
 };
 
 const SURFACE_MULTIPLIER: Record<string, number> = {
-  Полиэстер: 1.0,
-  Матовая: 1.15,
-  Глянцевая: 1.2,
-  Структурная: 1.3,
+	Полиэстер: 1.0,
+	Матовая: 1.15,
+	Глянцевая: 1.2,
+	Структурная: 1.3,
 };
 
 const DELIVERY_FEE = 3500;
 const INSTALLATION_PER_M2 = 450;
 
 const formatMultiplier = (m: number): string =>
-  m === 1 ? "×1.00" : `×${m.toFixed(2)}`;
+	m === 1 ? "×1.00" : `×${m.toFixed(2)}`;
 
 export const Calculator = (): string => `
   <div id="calc-modal"
@@ -164,233 +169,241 @@ export const Calculator = (): string => `
 `;
 
 const parseNumber = (value: string): number =>
-  Number(value.replace(",", ".").replace(/[^\d.]/g, "")) || 0;
+	Number(value.replace(",", ".").replace(/[^\d.]/g, "")) || 0;
 
 const getThicknessMult = (value: string): number =>
-  THICKNESS_MULTIPLIER[value] ?? 1;
+	THICKNESS_MULTIPLIER[value] ?? 1;
 
 const getSurfaceMult = (value: string): number =>
-  SURFACE_MULTIPLIER[value] ?? 1;
+	SURFACE_MULTIPLIER[value] ?? 1;
 
 interface CalcState {
-  title: string;
-  image: string;
-  color: string;
-  basePrice: number;
-  thickness: string;
-  surface: string;
+	title: string;
+	image: string;
+	color: string;
+	basePrice: number;
+	thickness: string;
+	surface: string;
 }
 
 const state: CalcState = {
-  title: "",
-  image: "",
-  color: "",
-  basePrice: 0,
-  thickness: "",
-  surface: "",
+	title: "",
+	image: "",
+	color: "",
+	basePrice: 0,
+	thickness: "",
+	surface: "",
 };
 
 const recalc = (): void => {
-  const areaInput = document.getElementById(
-    "calc-area",
-  ) as HTMLInputElement | null;
-  const installEl = document.getElementById(
-    "calc-installation",
-  ) as HTMLInputElement | null;
-  const deliveryEl = document.getElementById(
-    "calc-delivery",
-  ) as HTMLInputElement | null;
-  if (!areaInput) return;
+	const areaInput = document.getElementById(
+		"calc-area",
+	) as HTMLInputElement | null;
+	const installEl = document.getElementById(
+		"calc-installation",
+	) as HTMLInputElement | null;
+	const deliveryEl = document.getElementById(
+		"calc-delivery",
+	) as HTMLInputElement | null;
+	if (!areaInput) return;
 
-    const area = Math.max(AREA_MIN, Math.min(AREA_MAX, parseNumber(areaInput.value)));
-  const tMult = getThicknessMult(state.thickness);
-  const sMult = getSurfaceMult(state.surface);
+	const area = Math.max(
+		AREA_MIN,
+		Math.min(AREA_MAX, parseNumber(areaInput.value)),
+	);
+	const tMult = getThicknessMult(state.thickness);
+	const sMult = getSurfaceMult(state.surface);
 
-  const adjustedPrice = state.basePrice * tMult * sMult;
-  const material = adjustedPrice * area;
-  const installation = installEl?.checked ? area * INSTALLATION_PER_M2 : 0;
-  const delivery = deliveryEl?.checked ? DELIVERY_FEE : 0;
-  const total = material + installation + delivery;
+	const adjustedPrice = state.basePrice * tMult * sMult;
+	const material = adjustedPrice * area;
+	const installation = installEl?.checked ? area * INSTALLATION_PER_M2 : 0;
+	const delivery = deliveryEl?.checked ? DELIVERY_FEE : 0;
+	const total = material + installation + delivery;
 
-  const set = (id: string, text: string) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = text;
-  };
+	const set = (id: string, text: string) => {
+		const el = document.getElementById(id);
+		if (el) el.textContent = text;
+	};
 
-  set("calc-base", `${state.basePrice} ₽/м²`);
-  set("calc-mult-thickness", formatMultiplier(tMult));
-  set("calc-mult-surface", formatMultiplier(sMult));
-  set("calc-material", formatRub(material));
-  set("calc-installation-sum", formatRub(installation));
-  set("calc-delivery-sum", formatRub(delivery));
-  set("calc-total", formatRub(total));
+	set("calc-base", `${state.basePrice} ₽/м²`);
+	set("calc-mult-thickness", formatMultiplier(tMult));
+	set("calc-mult-surface", formatMultiplier(sMult));
+	set("calc-material", formatRub(material));
+	set("calc-installation-sum", formatRub(installation));
+	set("calc-delivery-sum", formatRub(delivery));
+	set("calc-total", formatRub(total));
 
-  document
-    .getElementById("calc-row-installation")
-    ?.classList.toggle("hidden", !installEl?.checked);
-  document
-    .getElementById("calc-row-delivery")
-    ?.classList.toggle("hidden", !deliveryEl?.checked);
+	document
+		.getElementById("calc-row-installation")
+		?.classList.toggle("hidden", !installEl?.checked);
+	document
+		.getElementById("calc-row-delivery")
+		?.classList.toggle("hidden", !deliveryEl?.checked);
 };
 
 const openModal = (article: HTMLElement): void => {
-  const modal = document.getElementById("calc-modal");
-  if (!modal) return;
+	const modal = document.getElementById("calc-modal");
+	if (!modal) return;
 
-  const title = article.dataset.productTitle ?? "";
-  const image = article.dataset.productImage ?? "";
-  const price = parseNumber(article.dataset.productPrice ?? "0");
+	const title = article.dataset.productTitle ?? "";
+	const image = article.dataset.productImage ?? "";
+	const price = parseNumber(article.dataset.productPrice ?? "0");
 
-  const values = article.querySelectorAll<HTMLElement>(
-    ".product-dropdown__value",
-  );
-  const color =
-    values[0]?.dataset.value ?? values[0]?.textContent?.trim() ?? "";
-  const thickness =
-    values[1]?.dataset.value ?? values[1]?.textContent?.trim() ?? "";
-  const surface =
-    values[2]?.dataset.value ?? values[2]?.textContent?.trim() ?? "";
+	const values = article.querySelectorAll<HTMLElement>(
+		".product-dropdown__value",
+	);
+	const color =
+		values[0]?.dataset.value ?? values[0]?.textContent?.trim() ?? "";
+	const thickness =
+		values[1]?.dataset.value ?? values[1]?.textContent?.trim() ?? "";
+	const surface =
+		values[2]?.dataset.value ?? values[2]?.textContent?.trim() ?? "";
 
-  state.title = title;
-  state.image = image;
-  state.color = color;
-  state.basePrice = price;
-  state.thickness = thickness;
-  state.surface = surface;
+	state.title = title;
+	state.image = image;
+	state.color = color;
+	state.basePrice = price;
+	state.thickness = thickness;
+	state.surface = surface;
 
-  const setText = (id: string, text: string) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = text;
-  };
-  setText("calc-subtitle", title);
-  setText("calc-color", color);
-  setText("calc-thickness", thickness);
-  setText("calc-surface", surface);
+	const setText = (id: string, text: string) => {
+		const el = document.getElementById(id);
+		if (el) el.textContent = text;
+	};
+	setText("calc-subtitle", title);
+	setText("calc-color", color);
+	setText("calc-thickness", thickness);
+	setText("calc-surface", surface);
 
-  const areaInput = document.getElementById(
-    "calc-area",
-  ) as HTMLInputElement | null;
-  if (areaInput) areaInput.value = String(AREA_DEFAULT);
-  const install = document.getElementById(
-    "calc-installation",
-  ) as HTMLInputElement | null;
-  const delivery = document.getElementById(
-    "calc-delivery",
-  ) as HTMLInputElement | null;
-  if (install) install.checked = false;
-  if (delivery) delivery.checked = false;
+	const areaInput = document.getElementById(
+		"calc-area",
+	) as HTMLInputElement | null;
+	if (areaInput) areaInput.value = String(AREA_DEFAULT);
+	const install = document.getElementById(
+		"calc-installation",
+	) as HTMLInputElement | null;
+	const delivery = document.getElementById(
+		"calc-delivery",
+	) as HTMLInputElement | null;
+	if (install) install.checked = false;
+	if (delivery) delivery.checked = false;
 
-  recalc();
+	recalc();
 
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
-  document.body.style.overflow = "hidden";
+	modal.classList.remove("hidden");
+	modal.classList.add("flex");
+	document.body.style.overflow = "hidden";
 };
 
 const closeModal = (): void => {
-  const modal = document.getElementById("calc-modal");
-  if (!modal) return;
-  modal.classList.add("hidden");
-  modal.classList.remove("flex");
-  document.body.style.overflow = "";
+	const modal = document.getElementById("calc-modal");
+	if (!modal) return;
+	modal.classList.add("hidden");
+	modal.classList.remove("flex");
+	document.body.style.overflow = "";
 };
 
 export const initCalculator = (): void => {
-  const modal = document.getElementById("calc-modal");
-  if (!modal) return;
+	const modal = document.getElementById("calc-modal");
+	if (!modal) return;
 
-  document.addEventListener("click", (event) => {
-    const target = event.target as HTMLElement;
-    const trigger = target.closest<HTMLElement>('[data-action="calculate"]');
-    if (trigger) {
-      const article = trigger.closest<HTMLElement>(
-        "article[data-product-title]",
-      );
-      if (article) openModal(article);
-    }
-  });
+	document.addEventListener("click", (event) => {
+		const target = event.target as HTMLElement;
+		const trigger = target.closest<HTMLElement>('[data-action="calculate"]');
+		if (trigger) {
+			const article = trigger.closest<HTMLElement>(
+				"article[data-product-title]",
+			);
+			if (article) openModal(article);
+		}
+	});
 
-  modal.addEventListener("click", (event) => {
-    if (event.target === modal) closeModal();
-  });
+	modal.addEventListener("click", (event) => {
+		if (event.target === modal) closeModal();
+	});
 
-  document.getElementById("calc-close")?.addEventListener("click", closeModal);
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !modal.classList.contains("hidden"))
-      closeModal();
-  });
+	document.getElementById("calc-close")?.addEventListener("click", closeModal);
+	document.addEventListener("keydown", (event) => {
+		if (event.key === "Escape" && !modal.classList.contains("hidden"))
+			closeModal();
+	});
 
-  document.getElementById("calc-area")?.addEventListener("input", recalc);
-  document
-    .getElementById("calc-installation")
-    ?.addEventListener("change", recalc);
-  document.getElementById("calc-delivery")?.addEventListener("change", recalc);
+	document.getElementById("calc-area")?.addEventListener("input", recalc);
+	document
+		.getElementById("calc-installation")
+		?.addEventListener("change", recalc);
+	document.getElementById("calc-delivery")?.addEventListener("change", recalc);
 
-  document.getElementById("calc-area-minus")?.addEventListener("click", () => {
-    const input = document.getElementById(
-      "calc-area",
-    ) as HTMLInputElement | null;
-    if (!input) return;
-    const next = Math.max(AREA_MIN, parseNumber(input.value) - AREA_STEP);
-    input.value = String(next);
-    recalc();
-  });
-  document.getElementById("calc-area-plus")?.addEventListener("click", () => {
-    const input = document.getElementById(
-      "calc-area",
-    ) as HTMLInputElement | null;
-    if (!input) return;
-    const next = Math.min(AREA_MAX, parseNumber(input.value) + AREA_STEP);
-    input.value = String(next);
-    recalc();
-  });
+	document.getElementById("calc-area-minus")?.addEventListener("click", () => {
+		const input = document.getElementById(
+			"calc-area",
+		) as HTMLInputElement | null;
+		if (!input) return;
+		const next = Math.max(AREA_MIN, parseNumber(input.value) - AREA_STEP);
+		input.value = String(next);
+		recalc();
+	});
+	document.getElementById("calc-area-plus")?.addEventListener("click", () => {
+		const input = document.getElementById(
+			"calc-area",
+		) as HTMLInputElement | null;
+		if (!input) return;
+		const next = Math.min(AREA_MAX, parseNumber(input.value) + AREA_STEP);
+		input.value = String(next);
+		recalc();
+	});
 
-  document.getElementById("calc-add-to-cart")?.addEventListener("click", () => {
-    if (!isAuthenticated()) {
-      closeModal();
-      window.location.hash = "#auth";
-      return;
-    }
-    const areaInput = document.getElementById(
-      "calc-area",
-    ) as HTMLInputElement | null;
-    const installEl = document.getElementById(
-      "calc-installation",
-    ) as HTMLInputElement | null;
-    const deliveryEl = document.getElementById(
-      "calc-delivery",
-    ) as HTMLInputElement | null;
-    if (!areaInput) return;
+	document.getElementById("calc-add-to-cart")?.addEventListener("click", () => {
+		if (!isAuthenticated()) {
+			closeModal();
+			window.location.hash = "#auth";
+			return;
+		}
+		const areaInput = document.getElementById(
+			"calc-area",
+		) as HTMLInputElement | null;
+		const installEl = document.getElementById(
+			"calc-installation",
+		) as HTMLInputElement | null;
+		const deliveryEl = document.getElementById(
+			"calc-delivery",
+		) as HTMLInputElement | null;
+		if (!areaInput) return;
 
-  const area = Math.max(AREA_MIN, Math.min(AREA_MAX, parseNumber(areaInput.value)));
-    const tMult = getThicknessMult(state.thickness);
-    const sMult = getSurfaceMult(state.surface);
-    const pricePerM2 = state.basePrice * tMult * sMult;
-    const installation = installEl?.checked ?? false;
-    const delivery = deliveryEl?.checked ?? false;
-    const total =
-      pricePerM2 * area +
-      (installation ? area * INSTALLATION_PER_M2 : 0) +
-      (delivery ? DELIVERY_FEE : 0);
+		const area = Math.max(
+			AREA_MIN,
+			Math.min(AREA_MAX, parseNumber(areaInput.value)),
+		);
+		const tMult = getThicknessMult(state.thickness);
+		const sMult = getSurfaceMult(state.surface);
+		const pricePerM2 = state.basePrice * tMult * sMult;
+		const installation = installEl?.checked ?? false;
+		const delivery = deliveryEl?.checked ?? false;
+		const total =
+			pricePerM2 * area +
+			(installation ? area * INSTALLATION_PER_M2 : 0) +
+			(delivery ? DELIVERY_FEE : 0);
 
-    void cart.add({
-      title: state.title,
-      image: state.image,
-      color: state.color,
-      thickness: state.thickness,
-      surface: state.surface,
-      area,
-      pricePerM2,
-      installation,
-      delivery,
-      total,
-    }).then(() => {
-      showToast(
-        `«${translateTitle(state.title)}» ${t("calc-toast-cart-added")}`,
-        { type: "success" },
-      );
-      closeModal();
-      window.location.hash = "#cart";
-    });
-  });
+		void cart
+			.add({
+				title: state.title,
+				image: state.image,
+				color: state.color,
+				thickness: state.thickness,
+				surface: state.surface,
+				area,
+				pricePerM2,
+				installation,
+				delivery,
+				total,
+			})
+			.then(() => {
+				showToast(
+					`«${translateTitle(state.title)}» ${t("calc-toast-cart-added")}`,
+					{ type: "success" },
+				);
+				closeModal();
+				window.location.hash = "#cart";
+			});
+	});
 };

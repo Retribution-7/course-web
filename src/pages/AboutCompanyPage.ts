@@ -1,87 +1,87 @@
 import { BackLink } from "../shared/ui/BackLink";
 
 interface Stat {
-  value: string;
-  label: string;
+	value: string;
+	label: string;
 }
 
 interface Milestone {
-  year: string;
-  title: string;
-  description: string;
+	year: string;
+	title: string;
+	description: string;
 }
 
 interface Value {
-  icon: string;
-  title: string;
-  description: string;
+	icon: string;
+	title: string;
+	description: string;
 }
 
 const STATS: Stat[] = [
-  { value: "13+", label: "лет на рынке" },
-  { value: "5 000+", label: "постоянных клиентов" },
-  { value: "20 000 м²", label: "складских площадей" },
-  { value: "80+", label: "сотрудников" },
+	{ value: "13+", label: "лет на рынке" },
+	{ value: "5 000+", label: "постоянных клиентов" },
+	{ value: "20 000 м²", label: "складских площадей" },
+	{ value: "80+", label: "сотрудников" },
 ];
 
 const MILESTONES: Milestone[] = [
-  {
-    year: "2010",
-    title: "Основание компании",
-    description:
-      "Открыли первый склад в Горелово площадью 1 500 м². Начали с поставок профнастила и арматуры.",
-  },
-  {
-    year: "2014",
-    title: "Расширение ассортимента",
-    description:
-      "Добавили в каталог металлочерепицу, фальцевую кровлю и доборные элементы. Склад вырос до 8 000 м².",
-  },
-  {
-    year: "2017",
-    title: "Собственный автопарк",
-    description:
-      "Запустили службу доставки: 50 машин грузоподъёмностью от 1,5 до 20 тонн. Сроки доставки сократились до 1–2 дней.",
-  },
-  {
-    year: "2020",
-    title: "Прямые контракты с заводами",
-    description:
-      "Перешли на работу напрямую с производителями, снизив цены для клиентов на 8–15%.",
-  },
-  {
-    year: "2024",
-    title: "Цифровая платформа",
-    description:
-      "Запустили онлайн-каталог с калькулятором стоимости и автоматизацию обработки заявок — менее 30 минут от заявки до счёта.",
-  },
+	{
+		year: "2010",
+		title: "Основание компании",
+		description:
+			"Открыли первый склад в Горелово площадью 1 500 м². Начали с поставок профнастила и арматуры.",
+	},
+	{
+		year: "2014",
+		title: "Расширение ассортимента",
+		description:
+			"Добавили в каталог металлочерепицу, фальцевую кровлю и доборные элементы. Склад вырос до 8 000 м².",
+	},
+	{
+		year: "2017",
+		title: "Собственный автопарк",
+		description:
+			"Запустили службу доставки: 50 машин грузоподъёмностью от 1,5 до 20 тонн. Сроки доставки сократились до 1–2 дней.",
+	},
+	{
+		year: "2020",
+		title: "Прямые контракты с заводами",
+		description:
+			"Перешли на работу напрямую с производителями, снизив цены для клиентов на 8–15%.",
+	},
+	{
+		year: "2024",
+		title: "Цифровая платформа",
+		description:
+			"Запустили онлайн-каталог с калькулятором стоимости и автоматизацию обработки заявок — менее 30 минут от заявки до счёта.",
+	},
 ];
 
 const VALUES: Value[] = [
-  {
-    icon: "/icons/check-square.svg",
-    title: "Качество без компромиссов",
-    description:
-      "Принимаем металл только у производителей с сертификацией. Каждая партия проходит входной контроль на складе.",
-  },
-  {
-    icon: "/icons/calculatings.svg",
-    title: "Прозрачные цены",
-    description:
-      "Цены в каталоге — финальные. Никаких «уточним при заказе»: вы видите стоимость до копейки ещё на этапе расчёта.",
-  },
-  {
-    icon: "/icons/people.svg",
-    title: "Внимание к клиенту",
-    description:
-      "Менеджер ведёт заказ от заявки до подписания акта приёмки. Любые вопросы — по одному номеру, без переключений.",
-  },
-  {
-    icon: "/icons/time.svg",
-    title: "Скорость поставки",
-    description:
-      "Большая часть заказов отгружается в день обращения. Срочные — в течение 2 часов с момента оплаты.",
-  },
+	{
+		icon: "/icons/check-square.svg",
+		title: "Качество без компромиссов",
+		description:
+			"Принимаем металл только у производителей с сертификацией. Каждая партия проходит входной контроль на складе.",
+	},
+	{
+		icon: "/icons/calculatings.svg",
+		title: "Прозрачные цены",
+		description:
+			"Цены в каталоге — финальные. Никаких «уточним при заказе»: вы видите стоимость до копейки ещё на этапе расчёта.",
+	},
+	{
+		icon: "/icons/people.svg",
+		title: "Внимание к клиенту",
+		description:
+			"Менеджер ведёт заказ от заявки до подписания акта приёмки. Любые вопросы — по одному номеру, без переключений.",
+	},
+	{
+		icon: "/icons/time.svg",
+		title: "Скорость поставки",
+		description:
+			"Большая часть заказов отгружается в день обращения. Срочные — в течение 2 часов с момента оплаты.",
+	},
 ];
 
 const renderStat = (stat: Stat, idx: number): string => `
@@ -321,17 +321,17 @@ export const AboutCompanyPage = (): string => `
 `;
 
 const showPage = (show: boolean): void => {
-  const page = document.getElementById("company-page");
-  if (!page) return;
-  page.classList.toggle("hidden", !show);
-  if (show) window.scrollTo({ top: 0, behavior: "smooth" });
+	const page = document.getElementById("company-page");
+	if (!page) return;
+	page.classList.toggle("hidden", !show);
+	if (show) window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 const handleRoute = (): void => {
-  showPage(window.location.hash === "#company");
+	showPage(window.location.hash === "#company");
 };
 
 export const initAboutCompanyPage = (): void => {
-  handleRoute();
-  window.addEventListener("hashchange", handleRoute);
+	handleRoute();
+	window.addEventListener("hashchange", handleRoute);
 };

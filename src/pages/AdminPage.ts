@@ -1,13 +1,13 @@
 import type { Product } from "../entities/products";
 import {
-  deleteProduct,
-  deleteReview,
-  fetchProducts,
-  fetchReviews,
-  fetchUsers,
-  getAllCartItems,
-  postProduct,
-  updateUser,
+	deleteProduct,
+	deleteReview,
+	fetchProducts,
+	fetchReviews,
+	fetchUsers,
+	getAllCartItems,
+	postProduct,
+	updateUser,
 } from "../services/api";
 import { getUser, isAdmin, onAuthChange } from "../services/auth";
 import { getCurrentLang, t } from "../services/i18n";
@@ -20,13 +20,13 @@ type AdminTab = "users" | "products" | "reviews";
 let currentTab: AdminTab = "users";
 
 const ROLE_COLORS: Record<string, string> = {
-  customer: "bg-[#E8F5E9] text-[#2E7D32]",
-  admin: "bg-gradient-to-r from-button-first to-button-second text-primary",
-  manager: "bg-[#E3F2FD] text-[#1565C0]",
+	customer: "bg-[#E8F5E9] text-[#2E7D32]",
+	admin: "bg-gradient-to-r from-button-first to-button-second text-primary",
+	manager: "bg-[#E3F2FD] text-[#1565C0]",
 };
 
 const formatPrice = (n: number): string =>
-  n.toLocaleString("ru-RU", { maximumFractionDigits: 0 }) + " ₽";
+	`${n.toLocaleString("ru-RU", { maximumFractionDigits: 0 })} ₽`;
 
 // ── Static template ───────────────────────────────────────────────────────────
 
@@ -72,10 +72,10 @@ export const AdminPage = (): string => `
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 const StatCard = (
-  label: string,
-  value: string | number,
-  iconHtml: string,
-  bgClass: string,
+	label: string,
+	value: string | number,
+	iconHtml: string,
+	bgClass: string,
 ): string => `
   <div class="bg-surface rounded-[14px] card-shadow p-5 lg:p-6 flex items-center gap-4 transition-colors duration-300">
     <div class="max-sm:hidden grid size-12 lg:size-14 place-items-center rounded-[12px] shrink-0 ${bgClass}">
@@ -111,96 +111,96 @@ const ThRow = (...cols: string[]): string => `
 `;
 
 const showLoading = (): void => {
-  const el = document.getElementById("admin-content");
-  if (el) el.innerHTML = Spinner();
+	const el = document.getElementById("admin-content");
+	if (el) el.innerHTML = Spinner();
 };
 
 // ── Stats ─────────────────────────────────────────────────────────────────────
 
 const loadStats = async (): Promise<void> => {
-  const el = document.getElementById("admin-stats");
-  if (!el) return;
-  try {
-    const [users, products, reviews, cart] = await Promise.all([
-      fetchUsers(),
-      fetchProducts(),
-      fetchReviews(),
-      getAllCartItems(),
-    ]);
-    const revenue = cart.reduce((s, i) => s + i.total, 0);
-    el.innerHTML = `
+	const el = document.getElementById("admin-stats");
+	if (!el) return;
+	try {
+		const [users, products, reviews, cart] = await Promise.all([
+			fetchUsers(),
+			fetchProducts(),
+			fetchReviews(),
+			getAllCartItems(),
+		]);
+		const revenue = cart.reduce((s, i) => s + i.total, 0);
+		el.innerHTML = `
       ${StatCard(
-        t("admin-stat-users"),
-        users.length,
-        `<svg viewBox="0 0 24 24" class="size-6 text-primary" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>`,
-        "gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]",
-      )}
+				t("admin-stat-users"),
+				users.length,
+				`<svg viewBox="0 0 24 24" class="size-6 text-primary" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>`,
+				"gradient-icon shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]",
+			)}
       ${StatCard(
-        t("admin-stat-products"),
-        products.length,
-        `<svg viewBox="0 0 24 24" class="size-6 text-[#2E7D32]" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`,
-        "bg-[#E8F5E9]",
-      )}
+				t("admin-stat-products"),
+				products.length,
+				`<svg viewBox="0 0 24 24" class="size-6 text-[#2E7D32]" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`,
+				"bg-[#E8F5E9]",
+			)}
       ${StatCard(
-        t("admin-stat-reviews"),
-        reviews.length,
-        `<svg viewBox="0 0 24 24" class="size-6 text-[#E65100]" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
-        "bg-[#FFF3E0]",
-      )}
+				t("admin-stat-reviews"),
+				reviews.length,
+				`<svg viewBox="0 0 24 24" class="size-6 text-[#E65100]" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+				"bg-[#FFF3E0]",
+			)}
       ${StatCard(
-        t("admin-stat-revenue"),
-        formatPrice(revenue),
-        `<svg viewBox="0 0 24 24" class="size-6 text-[#1565C0]" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
-        "bg-[#E3F2FD]",
-      )}
+				t("admin-stat-revenue"),
+				formatPrice(revenue),
+				`<svg viewBox="0 0 24 24" class="size-6 text-[#1565C0]" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+				"bg-[#E3F2FD]",
+			)}
     `;
-  } catch {
-    el.innerHTML = "";
-  }
+	} catch {
+		el.innerHTML = "";
+	}
 };
 
 // ── Tab Styles ────────────────────────────────────────────────────────────────
 
 const updateTabStyles = (active: AdminTab): void => {
-  document
-    .querySelectorAll<HTMLButtonElement>("[data-admin-tab]")
-    .forEach((btn) => {
-      const isActive = btn.dataset.adminTab === active;
-      btn.setAttribute("aria-selected", String(isActive));
-      btn.className = [
-        "admin-tab-btn shrink-0 px-5 py-2.5 rounded-full font-sans text-[15px] cursor-pointer transition-all",
-        isActive
-          ? "bg-gradient-to-r from-button-first to-button-second shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)] text-primary border border-[rgba(255,196,0,0.4)]"
-          : "bg-surface border border-primary/20 text-primary hover:border-button-first",
-      ].join(" ");
-    });
+	document
+		.querySelectorAll<HTMLButtonElement>("[data-admin-tab]")
+		.forEach((btn) => {
+			const isActive = btn.dataset.adminTab === active;
+			btn.setAttribute("aria-selected", String(isActive));
+			btn.className = [
+				"admin-tab-btn shrink-0 px-5 py-2.5 rounded-full font-sans text-[15px] cursor-pointer transition-all",
+				isActive
+					? "bg-gradient-to-r from-button-first to-button-second shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)] text-primary border border-[rgba(255,196,0,0.4)]"
+					: "bg-surface border border-primary/20 text-primary hover:border-button-first",
+			].join(" ");
+		});
 };
 
 // ── Users Tab ─────────────────────────────────────────────────────────────────
 
 const RoleBadge = (role: string): string => {
-  const knownRoles = ["customer", "admin", "manager"];
-  const label = knownRoles.includes(role) ? t(`admin-role-${role}`) : role;
-  const cls = ROLE_COLORS[role] ?? "bg-gray-100 text-gray-600";
-  return `<span class="inline-block px-2.5 py-0.5 rounded-full text-[12px] ${cls}">${label}</span>`;
+	const knownRoles = ["customer", "admin", "manager"];
+	const label = knownRoles.includes(role) ? t(`admin-role-${role}`) : role;
+	const cls = ROLE_COLORS[role] ?? "bg-gray-100 text-gray-600";
+	return `<span class="inline-block px-2.5 py-0.5 rounded-full text-[12px] ${cls}">${label}</span>`;
 };
 
 const renderUsersTab = async (): Promise<void> => {
-  const el = document.getElementById("admin-content");
-  if (!el) return;
-  showLoading();
-  try {
-    const users = await fetchUsers();
-    const currentPhone = getUser()?.phone ?? "";
-    const locale = getCurrentLang() === "en" ? "en-US" : "ru-RU";
+	const el = document.getElementById("admin-content");
+	if (!el) return;
+	showLoading();
+	try {
+		const users = await fetchUsers();
+		const currentPhone = getUser()?.phone ?? "";
+		const locale = getCurrentLang() === "en" ? "en-US" : "ru-RU";
 
-    const rows = users
-      .map((u) => {
-        const isSelf = u.phone === currentPhone;
-        const nextRole = u.role === "admin" ? "customer" : "admin";
-        const btnLabel =
-          u.role === "admin" ? t("admin-make-customer") : t("admin-make-admin");
-        return `
+		const rows = users
+			.map((u) => {
+				const isSelf = u.phone === currentPhone;
+				const nextRole = u.role === "admin" ? "customer" : "admin";
+				const btnLabel =
+					u.role === "admin" ? t("admin-make-customer") : t("admin-make-admin");
+				return `
         <tr class="border-t border-primary/10 hover:bg-bg-first transition-colors">
           <td class="px-4 py-3 text-text-third">#${u.id}</td>
           <td class="px-4 py-3">
@@ -215,22 +215,22 @@ const renderUsersTab = async (): Promise<void> => {
           </td>
           <td class="px-4 py-3">
             ${
-              isSelf
-                ? `<span class="text-[12px] text-[#758499] italic">${t("admin-you")}</span>`
-                : `<button type="button"
+							isSelf
+								? `<span class="text-[12px] text-[#758499] italic">${t("admin-you")}</span>`
+								: `<button type="button"
                            data-change-role="${u.id}"
                            data-next-role="${nextRole}"
                            class="text-[13px] px-3 py-1.5 rounded-full border border-button-first
                                   bg-surface text-primary hover:bg-bg-first transition-colors cursor-pointer">
                      ${btnLabel}
                    </button>`
-            }
+						}
           </td>
         </tr>`;
-      })
-      .join("");
+			})
+			.join("");
 
-    el.innerHTML = `
+		el.innerHTML = `
       <div class="mb-5">
         <h3 class="font-sans font-normal text-[20px] text-primary">${t("admin-all-users")} (${users.length})</h3>
       </div>
@@ -242,32 +242,32 @@ const renderUsersTab = async (): Promise<void> => {
       `)}
     `;
 
-    el.querySelectorAll<HTMLButtonElement>("[data-change-role]").forEach(
-      (btn) => {
-        btn.addEventListener("click", async () => {
-          const id = Number(btn.dataset.changeRole);
-          const nextRole = btn.dataset.nextRole ?? "customer";
-          btn.disabled = true;
-          try {
-            await updateUser(id, { role: nextRole });
-            void renderUsersTab();
-          } catch {
-            showToast(t("admin-error-role"), { type: "error" });
-            btn.disabled = false;
-          }
-        });
-      },
-    );
-  } catch {
-    el.innerHTML = `<div class="p-8 text-center text-red-500">${t("admin-error-load-users")}</div>`;
-  }
+		el.querySelectorAll<HTMLButtonElement>("[data-change-role]").forEach(
+			(btn) => {
+				btn.addEventListener("click", async () => {
+					const id = Number(btn.dataset.changeRole);
+					const nextRole = btn.dataset.nextRole ?? "customer";
+					btn.disabled = true;
+					try {
+						await updateUser(id, { role: nextRole });
+						void renderUsersTab();
+					} catch {
+						showToast(t("admin-error-role"), { type: "error" });
+						btn.disabled = false;
+					}
+				});
+			},
+		);
+	} catch {
+		el.innerHTML = `<div class="p-8 text-center text-red-500">${t("admin-error-load-users")}</div>`;
+	}
 };
 
 // ── Products Tab ──────────────────────────────────────────────────────────────
 
 const INPUT_CLS =
-  "h-11 rounded-[8px] border border-primary/20 px-3 font-sans text-[14px] text-primary " +
-  "focus:outline-none focus:border-button-first transition-colors bg-surface w-full";
+	"h-11 rounded-[8px] border border-primary/20 px-3 font-sans text-[14px] text-primary " +
+	"focus:outline-none focus:border-button-first transition-colors bg-surface w-full";
 
 const ProductAddFormHTML = (): string => `
   <div id="product-add-form" class="hidden bg-surface rounded-[14px] card-shadow p-6 mb-5 transition-colors duration-300">
@@ -349,84 +349,84 @@ const ProductAddFormHTML = (): string => `
 `;
 
 const wireProductForm = (): void => {
-  const form = document.getElementById("product-add-form");
-  const toggleBtn = document.getElementById("toggle-add-product");
-  const cancelBtn = document.getElementById("cancel-product-btn");
-  const saveBtn = document.getElementById(
-    "save-product-btn",
-  ) as HTMLButtonElement | null;
-  const errEl = document.getElementById("product-form-error");
+	const form = document.getElementById("product-add-form");
+	const toggleBtn = document.getElementById("toggle-add-product");
+	const cancelBtn = document.getElementById("cancel-product-btn");
+	const saveBtn = document.getElementById(
+		"save-product-btn",
+	) as HTMLButtonElement | null;
+	const errEl = document.getElementById("product-form-error");
 
-  toggleBtn?.addEventListener("click", () => {
-    form?.classList.toggle("hidden");
-  });
+	toggleBtn?.addEventListener("click", () => {
+		form?.classList.toggle("hidden");
+	});
 
-  cancelBtn?.addEventListener("click", () => {
-    form?.classList.add("hidden");
-  });
+	cancelBtn?.addEventListener("click", () => {
+		form?.classList.add("hidden");
+	});
 
-  saveBtn?.addEventListener("click", async () => {
-    const val = (id: string): string =>
-      (document.getElementById(id) as HTMLInputElement | null)?.value.trim() ??
-      "";
+	saveBtn?.addEventListener("click", async () => {
+		const val = (id: string): string =>
+			(document.getElementById(id) as HTMLInputElement | null)?.value.trim() ??
+			"";
 
-    const title = val("pf-title");
-    const price = val("pf-price");
-    const image = val("pf-image");
-    const category = val("pf-category") as Product["category"];
+		const title = val("pf-title");
+		const price = val("pf-price");
+		const image = val("pf-image");
+		const category = val("pf-category") as Product["category"];
 
-    if (!title || !price || !image) {
-      if (errEl) {
-        errEl.textContent = t("admin-form-error");
-        errEl.classList.remove("hidden");
-      }
-      return;
-    }
-    errEl?.classList.add("hidden");
+		if (!title || !price || !image) {
+			if (errEl) {
+				errEl.textContent = t("admin-form-error");
+				errEl.classList.remove("hidden");
+			}
+			return;
+		}
+		errEl?.classList.add("hidden");
 
-    const newProduct: Omit<Product, "id"> = {
-      title,
-      image,
-      price,
-      brand: val("pf-brand") || "Grande Line",
-      category,
-      color: val("pf-color") || "—",
-      thickness: val("pf-thickness") || "0,5",
-      surface: val("pf-surface") || "Полиэстер",
-      specs: [
-        {
-          label: val("pf-spec1-label") || "Характеристика 1",
-          value: val("pf-spec1-value") || "—",
-        },
-        {
-          label: val("pf-spec2-label") || "Характеристика 2",
-          value: val("pf-spec2-value") || "—",
-        },
-      ],
-    };
+		const newProduct: Omit<Product, "id"> = {
+			title,
+			image,
+			price,
+			brand: val("pf-brand") || "Grande Line",
+			category,
+			color: val("pf-color") || "—",
+			thickness: val("pf-thickness") || "0,5",
+			surface: val("pf-surface") || "Полиэстер",
+			specs: [
+				{
+					label: val("pf-spec1-label") || "Характеристика 1",
+					value: val("pf-spec1-value") || "—",
+				},
+				{
+					label: val("pf-spec2-label") || "Характеристика 2",
+					value: val("pf-spec2-value") || "—",
+				},
+			],
+		};
 
-    if (saveBtn) saveBtn.disabled = true;
-    try {
-      await postProduct(newProduct);
-      void renderProductsTab();
-      void loadStats();
-    } catch {
-      showToast(t("admin-error-product"), { type: "error" });
-      if (saveBtn) saveBtn.disabled = false;
-    }
-  });
+		if (saveBtn) saveBtn.disabled = true;
+		try {
+			await postProduct(newProduct);
+			void renderProductsTab();
+			void loadStats();
+		} catch {
+			showToast(t("admin-error-product"), { type: "error" });
+			if (saveBtn) saveBtn.disabled = false;
+		}
+	});
 };
 
 const renderProductsTab = async (): Promise<void> => {
-  const el = document.getElementById("admin-content");
-  if (!el) return;
-  showLoading();
-  try {
-    const products = await fetchProducts();
+	const el = document.getElementById("admin-content");
+	if (!el) return;
+	showLoading();
+	try {
+		const products = await fetchProducts();
 
-    const rows = products
-      .map(
-        (p) => `
+		const rows = products
+			.map(
+				(p) => `
       <tr class="border-t border-primary/10 hover:bg-bg-first transition-colors">
         <td class="px-4 py-3 text-text-third">#${p.id ?? "—"}</td>
         <td class="px-4 py-3">
@@ -450,10 +450,10 @@ const renderProductsTab = async (): Promise<void> => {
         </td>
       </tr>
     `,
-      )
-      .join("");
+			)
+			.join("");
 
-    el.innerHTML = `
+		el.innerHTML = `
       <div class="flex flex-wrap items-center justify-between gap-4 mb-5">
         <h3 class="font-sans font-normal text-[20px] text-primary">${t("admin-all-products")} (${products.length})</h3>
         <button type="button" id="toggle-add-product"
@@ -478,47 +478,47 @@ const renderProductsTab = async (): Promise<void> => {
       `)}
     `;
 
-    wireProductForm();
+		wireProductForm();
 
-    el.querySelectorAll<HTMLButtonElement>("[data-delete-product]").forEach(
-      (btn) => {
-        btn.addEventListener("click", async () => {
-          const id = Number(btn.dataset.deleteProduct);
-          if (!confirm(t("admin-confirm-delete-product"))) return;
-          try {
-            await deleteProduct(id);
-            void renderProductsTab();
-            void loadStats();
-          } catch {
-            showToast(t("admin-error-delete-product"), { type: "error" });
-          }
-        });
-      },
-    );
-  } catch {
-    el.innerHTML = `<div class="p-8 text-center text-red-500">${t("admin-error-load-products")}</div>`;
-  }
+		el.querySelectorAll<HTMLButtonElement>("[data-delete-product]").forEach(
+			(btn) => {
+				btn.addEventListener("click", async () => {
+					const id = Number(btn.dataset.deleteProduct);
+					if (!confirm(t("admin-confirm-delete-product"))) return;
+					try {
+						await deleteProduct(id);
+						void renderProductsTab();
+						void loadStats();
+					} catch {
+						showToast(t("admin-error-delete-product"), { type: "error" });
+					}
+				});
+			},
+		);
+	} catch {
+		el.innerHTML = `<div class="p-8 text-center text-red-500">${t("admin-error-load-products")}</div>`;
+	}
 };
 
 // ── Reviews Tab ───────────────────────────────────────────────────────────────
 
 const Stars = (rating: number): string =>
-  Array.from(
-    { length: 5 },
-    (_, i) =>
-      `<span class="${i < Math.round(rating) ? "text-[#FFC400]" : "text-gray-300"}">★</span>`,
-  ).join("");
+	Array.from(
+		{ length: 5 },
+		(_, i) =>
+			`<span class="${i < Math.round(rating) ? "text-[#FFC400]" : "text-gray-300"}">★</span>`,
+	).join("");
 
 const renderReviewsTab = async (): Promise<void> => {
-  const el = document.getElementById("admin-content");
-  if (!el) return;
-  showLoading();
-  try {
-    const reviews = await fetchReviews();
+	const el = document.getElementById("admin-content");
+	if (!el) return;
+	showLoading();
+	try {
+		const reviews = await fetchReviews();
 
-    const rows = reviews
-      .map(
-        (r) => `
+		const rows = reviews
+			.map(
+				(r) => `
       <tr class="border-t border-primary/10 hover:bg-bg-first transition-colors">
         <td class="px-4 py-3 text-text-third">#${r.id}</td>
         <td class="px-4 py-3">
@@ -544,10 +544,10 @@ const renderReviewsTab = async (): Promise<void> => {
         </td>
       </tr>
     `,
-      )
-      .join("");
+			)
+			.join("");
 
-    el.innerHTML = `
+		el.innerHTML = `
       <div class="mb-5">
         <h3 class="font-sans font-normal text-[20px] text-primary">${t("admin-all-reviews")} (${reviews.length})</h3>
       </div>
@@ -559,72 +559,72 @@ const renderReviewsTab = async (): Promise<void> => {
       `)}
     `;
 
-    el.querySelectorAll<HTMLButtonElement>("[data-delete-review]").forEach(
-      (btn) => {
-        btn.addEventListener("click", async () => {
-          const id = Number(btn.dataset.deleteReview);
-          if (!confirm(t("admin-confirm-delete-review"))) return;
-          try {
-            await deleteReview(id);
-            void renderReviewsTab();
-            void loadStats();
-          } catch {
-            showToast(t("admin-error-delete-review"), { type: "error" });
-          }
-        });
-      },
-    );
-  } catch {
-    el.innerHTML = `<div class="p-8 text-center text-red-500">${t("admin-error-load-reviews")}</div>`;
-  }
+		el.querySelectorAll<HTMLButtonElement>("[data-delete-review]").forEach(
+			(btn) => {
+				btn.addEventListener("click", async () => {
+					const id = Number(btn.dataset.deleteReview);
+					if (!confirm(t("admin-confirm-delete-review"))) return;
+					try {
+						await deleteReview(id);
+						void renderReviewsTab();
+						void loadStats();
+					} catch {
+						showToast(t("admin-error-delete-review"), { type: "error" });
+					}
+				});
+			},
+		);
+	} catch {
+		el.innerHTML = `<div class="p-8 text-center text-red-500">${t("admin-error-load-reviews")}</div>`;
+	}
 };
 
 // ── Tab Switching ─────────────────────────────────────────────────────────────
 
 const switchTab = (tab: AdminTab): void => {
-  currentTab = tab;
-  updateTabStyles(tab);
-  if (tab === "users") void renderUsersTab();
-  else if (tab === "products") void renderProductsTab();
-  else void renderReviewsTab();
+	currentTab = tab;
+	updateTabStyles(tab);
+	if (tab === "users") void renderUsersTab();
+	else if (tab === "products") void renderProductsTab();
+	else void renderReviewsTab();
 };
 
 // ── Page lifecycle ────────────────────────────────────────────────────────────
 
 const showPage = (show: boolean): void => {
-  const page = document.getElementById("admin-page");
-  if (!page) return;
-  page.classList.toggle("hidden", !show);
-  if (show) {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    void loadStats();
-    switchTab(currentTab);
-  }
+	const page = document.getElementById("admin-page");
+	if (!page) return;
+	page.classList.toggle("hidden", !show);
+	if (show) {
+		window.scrollTo({ top: 0, behavior: "smooth" });
+		void loadStats();
+		switchTab(currentTab);
+	}
 };
 
 const handleRoute = (): void => {
-  showPage(window.location.hash === "#admin");
+	showPage(window.location.hash === "#admin");
 };
 
 export const initAdminPage = (): void => {
-  handleRoute();
-  window.addEventListener("hashchange", handleRoute);
+	handleRoute();
+	window.addEventListener("hashchange", handleRoute);
 
-  onAuthChange(() => {
-    if (window.location.hash === "#admin") {
-      if (!isAdmin()) {
-        window.location.hash = "";
-      } else {
-        void loadStats();
-      }
-    }
-  });
+	onAuthChange(() => {
+		if (window.location.hash === "#admin") {
+			if (!isAdmin()) {
+				window.location.hash = "";
+			} else {
+				void loadStats();
+			}
+		}
+	});
 
-  document
-    .querySelectorAll<HTMLButtonElement>("[data-admin-tab]")
-    .forEach((btn) => {
-      btn.addEventListener("click", () => {
-        switchTab(btn.dataset.adminTab as AdminTab);
-      });
-    });
+	document
+		.querySelectorAll<HTMLButtonElement>("[data-admin-tab]")
+		.forEach((btn) => {
+			btn.addEventListener("click", () => {
+				switchTab(btn.dataset.adminTab as AdminTab);
+			});
+		});
 };

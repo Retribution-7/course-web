@@ -22,7 +22,11 @@ body {
 	}
 
 	.gradient-text {
-		background: linear-gradient(to top, var(--color-button-second), var(--color-button-first));
+		background: linear-gradient(
+			to top,
+			var(--color-button-second),
+			var(--color-button-first)
+		);
 		-webkit-background-clip: text;
 		background-clip: text;
 		color: transparent;
@@ -43,7 +47,11 @@ body {
 	}
 
 	.gradient-icon {
-		background: radial-gradient(ellipse at top, var(--color-button-first) 0%, var(--color-button-second) 100%);
+		background: radial-gradient(
+			ellipse at top,
+			var(--color-button-first) 0%,
+			var(--color-button-second) 100%
+		);
 	}
 
 	.card-shadow {

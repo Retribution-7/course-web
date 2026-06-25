@@ -49,11 +49,11 @@ const renderItem = (item: CartItem): string => `
 `;
 
 const renderEmpty = (): string =>
-  EmptyState({
-    icon: `<img src="/icons/cart.svg" alt="" class="size-10" aria-hidden="true">`,
-    title: t("cart-empty-title"),
-    description: t("cart-empty-desc"),
-    action: `<a href="#catalog"
+	EmptyState({
+		icon: `<img src="/icons/cart.svg" alt="" class="size-10" aria-hidden="true">`,
+		title: t("cart-empty-title"),
+		description: t("cart-empty-desc"),
+		action: `<a href="#catalog"
        data-action="cart-back"
        class="inline-flex items-center justify-center rounded-full
               bg-gradient-to-r from-button-first to-button-second
@@ -62,7 +62,7 @@ const renderEmpty = (): string =>
               shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]">
       ${t("cart-to-catalog")}
     </a>`,
-  });
+	});
 
 export const CartPage = (): string => `
   <section id="cart-page"
@@ -120,76 +120,76 @@ export const CartPage = (): string => `
 `;
 
 const pluralCount = (n: number): string =>
-  pluralize(n, ["товар", "товара", "товаров"], "item");
+	pluralize(n, ["товар", "товара", "товаров"], "item");
 
 const render = (): void => {
-  const content = document.getElementById("cart-content");
-  const summary = document.getElementById("cart-summary");
-  if (!content || !summary) return;
+	const content = document.getElementById("cart-content");
+	const summary = document.getElementById("cart-summary");
+	if (!content || !summary) return;
 
-  const items = cart.list();
-  if (items.length === 0) {
-    content.innerHTML = renderEmpty();
-    summary.classList.add("hidden");
-    return;
-  }
+	const items = cart.list();
+	if (items.length === 0) {
+		content.innerHTML = renderEmpty();
+		summary.classList.add("hidden");
+		return;
+	}
 
-  content.innerHTML = items.map(renderItem).join("");
-  summary.classList.remove("hidden");
+	content.innerHTML = items.map(renderItem).join("");
+	summary.classList.remove("hidden");
 
-  const totalEl = document.getElementById("cart-total");
-  const countEl = document.getElementById("cart-count");
-  if (totalEl) totalEl.textContent = formatRub(cart.total());
-  if (countEl) countEl.textContent = pluralCount(items.length);
+	const totalEl = document.getElementById("cart-total");
+	const countEl = document.getElementById("cart-count");
+	if (totalEl) totalEl.textContent = formatRub(cart.total());
+	if (countEl) countEl.textContent = pluralCount(items.length);
 };
 
 const showPage = (show: boolean): void => {
-  const page = document.getElementById("cart-page");
-  if (!page) return;
-  page.classList.toggle("hidden", !show);
-  if (show) {
-    render();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
+	const page = document.getElementById("cart-page");
+	if (!page) return;
+	page.classList.toggle("hidden", !show);
+	if (show) {
+		render();
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	}
 };
 
 const handleRoute = (): void => {
-  showPage(window.location.hash === "#cart");
+	showPage(window.location.hash === "#cart");
 };
 
 export const initCartPage = (): void => {
-  handleRoute();
-  window.addEventListener("hashchange", handleRoute);
-  cart.onChange(() => {
-    if (window.location.hash === "#cart") render();
-  });
+	handleRoute();
+	window.addEventListener("hashchange", handleRoute);
+	cart.onChange(() => {
+		if (window.location.hash === "#cart") render();
+	});
 
-  document.addEventListener("click", (event) => {
-    const target = event.target as HTMLElement;
+	document.addEventListener("click", (event) => {
+		const target = event.target as HTMLElement;
 
-    const remove = target.closest<HTMLElement>('[data-action="cart-remove"]');
-    if (remove) {
-      const id = remove.dataset.id;
-      if (id) void cart.remove(id);
-      return;
-    }
+		const remove = target.closest<HTMLElement>('[data-action="cart-remove"]');
+		if (remove) {
+			const id = remove.dataset.id;
+			if (id) void cart.remove(id);
+			return;
+		}
 
-    if (target.closest('[data-action="cart-clear"]')) {
-      if (confirm(t("cart-clear-confirm"))) void cart.clear();
-      return;
-    }
+		if (target.closest('[data-action="cart-clear"]')) {
+			if (confirm(t("cart-clear-confirm"))) void cart.clear();
+			return;
+		}
 
-    if (target.closest('[data-action="cart-checkout"]')) {
-      showToast(t("cart-checkout-thanks"), { type: "success" });
-      void cart.clear().then(() => {
-        window.location.hash = "";
-        setTimeout(() => {
-          document
-            .getElementById("consultation")
-            ?.scrollIntoView({ behavior: "smooth" });
-        }, SCROLL_DELAY_MS);
-      });
-      return;
-    }
-  });
+		if (target.closest('[data-action="cart-checkout"]')) {
+			showToast(t("cart-checkout-thanks"), { type: "success" });
+			void cart.clear().then(() => {
+				window.location.hash = "";
+				setTimeout(() => {
+					document
+						.getElementById("consultation")
+						?.scrollIntoView({ behavior: "smooth" });
+				}, SCROLL_DELAY_MS);
+			});
+			return;
+		}
+	});
 };

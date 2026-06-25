@@ -3,25 +3,24 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-
 	--max-width-container: 1570px;
 
-	--color-surface: #FFFFFF;
-	--color-primary: #44444E;
-	--color-secondary: #69686F;
-	--color-button-first: #FFC400;
-	--color-button-second: #FF9900;
-	--color-bg-first: #F3F5F9;
-	--color-bg-second: #F8FAFE;
-	--color-text-first: #4B4A53;
+	--color-surface: #ffffff;
+	--color-primary: #44444e;
+	--color-secondary: #69686f;
+	--color-button-first: #ffc400;
+	--color-button-second: #ff9900;
+	--color-bg-first: #f3f5f9;
+	--color-bg-second: #f8fafe;
+	--color-text-first: #4b4a53;
 	--color-text-second: #808086;
 	--color-text-third: #758499;
-	--color-white: #FFFFFF;
-	--color-123-first: #2E4156;
-	--color-123-second: #69809F;
+	--color-white: #ffffff;
+	--color-123-first: #2e4156;
+	--color-123-second: #69809f;
 
-	--font-sans: 'Manrope', system-ui, sans-serif;
-	--font-inter: 'Inter', system-ui, sans-serif;
+	--font-sans: "Manrope", system-ui, sans-serif;
+	--font-inter: "Inter", system-ui, sans-serif;
 
 	--text-h1: 3.5rem;
 	--text-h1--line-height: 4.25rem;
@@ -60,15 +59,15 @@
 }
 
 .dark {
-	--color-surface: #1E293B;
-	--color-primary: #F1F5F9;
-	--color-secondary: #94A3B8;
-	--color-bg-first: #0F172A;
-	--color-bg-second: #1A2332;
-	--color-text-first: #E2E8F0;
-	--color-text-second: #94A3B8;
-	--color-text-third: #7C8FA6;
-	--color-white: #1E293B;
-	--color-123-first: #93C5FD;
-	--color-123-second: #7DD3FC;
+	--color-surface: #1e293b;
+	--color-primary: #f1f5f9;
+	--color-secondary: #94a3b8;
+	--color-bg-first: #0f172a;
+	--color-bg-second: #1a2332;
+	--color-text-first: #e2e8f0;
+	--color-text-second: #94a3b8;
+	--color-text-third: #7c8fa6;
+	--color-white: #1e293b;
+	--color-123-first: #93c5fd;
+	--color-123-second: #7dd3fc;
 }

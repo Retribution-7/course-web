@@ -3,8 +3,8 @@ import "./styles/main.css";
 import { initRouter } from "./app/router";
 import { Calculator, initCalculator } from "./features/Calculator";
 import {
-  AboutCompanyPage,
-  initAboutCompanyPage,
+	AboutCompanyPage,
+	initAboutCompanyPage,
 } from "./pages/AboutCompanyPage";
 import { AccountPage, initAccountPage } from "./pages/AccountPage";
 import { AdminPage, initAdminPage } from "./pages/AdminPage";
@@ -12,8 +12,8 @@ import { AuthPage, initAuthPage } from "./pages/AuthPage";
 import { CartPage, initCartPage } from "./pages/CartPage";
 import { FavoritesPage, initFavoritesPage } from "./pages/FavoritesPage";
 import {
-  initProductDetailPage,
-  ProductDetailPage,
+	initProductDetailPage,
+	ProductDetailPage,
 } from "./pages/ProductDetailPage";
 import { initReviewsPage, ReviewsPage } from "./pages/ReviewsPage";
 import { a11y } from "./services/a11y";
@@ -34,7 +34,7 @@ import { initTestimonials, Testimonials } from "./widgets/Testimonials";
 const app = document.querySelector<HTMLDivElement>("#app");
 
 if (!app) {
-  throw new Error("App root not found");
+	throw new Error("App root not found");
 }
 
 app.innerHTML = `
@@ -82,10 +82,10 @@ hidePreloader();
 a11y.observeImages();
 
 const syncFromServer = (): void => {
-  if (isAuthenticated()) {
-    void favorites.loadFromServer();
-    void cart.loadFromServer();
-  }
+	if (isAuthenticated()) {
+		void favorites.loadFromServer();
+		void cart.loadFromServer();
+	}
 };
 
 syncFromServer();

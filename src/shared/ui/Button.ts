@@ -1,5 +1,5 @@
 export const Button = (label: string): string => {
-  return `
+	return `
     <button class="btn-primary">
       ${label}
     </button>

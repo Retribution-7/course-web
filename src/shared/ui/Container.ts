@@ -1,5 +1,5 @@
 export const Container = (content: string): string => {
-  return `
+	return `
     <div class="container-main">
       ${content}
     </div>

@@ -1,19 +1,19 @@
 import { fetchUsers } from "../services/api";
 import {
-  generateNickname,
-  generatePassword,
-  getUser,
-  NICKNAME_REGEN_LIMIT,
-  restoreUser,
-  saveUser,
-  setAuthenticated,
-  validateBirthDate,
-  validateEmail,
-  validateNicknameCustom,
-  validatePassword,
-  validatePasswordConfirm,
-  validatePhone,
-  validateRequired,
+	generateNickname,
+	generatePassword,
+	getUser,
+	NICKNAME_REGEN_LIMIT,
+	restoreUser,
+	saveUser,
+	setAuthenticated,
+	validateBirthDate,
+	validateEmail,
+	validateNicknameCustom,
+	validatePassword,
+	validatePasswordConfirm,
+	validatePhone,
+	validateRequired,
 } from "../services/auth";
 import { t } from "../services/i18n";
 import { AUTO_PASSWORD_LENGTH } from "../shared/lib/constants";
@@ -22,25 +22,25 @@ import { showToast } from "../shared/ui/toast";
 type Tab = "login" | "register";
 
 const FIELD_INPUT =
-  "h-11 w-full rounded-[8px] border border-primary/20 bg-surface px-3 font-sans text-[15px] text-primary " +
-  "focus:outline-none focus:border-button-first transition-colors";
+	"h-11 w-full rounded-[8px] border border-primary/20 bg-surface px-3 font-sans text-[15px] text-primary " +
+	"focus:outline-none focus:border-button-first transition-colors";
 
 const FIELD_LABEL =
-  "block font-sans text-[13px] leading-[1.3] text-primary mb-1.5";
+	"block font-sans text-[13px] leading-[1.3] text-primary mb-1.5";
 
 const FIELD_ERROR =
-  "field-error hidden mt-1 font-sans text-[13px] leading-[1.3] text-red-500";
+	"field-error hidden mt-1 font-sans text-[13px] leading-[1.3] text-red-500";
 
 const Field = (opts: {
-  id: string;
-  label: string;
-  labelI18nKey?: string;
-  type?: string;
-  required?: boolean;
-  placeholder?: string;
-  hint?: string;
-  hintI18nKey?: string;
-  attrs?: string;
+	id: string;
+	label: string;
+	labelI18nKey?: string;
+	type?: string;
+	required?: boolean;
+	placeholder?: string;
+	hint?: string;
+	hintI18nKey?: string;
+	attrs?: string;
 }): string => `
   <div class="field" data-field="${opts.id}">
     <label for="${opts.id}" class="${FIELD_LABEL}">
@@ -97,20 +97,20 @@ export const AuthPage = (): string => `
 
         <form id="auth-login-form" class="mt-8 flex flex-col gap-4" novalidate>
           ${Field({
-            id: "login-phone",
-            label: "Телефон",
-            labelI18nKey: "auth-phone",
-            type: "tel",
-            required: true,
-            placeholder: "+375 (29) 123-45-67",
-          })}
+						id: "login-phone",
+						label: "Телефон",
+						labelI18nKey: "auth-phone",
+						type: "tel",
+						required: true,
+						placeholder: "+375 (29) 123-45-67",
+					})}
           ${Field({
-            id: "login-password",
-            label: "Пароль",
-            labelI18nKey: "auth-password",
-            type: "password",
-            required: true,
-          })}
+						id: "login-password",
+						label: "Пароль",
+						labelI18nKey: "auth-password",
+						type: "password",
+						required: true,
+					})}
           <button type="submit"
                   id="login-submit"
                   data-i18n="auth-login-btn"
@@ -133,32 +133,32 @@ export const AuthPage = (): string => `
           </p>
 
           ${Field({
-            id: "reg-phone",
-            label: "Телефон",
-            labelI18nKey: "auth-phone",
-            type: "tel",
-            required: true,
-            placeholder: "+375 (29) 123-45-67",
-            hint: "Только номера РБ (25, 29, 33, 44)",
-            hintI18nKey: "auth-phone-hint",
-          })}
+						id: "reg-phone",
+						label: "Телефон",
+						labelI18nKey: "auth-phone",
+						type: "tel",
+						required: true,
+						placeholder: "+375 (29) 123-45-67",
+						hint: "Только номера РБ (25, 29, 33, 44)",
+						hintI18nKey: "auth-phone-hint",
+					})}
           ${Field({
-            id: "reg-email",
-            label: "E-mail",
-            labelI18nKey: "auth-email",
-            type: "email",
-            required: true,
-            placeholder: "you@example.com",
-          })}
+						id: "reg-email",
+						label: "E-mail",
+						labelI18nKey: "auth-email",
+						type: "email",
+						required: true,
+						placeholder: "you@example.com",
+					})}
           ${Field({
-            id: "reg-birth",
-            label: "Дата рождения",
-            labelI18nKey: "auth-birth",
-            type: "date",
-            required: true,
-            hint: "Регистрация доступна с 16 лет",
-            hintI18nKey: "auth-birth-hint",
-          })}
+						id: "reg-birth",
+						label: "Дата рождения",
+						labelI18nKey: "auth-birth",
+						type: "date",
+						required: true,
+						hint: "Регистрация доступна с 16 лет",
+						hintI18nKey: "auth-birth-hint",
+					})}
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             ${Field({ id: "reg-lastname", label: "Фамилия", labelI18nKey: "auth-lastname", required: true })}
@@ -280,371 +280,373 @@ export const AuthPage = (): string => `
 `;
 
 const setError = (fieldId: string, message: string | null): void => {
-  const el = document.querySelector<HTMLElement>(
-    `[data-error-for="${fieldId}"]`,
-  );
-  if (!el) return;
-  if (message) {
-    el.textContent = message;
-    el.classList.remove("hidden");
-  } else {
-    el.textContent = "";
-    el.classList.add("hidden");
-  }
+	const el = document.querySelector<HTMLElement>(
+		`[data-error-for="${fieldId}"]`,
+	);
+	if (!el) return;
+	if (message) {
+		el.textContent = message;
+		el.classList.remove("hidden");
+	} else {
+		el.textContent = "";
+		el.classList.add("hidden");
+	}
 };
 
 const setActiveTab = (tab: Tab): void => {
-  const indicator = document.getElementById("auth-toggle-indicator");
-  const buttons = document.querySelectorAll<HTMLElement>("[data-auth-tab]");
-  buttons.forEach((b) => {
-    const active = b.dataset.authTab === tab;
-    b.setAttribute("aria-selected", String(active));
-    b.classList.toggle("text-primary", true);
-  });
-  if (indicator) {
-    indicator.style.transform =
-      tab === "register" ? "translateX(100%)" : "translateX(0)";
-  }
-  document
-    .getElementById("auth-login-form")
-    ?.classList.toggle("hidden", tab !== "login");
-  document
-    .getElementById("auth-register-form")
-    ?.classList.toggle("hidden", tab !== "register");
+	const indicator = document.getElementById("auth-toggle-indicator");
+	const buttons = document.querySelectorAll<HTMLElement>("[data-auth-tab]");
+	buttons.forEach((b) => {
+		const active = b.dataset.authTab === tab;
+		b.setAttribute("aria-selected", String(active));
+		b.classList.toggle("text-primary", true);
+	});
+	if (indicator) {
+		indicator.style.transform =
+			tab === "register" ? "translateX(100%)" : "translateX(0)";
+	}
+	document
+		.getElementById("auth-login-form")
+		?.classList.toggle("hidden", tab !== "login");
+	document
+		.getElementById("auth-register-form")
+		?.classList.toggle("hidden", tab !== "register");
 };
 
 interface RegState {
-  pwdMode: "manual" | "auto";
-  autoPassword: string;
-  nicknameAttempts: number;
-  nicknameEditable: boolean;
+	pwdMode: "manual" | "auto";
+	autoPassword: string;
+	nicknameAttempts: number;
+	nicknameEditable: boolean;
 }
 
 const regState: RegState = {
-  pwdMode: "manual",
-  autoPassword: "",
-  nicknameAttempts: 0,
-  nicknameEditable: false,
+	pwdMode: "manual",
+	autoPassword: "",
+	nicknameAttempts: 0,
+	nicknameEditable: false,
 };
 
 const getInput = (id: string): HTMLInputElement | null =>
-  document.getElementById(id) as HTMLInputElement | null;
+	document.getElementById(id) as HTMLInputElement | null;
 
 const validateLoginForm = (): boolean => {
-  const phone = getInput("login-phone")?.value ?? "";
-  const password = getInput("login-password")?.value ?? "";
-  return phone.trim().length > 0 && password.length > 0;
+	const phone = getInput("login-phone")?.value ?? "";
+	const password = getInput("login-password")?.value ?? "";
+	return phone.trim().length > 0 && password.length > 0;
 };
 
 const validateRegisterForm = (silent: boolean): boolean => {
-  const phoneErr = validatePhone(getInput("reg-phone")?.value ?? "");
-  const emailErr = validateEmail(getInput("reg-email")?.value ?? "");
-  const birthErr = validateBirthDate(getInput("reg-birth")?.value ?? "");
-  const lastErr = validateRequired(
-    getInput("reg-lastname")?.value ?? "",
-    "фамилию",
-  );
-  const firstErr = validateRequired(
-    getInput("reg-firstname")?.value ?? "",
-    "имя",
-  );
+	const phoneErr = validatePhone(getInput("reg-phone")?.value ?? "");
+	const emailErr = validateEmail(getInput("reg-email")?.value ?? "");
+	const birthErr = validateBirthDate(getInput("reg-birth")?.value ?? "");
+	const lastErr = validateRequired(
+		getInput("reg-lastname")?.value ?? "",
+		"фамилию",
+	);
+	const firstErr = validateRequired(
+		getInput("reg-firstname")?.value ?? "",
+		"имя",
+	);
 
-  let pwdErr: string | null = null;
-  let pwdConfirmErr: string | null = null;
-  if (regState.pwdMode === "manual") {
-    const pwd = getInput("reg-password")?.value ?? "";
-    const confirm = getInput("reg-password-confirm")?.value ?? "";
-    pwdErr = validatePassword(pwd);
-    pwdConfirmErr = pwdErr ? null : validatePasswordConfirm(pwd, confirm);
-  }
+	let pwdErr: string | null = null;
+	let pwdConfirmErr: string | null = null;
+	if (regState.pwdMode === "manual") {
+		const pwd = getInput("reg-password")?.value ?? "";
+		const confirm = getInput("reg-password-confirm")?.value ?? "";
+		pwdErr = validatePassword(pwd);
+		pwdConfirmErr = pwdErr ? null : validatePasswordConfirm(pwd, confirm);
+	}
 
-  let nickErr: string | null = null;
-  const nick = getInput("reg-nickname")?.value ?? "";
-  if (regState.nicknameEditable) {
-    nickErr = validateNicknameCustom(nick);
-  } else if (!nick.trim()) {
-    nickErr = "Никнейм не сгенерирован";
-  }
+	let nickErr: string | null = null;
+	const nick = getInput("reg-nickname")?.value ?? "";
+	if (regState.nicknameEditable) {
+		nickErr = validateNicknameCustom(nick);
+	} else if (!nick.trim()) {
+		nickErr = "Никнейм не сгенерирован";
+	}
 
-  const agree =
-    (getInput("reg-agree") as HTMLInputElement | null)?.checked ?? false;
+	const agree =
+		(getInput("reg-agree") as HTMLInputElement | null)?.checked ?? false;
 
-  if (!silent) {
-    setError("reg-phone", phoneErr);
-    setError("reg-email", emailErr);
-    setError("reg-birth", birthErr);
-    setError("reg-lastname", lastErr);
-    setError("reg-firstname", firstErr);
-    setError("reg-password", pwdErr);
-    setError("reg-password-confirm", pwdConfirmErr);
-    setError("reg-nickname", nickErr);
-  }
+	if (!silent) {
+		setError("reg-phone", phoneErr);
+		setError("reg-email", emailErr);
+		setError("reg-birth", birthErr);
+		setError("reg-lastname", lastErr);
+		setError("reg-firstname", firstErr);
+		setError("reg-password", pwdErr);
+		setError("reg-password-confirm", pwdConfirmErr);
+		setError("reg-nickname", nickErr);
+	}
 
-  return (
-    !phoneErr &&
-    !emailErr &&
-    !birthErr &&
-    !lastErr &&
-    !firstErr &&
-    !pwdErr &&
-    !pwdConfirmErr &&
-    !nickErr &&
-    agree
-  );
+	return (
+		!phoneErr &&
+		!emailErr &&
+		!birthErr &&
+		!lastErr &&
+		!firstErr &&
+		!pwdErr &&
+		!pwdConfirmErr &&
+		!nickErr &&
+		agree
+	);
 };
 
 const refreshSubmit = (): void => {
-  const loginBtn = document.getElementById(
-    "login-submit",
-  ) as HTMLButtonElement | null;
-  const regBtn = document.getElementById(
-    "register-submit",
-  ) as HTMLButtonElement | null;
-  if (loginBtn) loginBtn.disabled = !validateLoginForm();
-  if (regBtn) regBtn.disabled = !validateRegisterForm(true);
+	const loginBtn = document.getElementById(
+		"login-submit",
+	) as HTMLButtonElement | null;
+	const regBtn = document.getElementById(
+		"register-submit",
+	) as HTMLButtonElement | null;
+	if (loginBtn) loginBtn.disabled = !validateLoginForm();
+	if (regBtn) regBtn.disabled = !validateRegisterForm(true);
 };
 
 const wireFieldClear = (
-  fieldId: string,
-  eventType: "input" | "change" = "input",
+	fieldId: string,
+	eventType: "input" | "change" = "input",
 ): void => {
-  const input = getInput(fieldId);
-  input?.addEventListener(eventType, () => {
-    setError(fieldId, null);
-    refreshSubmit();
-  });
-  input?.addEventListener("blur", () => {
-    if (fieldId === "reg-phone") setError(fieldId, validatePhone(input.value));
-    else if (fieldId === "reg-email")
-      setError(fieldId, validateEmail(input.value));
-    else if (fieldId === "reg-birth")
-      setError(fieldId, validateBirthDate(input.value));
-    else if (fieldId === "reg-lastname")
-      setError(fieldId, validateRequired(input.value, "фамилию"));
-    else if (fieldId === "reg-firstname")
-      setError(fieldId, validateRequired(input.value, "имя"));
-    else if (fieldId === "reg-password" && regState.pwdMode === "manual")
-      setError(fieldId, validatePassword(input.value));
-    else if (
-      fieldId === "reg-password-confirm" &&
-      regState.pwdMode === "manual"
-    )
-      setError(
-        fieldId,
-        validatePasswordConfirm(
-          getInput("reg-password")?.value ?? "",
-          input.value,
-        ),
-      );
-    else if (fieldId === "reg-nickname" && regState.nicknameEditable)
-      setError(fieldId, validateNicknameCustom(input.value));
-  });
+	const input = getInput(fieldId);
+	input?.addEventListener(eventType, () => {
+		setError(fieldId, null);
+		refreshSubmit();
+	});
+	input?.addEventListener("blur", () => {
+		if (fieldId === "reg-phone") setError(fieldId, validatePhone(input.value));
+		else if (fieldId === "reg-email")
+			setError(fieldId, validateEmail(input.value));
+		else if (fieldId === "reg-birth")
+			setError(fieldId, validateBirthDate(input.value));
+		else if (fieldId === "reg-lastname")
+			setError(fieldId, validateRequired(input.value, "фамилию"));
+		else if (fieldId === "reg-firstname")
+			setError(fieldId, validateRequired(input.value, "имя"));
+		else if (fieldId === "reg-password" && regState.pwdMode === "manual")
+			setError(fieldId, validatePassword(input.value));
+		else if (
+			fieldId === "reg-password-confirm" &&
+			regState.pwdMode === "manual"
+		)
+			setError(
+				fieldId,
+				validatePasswordConfirm(
+					getInput("reg-password")?.value ?? "",
+					input.value,
+				),
+			);
+		else if (fieldId === "reg-nickname" && regState.nicknameEditable)
+			setError(fieldId, validateNicknameCustom(input.value));
+	});
 };
 
 const regenerateNickname = (): void => {
-  const input = getInput("reg-nickname");
-  const hint = document.getElementById("nick-hint");
-  const btn = document.getElementById("nick-regen");
-  if (!input) return;
+	const input = getInput("reg-nickname");
+	const hint = document.getElementById("nick-hint");
+	const btn = document.getElementById("nick-regen");
+	if (!input) return;
 
-  if (regState.nicknameEditable) return;
+	if (regState.nicknameEditable) return;
 
-  input.value = generateNickname();
-  regState.nicknameAttempts += 1;
+	input.value = generateNickname();
+	regState.nicknameAttempts += 1;
 
-  if (regState.nicknameAttempts >= NICKNAME_REGEN_LIMIT) {
-    regState.nicknameEditable = true;
-    input.readOnly = false;
-    input.classList.remove("bg-bg-first");
-    input.value = "";
-    input.placeholder = t("auth-nickname-input-placeholder");
-    if (hint) hint.textContent = t("auth-nickname-limit");
-    btn?.setAttribute("hidden", "");
-  }
+	if (regState.nicknameAttempts >= NICKNAME_REGEN_LIMIT) {
+		regState.nicknameEditable = true;
+		input.readOnly = false;
+		input.classList.remove("bg-bg-first");
+		input.value = "";
+		input.placeholder = t("auth-nickname-input-placeholder");
+		if (hint) hint.textContent = t("auth-nickname-limit");
+		btn?.setAttribute("hidden", "");
+	}
 
-  refreshSubmit();
+	refreshSubmit();
 };
 
 const switchPasswordMode = (mode: "manual" | "auto"): void => {
-  regState.pwdMode = mode;
-  const manual = document.getElementById("pwd-manual");
-  const auto = document.getElementById("pwd-auto");
-  manual?.classList.toggle("hidden", mode !== "manual");
-  auto?.classList.toggle("hidden", mode !== "auto");
+	regState.pwdMode = mode;
+	const manual = document.getElementById("pwd-manual");
+	const auto = document.getElementById("pwd-auto");
+	manual?.classList.toggle("hidden", mode !== "manual");
+	auto?.classList.toggle("hidden", mode !== "auto");
 
-  if (mode === "auto") {
-    regState.autoPassword = generatePassword(AUTO_PASSWORD_LENGTH);
-    const input = getInput("reg-password-auto");
-    if (input) input.value = regState.autoPassword;
-    setError("reg-password", null);
-    setError("reg-password-confirm", null);
-  }
-  refreshSubmit();
+	if (mode === "auto") {
+		regState.autoPassword = generatePassword(AUTO_PASSWORD_LENGTH);
+		const input = getInput("reg-password-auto");
+		if (input) input.value = regState.autoPassword;
+		setError("reg-password", null);
+		setError("reg-password-confirm", null);
+	}
+	refreshSubmit();
 };
 
 const handleRegisterSubmit = (event: Event): void => {
-  event.preventDefault();
-  if (!validateRegisterForm(false)) {
-    refreshSubmit();
-    return;
-  }
-  const middle = getInput("reg-middlename")?.value.trim() ?? "";
-  const password =
-    regState.pwdMode === "auto"
-      ? regState.autoPassword
-      : (getInput("reg-password")?.value ?? "");
-  saveUser({
-    phone: (getInput("reg-phone")?.value ?? "").trim(),
-    email: (getInput("reg-email")?.value ?? "").trim(),
-    birthDate: getInput("reg-birth")?.value ?? "",
-    lastName: (getInput("reg-lastname")?.value ?? "").trim(),
-    firstName: (getInput("reg-firstname")?.value ?? "").trim(),
-    middleName: middle || undefined,
-    nickname: (getInput("reg-nickname")?.value ?? "").trim(),
-    password,
-    createdAt: new Date().toISOString(),
-    role: "customer",
-  });
-  showToast(t("auth-success-register"), { type: "success" });
-  window.location.hash = "";
+	event.preventDefault();
+	if (!validateRegisterForm(false)) {
+		refreshSubmit();
+		return;
+	}
+	const middle = getInput("reg-middlename")?.value.trim() ?? "";
+	const password =
+		regState.pwdMode === "auto"
+			? regState.autoPassword
+			: (getInput("reg-password")?.value ?? "");
+	saveUser({
+		phone: (getInput("reg-phone")?.value ?? "").trim(),
+		email: (getInput("reg-email")?.value ?? "").trim(),
+		birthDate: getInput("reg-birth")?.value ?? "",
+		lastName: (getInput("reg-lastname")?.value ?? "").trim(),
+		firstName: (getInput("reg-firstname")?.value ?? "").trim(),
+		middleName: middle || undefined,
+		nickname: (getInput("reg-nickname")?.value ?? "").trim(),
+		password,
+		createdAt: new Date().toISOString(),
+		role: "customer",
+	});
+	showToast(t("auth-success-register"), { type: "success" });
+	window.location.hash = "";
 };
 
 const handleLoginSubmit = (event: Event): void => {
-  event.preventDefault();
-  if (!validateLoginForm()) return;
+	event.preventDefault();
+	if (!validateLoginForm()) return;
 
-  const phone = (getInput("login-phone")?.value ?? "").trim();
-  const password = getInput("login-password")?.value ?? "";
+	const phone = (getInput("login-phone")?.value ?? "").trim();
+	const password = getInput("login-password")?.value ?? "";
 
-  const localUser = getUser();
-  // Fast path: same user already cached locally
-  if (localUser && localUser.phone === phone) {
-    if (localUser.password !== password) {
-      showToast(t("auth-error-wrong-pwd"), { type: "error" });
-      return;
-    }
-    setAuthenticated(true);
-    showToast(t("auth-success-login"), { type: "success" });
-    window.location.hash = "";
-    return;
-  }
+	const localUser = getUser();
+	// Fast path: same user already cached locally
+	if (localUser && localUser.phone === phone) {
+		if (localUser.password !== password) {
+			showToast(t("auth-error-wrong-pwd"), { type: "error" });
+			return;
+		}
+		setAuthenticated(true);
+		showToast(t("auth-success-login"), { type: "success" });
+		window.location.hash = "";
+		return;
+	}
 
-  // Different phone or no local user — check server
-  const loginBtn = document.getElementById(
-    "login-submit",
-  ) as HTMLButtonElement | null;
-  if (loginBtn) loginBtn.disabled = true;
+	// Different phone or no local user — check server
+	const loginBtn = document.getElementById(
+		"login-submit",
+	) as HTMLButtonElement | null;
+	if (loginBtn) loginBtn.disabled = true;
 
-  fetchUsers()
-    .then((users) => {
-      const found = users.find(
-        (u) => u.phone === phone && u.password === password,
-      );
-      if (!found) {
-        showToast(t("auth-error-not-found"), { type: "error" });
-        return;
-      }
-      restoreUser(
-        {
-          phone: found.phone,
-          email: found.email,
-          firstName: found.firstName,
-          lastName: found.lastName,
-          birthDate: found.birthDate ?? "",
-          nickname: found.nickname ?? "",
-          password,
-          createdAt: found.createdAt,
-          role: (found.role as "customer" | "admin") ?? "customer",
-        },
-        found.id,
-      );
-      showToast(t("auth-success-login"), { type: "success" });
-      window.location.hash = "";
-    })
-    .catch(() => {
-      showToast(t("auth-error-server"), { type: "error" });
-    })
-    .finally(() => {
-      if (loginBtn) loginBtn.disabled = !validateLoginForm();
-    });
+	fetchUsers()
+		.then((users) => {
+			const found = users.find(
+				(u) => u.phone === phone && u.password === password,
+			);
+			if (!found) {
+				showToast(t("auth-error-not-found"), { type: "error" });
+				return;
+			}
+			restoreUser(
+				{
+					phone: found.phone,
+					email: found.email,
+					firstName: found.firstName,
+					lastName: found.lastName,
+					birthDate: found.birthDate ?? "",
+					nickname: found.nickname ?? "",
+					password,
+					createdAt: found.createdAt,
+					role: (found.role as "customer" | "admin") ?? "customer",
+				},
+				found.id,
+			);
+			showToast(t("auth-success-login"), { type: "success" });
+			window.location.hash = "";
+		})
+		.catch(() => {
+			showToast(t("auth-error-server"), { type: "error" });
+		})
+		.finally(() => {
+			if (loginBtn) loginBtn.disabled = !validateLoginForm();
+		});
 };
 
 const showPage = (show: boolean): void => {
-  const page = document.getElementById("auth-page");
-  if (!page) return;
-  page.classList.toggle("hidden", !show);
-  if (show) window.scrollTo({ top: 0, behavior: "smooth" });
+	const page = document.getElementById("auth-page");
+	if (!page) return;
+	page.classList.toggle("hidden", !show);
+	if (show) window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 const handleRoute = (): void => {
-  showPage(window.location.hash === "#auth");
+	showPage(window.location.hash === "#auth");
 };
 
 export const initAuthPage = (): void => {
-  handleRoute();
-  window.addEventListener("hashchange", handleRoute);
+	handleRoute();
+	window.addEventListener("hashchange", handleRoute);
 
-  setActiveTab("login");
-  document.querySelectorAll<HTMLElement>("[data-auth-tab]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      setActiveTab(btn.dataset.authTab as Tab);
-      refreshSubmit();
-    });
-  });
+	setActiveTab("login");
+	document.querySelectorAll<HTMLElement>("[data-auth-tab]").forEach((btn) => {
+		btn.addEventListener("click", () => {
+			setActiveTab(btn.dataset.authTab as Tab);
+			refreshSubmit();
+		});
+	});
 
-  [
-    "login-phone",
-    "login-password",
-    "reg-phone",
-    "reg-email",
-    "reg-birth",
-    "reg-lastname",
-    "reg-firstname",
-    "reg-middlename",
-    "reg-password",
-    "reg-password-confirm",
-    "reg-nickname",
-  ].forEach((id) => wireFieldClear(id));
+	[
+		"login-phone",
+		"login-password",
+		"reg-phone",
+		"reg-email",
+		"reg-birth",
+		"reg-lastname",
+		"reg-firstname",
+		"reg-middlename",
+		"reg-password",
+		"reg-password-confirm",
+		"reg-nickname",
+	].forEach((id) => {
+		wireFieldClear(id);
+	});
 
-  getInput("reg-agree")?.addEventListener("change", refreshSubmit);
+	getInput("reg-agree")?.addEventListener("change", refreshSubmit);
 
-  document
-    .querySelectorAll<HTMLInputElement>('input[name="pwd-mode"]')
-    .forEach((r) => {
-      r.addEventListener("change", () => {
-        if (r.checked) switchPasswordMode(r.value as "manual" | "auto");
-      });
-    });
+	document
+		.querySelectorAll<HTMLInputElement>('input[name="pwd-mode"]')
+		.forEach((r) => {
+			r.addEventListener("change", () => {
+				if (r.checked) switchPasswordMode(r.value as "manual" | "auto");
+			});
+		});
 
-  document.getElementById("pwd-regen")?.addEventListener("click", () => {
-    regState.autoPassword = generatePassword(AUTO_PASSWORD_LENGTH);
-    const input = getInput("reg-password-auto");
-    if (input) input.value = regState.autoPassword;
-  });
+	document.getElementById("pwd-regen")?.addEventListener("click", () => {
+		regState.autoPassword = generatePassword(AUTO_PASSWORD_LENGTH);
+		const input = getInput("reg-password-auto");
+		if (input) input.value = regState.autoPassword;
+	});
 
-  const confirmInput = getInput("reg-password-confirm");
-  confirmInput?.addEventListener("paste", (e) => {
-    e.preventDefault();
-    setError("reg-password-confirm", t("auth-paste-error"));
-  });
+	const confirmInput = getInput("reg-password-confirm");
+	confirmInput?.addEventListener("paste", (e) => {
+		e.preventDefault();
+		setError("reg-password-confirm", t("auth-paste-error"));
+	});
 
-  const nickInput = getInput("reg-nickname");
-  if (nickInput) nickInput.value = generateNickname();
-  document
-    .getElementById("nick-regen")
-    ?.addEventListener("click", regenerateNickname);
+	const nickInput = getInput("reg-nickname");
+	if (nickInput) nickInput.value = generateNickname();
+	document
+		.getElementById("nick-regen")
+		?.addEventListener("click", regenerateNickname);
 
-  document.getElementById("agreement-link")?.addEventListener("click", (e) => {
-    e.preventDefault();
-    showToast(t("auth-agreement-text"), { type: "info", duration: 5000 });
-  });
+	document.getElementById("agreement-link")?.addEventListener("click", (e) => {
+		e.preventDefault();
+		showToast(t("auth-agreement-text"), { type: "info", duration: 5000 });
+	});
 
-  document
-    .getElementById("auth-login-form")
-    ?.addEventListener("submit", handleLoginSubmit);
-  document
-    .getElementById("auth-register-form")
-    ?.addEventListener("submit", handleRegisterSubmit);
+	document
+		.getElementById("auth-login-form")
+		?.addEventListener("submit", handleLoginSubmit);
+	document
+		.getElementById("auth-register-form")
+		?.addEventListener("submit", handleRegisterSubmit);
 
-  refreshSubmit();
+	refreshSubmit();
 };

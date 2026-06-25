@@ -1,11 +1,11 @@
 const LINK_CLASS =
-  "flex items-center justify-center w-[50px] h-[41px] rounded-[8px] shrink-0 transition-opacity hover:opacity-80";
+	"flex items-center justify-center w-[50px] h-[41px] rounded-[8px] shrink-0 transition-opacity hover:opacity-80";
 
 export const MessengerLinks = (compact = false): string => {
-  const cls = compact
-    ? "flex items-center justify-center w-[50px] h-[41px] rounded-[8px]"
-    : LINK_CLASS;
-  return `
+	const cls = compact
+		? "flex items-center justify-center w-[50px] h-[41px] rounded-[8px]"
+		: LINK_CLASS;
+	return `
     <a href="https://wa.me/78123255055" target="_blank" rel="noopener noreferrer"
        class="${cls}"
        style="background: linear-gradient(145deg, rgba(0,215,41,0.3) 0%, rgb(0,215,41) 100%)"

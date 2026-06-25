@@ -1,8 +1,8 @@
 export const BackLink = (
-  href: string,
-  i18nKey: string,
-  label: string,
-  className = "text-primary",
+	href: string,
+	i18nKey: string,
+	label: string,
+	className = "text-primary",
 ): string => `
   <a href="${href}"
      class="inline-flex items-center gap-2 font-sans text-[14px] lg:text-[15px]
