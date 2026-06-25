@@ -21,7 +21,7 @@ export const COLOR_OPTIONS = [
   "RAL 9005",
   "Оцинкованный",
   "Антрацит",
-];
+] as const;
 
 export const THICKNESS_OPTIONS = [
   "0,35",
@@ -31,14 +31,14 @@ export const THICKNESS_OPTIONS = [
   "0,55",
   "0,7",
   "0,8",
-];
+] as const;
 
 export const SURFACE_OPTIONS = [
   "Полиэстер",
   "Матовая",
   "Глянцевая",
   "Структурная",
-];
+] as const;
 
 const DROPDOWN_I18N: Record<string, string> = {
   color: "calc-color-label",
@@ -49,7 +49,7 @@ const DROPDOWN_I18N: Record<string, string> = {
 export const Dropdown = (
   label: string,
   value: string,
-  options: string[],
+  options: readonly string[],
   name: string,
 ): string => {
   const isSurface = name === "surface";
