@@ -16,6 +16,7 @@ import {
   validateRequired,
 } from "../services/auth";
 import { t } from "../services/i18n";
+import { showToast } from "../shared/ui/toast";
 
 type Tab = "login" | "register";
 
@@ -503,7 +504,7 @@ const handleRegisterSubmit = (event: Event): void => {
     createdAt: new Date().toISOString(),
     role: "customer",
   });
-  alert(t("auth-success-register"));
+  showToast(t("auth-success-register"), { type: "success" });
   window.location.hash = "";
 };
 
@@ -518,11 +519,11 @@ const handleLoginSubmit = (event: Event): void => {
   // Fast path: same user already cached locally
   if (localUser && localUser.phone === phone) {
     if (localUser.password !== password) {
-      alert(t("auth-error-wrong-pwd"));
+      showToast(t("auth-error-wrong-pwd"), { type: "error" });
       return;
     }
     setAuthenticated(true);
-    alert(t("auth-success-login"));
+    showToast(t("auth-success-login"), { type: "success" });
     window.location.hash = "";
     return;
   }
@@ -539,7 +540,7 @@ const handleLoginSubmit = (event: Event): void => {
         (u) => u.phone === phone && u.password === password,
       );
       if (!found) {
-        alert(t("auth-error-not-found"));
+        showToast(t("auth-error-not-found"), { type: "error" });
         return;
       }
       restoreUser(
@@ -556,11 +557,11 @@ const handleLoginSubmit = (event: Event): void => {
         },
         found.id,
       );
-      alert(t("auth-success-login"));
+      showToast(t("auth-success-login"), { type: "success" });
       window.location.hash = "";
     })
     .catch(() => {
-      alert(t("auth-error-server"));
+      showToast(t("auth-error-server"), { type: "error" });
     })
     .finally(() => {
       if (loginBtn) loginBtn.disabled = !validateLoginForm();
@@ -634,7 +635,7 @@ export const initAuthPage = (): void => {
 
   document.getElementById("agreement-link")?.addEventListener("click", (e) => {
     e.preventDefault();
-    alert(t("auth-agreement-text"));
+    showToast(t("auth-agreement-text"), { type: "info", duration: 5000 });
   });
 
   document

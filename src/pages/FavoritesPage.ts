@@ -154,7 +154,11 @@ export const initFavoritesPage = (): void => {
   handleRoute();
   window.addEventListener("hashchange", handleRoute);
   favorites.onChange(() => {
-    if (window.location.hash === "#favorites") void render();
+    if (window.location.hash === "#favorites") {
+      void render();
+    } else {
+      syncFavoriteButtons();
+    }
   });
 
   document.getElementById("favorites-clear")?.addEventListener("click", () => {

@@ -1,4 +1,5 @@
 import { t } from "../services/i18n";
+import { showToast } from "../shared/ui/toast";
 
 export const ContactForm = (): string => {
   return `
@@ -79,6 +80,6 @@ export const initContactForm = (): void => {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    alert(t("contact-thanks"));
+    showToast(t("contact-thanks"), { type: "success" });
   });
 };

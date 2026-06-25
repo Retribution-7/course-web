@@ -25,8 +25,8 @@ const ensureContainer = (): HTMLElement => {
   if (container && document.body.contains(container)) return container;
   container = document.createElement("div");
   container.id = "toast-container";
-  container.className =
-    "fixed bottom-5 right-5 z-[9000] flex flex-col gap-2 pointer-events-none";
+  container.style.cssText =
+    "position:fixed;bottom:20px;right:20px;z-index:9000;display:flex;flex-direction:column;gap:8px;pointer-events:none;";
   document.body.appendChild(container);
   return container;
 };
@@ -36,31 +36,25 @@ export const showToast = (
   options: ToastOptions = {},
 ): void => {
   const type = options.type ?? "success";
-  const duration = options.duration ?? 2500;
+  const duration = options.duration ?? 3000;
   const accent = COLOR[type];
   const icon = ICON[type];
 
   const root = ensureContainer();
   const toast = document.createElement("div");
-  toast.className =
-    "pointer-events-auto bg-white rounded-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.12)] " +
-    "px-4 py-3 flex items-center gap-3 min-w-[220px] max-w-[360px] " +
-    "font-sans text-[14px] leading-[1.3] text-[#44444E] " +
-    "opacity-0 translate-y-2 transition-all duration-300";
+  toast.style.cssText =
+    "pointer-events:auto;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.12);padding:12px 16px;display:flex;align-items:center;gap:12px;min-width:220px;max-width:360px;font-family:sans-serif;font-size:14px;line-height:1.3;color:#44444E;";
   toast.setAttribute("role", "status");
   toast.innerHTML = `
-    <span class="grid place-items-center size-6 rounded-full text-white font-medium text-[13px] shrink-0"
-          style="background:${accent}" aria-hidden="true">${icon}</span>
-    <span class="flex-1">${message}</span>
+    <span style="display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:${accent};color:#fff;font-size:13px;font-weight:500;flex-shrink:0;" aria-hidden="true">${icon}</span>
+    <span style="flex:1;">${message}</span>
   `;
   root.appendChild(toast);
 
-  requestAnimationFrame(() => {
-    toast.classList.remove("opacity-0", "translate-y-2");
-  });
-
   window.setTimeout(() => {
-    toast.classList.add("opacity-0", "translate-y-2");
-    window.setTimeout(() => toast.remove(), 300);
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(8px)";
+    toast.style.transition = "opacity 300ms, transform 300ms";
+    window.setTimeout(() => toast.remove(), 350);
   }, duration);
 };

@@ -572,14 +572,25 @@
       "userId": "100",
       "productId": 18,
       "id": 2
-    },
-    {
-      "userId": "100",
-      "productId": 1,
-      "id": 3
     }
   ],
-  "cart": [],
+  "cart": [
+    {
+      "title": "Kvinta Plus",
+      "image": "/images/metal-tiles/metal-tile-2.jpg",
+      "color": "RAL 6020",
+      "thickness": "0,5",
+      "surface": "Матовая",
+      "area": 100,
+      "pricePerM2": 701.5,
+      "installation": false,
+      "delivery": false,
+      "total": 70150,
+      "clientId": "401e4bcc-8999-498c-9561-a2a82175d744",
+      "userId": "100",
+      "id": 1
+    }
+  ],
   "reviews": [
     {
       "id": 1,

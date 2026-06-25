@@ -11,6 +11,7 @@ import {
 } from "../services/api";
 import { getUser, isAdmin, onAuthChange } from "../services/auth";
 import { getCurrentLang, t } from "../services/i18n";
+import { showToast } from "../shared/ui/toast";
 
 type AdminTab = "users" | "products" | "reviews";
 
@@ -265,7 +266,7 @@ const renderUsersTab = async (): Promise<void> => {
             await updateUser(id, { role: nextRole });
             void renderUsersTab();
           } catch {
-            alert(t("admin-error-role"));
+            showToast(t("admin-error-role"), { type: "error" });
             btn.disabled = false;
           }
         });
@@ -424,7 +425,7 @@ const wireProductForm = (): void => {
       void renderProductsTab();
       void loadStats();
     } catch {
-      alert(t("admin-error-product"));
+      showToast(t("admin-error-product"), { type: "error" });
       if (saveBtn) saveBtn.disabled = false;
     }
   });
@@ -503,7 +504,7 @@ const renderProductsTab = async (): Promise<void> => {
             void renderProductsTab();
             void loadStats();
           } catch {
-            alert(t("admin-error-delete-product"));
+            showToast(t("admin-error-delete-product"), { type: "error" });
           }
         });
       },
@@ -582,7 +583,7 @@ const renderReviewsTab = async (): Promise<void> => {
             void renderReviewsTab();
             void loadStats();
           } catch {
-            alert(t("admin-error-delete-review"));
+            showToast(t("admin-error-delete-review"), { type: "error" });
           }
         });
       },

@@ -5,6 +5,7 @@ import {
   translateSurface,
   translateTitle,
 } from "../services/i18n";
+import { showToast } from "../shared/ui/toast";
 
 const formatRub = (value: number): string =>
   `${Math.round(value).toLocaleString("ru-RU")} ₽`;
@@ -198,13 +199,13 @@ export const initCartPage = (): void => {
     }
 
     if (target.closest('[data-action="cart-checkout"]')) {
+      showToast(t("cart-checkout-thanks"), { type: "success" });
       cart.clear();
       window.location.hash = "";
       setTimeout(() => {
         document
           .getElementById("consultation")
           ?.scrollIntoView({ behavior: "smooth" });
-        alert(t("cart-checkout-thanks"));
       }, 100);
       return;
     }
