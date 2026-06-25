@@ -120,6 +120,11 @@ const applyToDOM = (s: A11ySettings): void => {
 
 let imageObserver: MutationObserver | null = null;
 
+/**
+ * Accessibility panel service — manages font size, color scheme, and image visibility.
+ *
+ * Methods: getSettings, apply, reset, applyFromStorage, observeImages, onChange
+ */
 export const a11y = {
 	getSettings,
 

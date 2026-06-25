@@ -6,6 +6,7 @@ import {
 } from "./api";
 import { getServerId } from "./auth";
 
+/** Single item in the shopping cart. */
 export interface CartItem {
 	id: string;
 	title: string;
@@ -33,6 +34,11 @@ const setItems = (next: CartItem[]): void => {
 	emit();
 };
 
+/**
+ * Cart service — manages local cart state and syncs with the server.
+ *
+ * Methods: list, count, total, add, remove, clear, onChange
+ */
 export const cart = {
 	list(): CartItem[] {
 		return items;

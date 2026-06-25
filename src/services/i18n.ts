@@ -839,6 +839,7 @@ const PRODUCT_TITLE_EN: Record<string, string> = {
 	"Фальц премиум": "Premium Seam",
 };
 
+/** Maps Russian surface names to i18n keys. */
 export const SURFACE_I18N_KEY: Record<string, string> = {
 	Полиэстер: "surface-polyester",
 	Матовая: "surface-matte",
@@ -846,6 +847,7 @@ export const SURFACE_I18N_KEY: Record<string, string> = {
 	Структурная: "surface-structured",
 };
 
+/** Maps Russian spec labels to i18n keys. */
 export const SPEC_LABEL_I18N_KEY: Record<string, string> = {
 	"Высота волны, мм": "spec-wave-height",
 	"Высота ступеньки, мм": "spec-step-height",
@@ -857,18 +859,36 @@ export const SPEC_LABEL_I18N_KEY: Record<string, string> = {
 
 let currentLang: Lang = (localStorage.getItem("lang") as Lang | null) ?? "ru";
 
+/** Get the currently active language. */
 export const getCurrentLang = (): Lang => currentLang;
 
+/**
+ * Translate a key to the current language.
+ * @param key - Translation key
+ * @returns Translated string or the key itself if not found
+ */
 export const t = (key: string): string => i18Obj[currentLang][key] ?? key;
 
+/**
+ * Translate a surface name (e.g. "Полиэстер" → localized).
+ * @param surface - Russian surface name
+ */
 export const translateSurface = (surface: string): string => {
 	const key = SURFACE_I18N_KEY[surface];
 	return key ? t(key) : surface;
 };
 
+/**
+ * Translate a product title to the current language (EN/RU).
+ * @param title - Russian product title
+ */
 export const translateTitle = (title: string): string =>
 	currentLang === "en" ? (PRODUCT_TITLE_EN[title] ?? title) : title;
 
+/**
+ * Switch the active language and update all translated DOM elements.
+ * @param lang - Target language code
+ */
 export const getTranslate = (lang: Lang): void => {
 	currentLang = lang;
 	localStorage.setItem("lang", lang);
@@ -930,6 +950,7 @@ export const getTranslate = (lang: Lang): void => {
 	});
 };
 
+/** Initialize i18n from localStorage and apply translations. */
 export const initI18n = (): void => {
 	getTranslate(currentLang);
 };

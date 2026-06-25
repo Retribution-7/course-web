@@ -1,6 +1,7 @@
 import type { Product } from "../entities/products";
 import type { Review } from "../entities/reviews";
 
+/** Base URL for the JSON Server API. */
 export const API_BASE = "/api";
 
 const deleteAllByQuery = async (
@@ -17,6 +18,7 @@ const deleteAllByQuery = async (
 	);
 };
 
+/** Filters for product listing queries. */
 export interface ProductFilters {
 	category?: string;
 	_sort?: string;
@@ -24,6 +26,7 @@ export interface ProductFilters {
 	title_like?: string;
 }
 
+/** User record as stored on the server. */
 export interface ApiUser {
 	id: number;
 	firstName: string;
@@ -37,12 +40,14 @@ export interface ApiUser {
 	nickname?: string;
 }
 
+/** Favorite product reference for a user. */
 export interface ApiFavorite {
 	id: number;
 	userId: string;
 	productId: number;
 }
 
+/** Cart item stored on the server. */
 export interface ApiCartItem {
 	id: number;
 	clientId: string;
@@ -59,6 +64,11 @@ export interface ApiCartItem {
 	total: number;
 }
 
+/**
+ * Fetch products with optional filters.
+ * @param filters - category, sort order, search query
+ * @returns Array of matching products
+ */
 export const fetchProducts = async (
 	filters: ProductFilters = {},
 ): Promise<Product[]> => {
@@ -73,6 +83,11 @@ export const fetchProducts = async (
 	return res.json() as Promise<Product[]>;
 };
 
+/**
+ * Fetch a single product by ID.
+ * @param id - Product identifier
+ * @returns The product or null if not found
+ */
 export const fetchProductById = async (id: number): Promise<Product | null> => {
 	const res = await fetch(`${API_BASE}/products/${id}`);
 	if (res.status === 404) return null;
@@ -80,6 +95,11 @@ export const fetchProductById = async (id: number): Promise<Product | null> => {
 	return res.json() as Promise<Product>;
 };
 
+/**
+ * Fetch multiple products by their IDs.
+ * @param ids - Array of product identifiers
+ * @returns Array of found products (may be shorter than input)
+ */
 export const fetchProductsByIds = async (ids: number[]): Promise<Product[]> => {
 	if (ids.length === 0) return [];
 	const qs = ids.map((id) => `id=${id}`).join("&");
@@ -88,18 +108,21 @@ export const fetchProductsByIds = async (ids: number[]): Promise<Product[]> => {
 	return res.json() as Promise<Product[]>;
 };
 
+/** Fetch all reviews. */
 export const fetchReviews = async (): Promise<Review[]> => {
 	const res = await fetch(`${API_BASE}/reviews`);
 	if (!res.ok) throw new Error("Ошибка загрузки отзывов");
 	return res.json() as Promise<Review[]>;
 };
 
+/** Fetch all registered users. */
 export const fetchUsers = async (): Promise<ApiUser[]> => {
 	const res = await fetch(`${API_BASE}/users`);
 	if (!res.ok) throw new Error("Ошибка загрузки пользователей");
 	return res.json() as Promise<ApiUser[]>;
 };
 
+/** Input data for creating a new user. */
 export interface CreateUserInput {
 	phone: string;
 	email: string;
@@ -113,6 +136,11 @@ export interface CreateUserInput {
 	createdAt: string;
 }
 
+/**
+ * Register a new user on the server.
+ * @param user - User data to save
+ * @returns The created user's server ID
+ */
 export const postUser = async (
 	user: CreateUserInput,
 ): Promise<{ id: number }> => {
@@ -125,6 +153,12 @@ export const postUser = async (
 	return res.json() as Promise<{ id: number }>;
 };
 
+/**
+ * Update an existing user's fields.
+ * @param id - User server ID
+ * @param data - Partial fields to update
+ * @returns The updated user record
+ */
 export const updateUser = async (
 	id: number,
 	data: Partial<ApiUser>,
@@ -138,12 +172,18 @@ export const updateUser = async (
 	return res.json() as Promise<ApiUser>;
 };
 
+/** Fetch all cart items (admin view). */
 export const getAllCartItems = async (): Promise<ApiCartItem[]> => {
 	const res = await fetch(`${API_BASE}/cart`);
 	if (!res.ok) throw new Error("Ошибка загрузки корзины");
 	return res.json() as Promise<ApiCartItem[]>;
 };
 
+/**
+ * Create a new product.
+ * @param product - Product data without ID
+ * @returns The created product with server-assigned ID
+ */
 export const postProduct = async (
 	product: Omit<Product, "id">,
 ): Promise<Product> => {
@@ -156,14 +196,21 @@ export const postProduct = async (
 	return res.json() as Promise<Product>;
 };
 
+/** Delete a product by ID. */
 export const deleteProduct = async (id: number): Promise<void> => {
 	await fetch(`${API_BASE}/products/${id}`, { method: "DELETE" });
 };
 
+/** Delete a review by ID. */
 export const deleteReview = async (id: number): Promise<void> => {
 	await fetch(`${API_BASE}/reviews/${id}`, { method: "DELETE" });
 };
 
+/**
+ * Submit a new review.
+ * @param review - Review data without ID
+ * @returns The saved review with server-assigned ID
+ */
 export const postReview = async (
 	review: Omit<Review, "id">,
 ): Promise<Review> => {
@@ -176,6 +223,11 @@ export const postReview = async (
 	return res.json() as Promise<Review>;
 };
 
+/**
+ * Get all favorite product IDs for a user.
+ * @param userId - User identifier
+ * @returns Array of favorite records
+ */
 export const getFavoritesByUser = async (
 	userId: string,
 ): Promise<ApiFavorite[]> => {
@@ -184,6 +236,11 @@ export const getFavoritesByUser = async (
 	return res.json() as Promise<ApiFavorite[]>;
 };
 
+/**
+ * Add a product to user's favorites.
+ * @param userId - User identifier
+ * @param productId - Product to favorite
+ */
 export const postFavorite = async (
 	userId: string,
 	productId: number,
@@ -195,6 +252,11 @@ export const postFavorite = async (
 	});
 };
 
+/**
+ * Remove a product from user's favorites.
+ * @param userId - User identifier
+ * @param productId - Product to remove
+ */
 export const deleteFavorite = async (
 	userId: string,
 	productId: number,
@@ -205,16 +267,26 @@ export const deleteFavorite = async (
 	});
 };
 
+/** Clear all favorites for a user. */
 export const clearFavoritesByUser = async (userId: string): Promise<void> => {
 	await deleteAllByQuery("favorites", { userId });
 };
 
+/**
+ * Get cart items for a specific user.
+ * @param userId - User identifier
+ * @returns Array of cart items
+ */
 export const getCartByUser = async (userId: string): Promise<ApiCartItem[]> => {
 	const res = await fetch(`${API_BASE}/cart?userId=${userId}`);
 	if (!res.ok) throw new Error("Ошибка загрузки корзины");
 	return res.json() as Promise<ApiCartItem[]>;
 };
 
+/**
+ * Add an item to user's cart.
+ * @param item - Cart item data without server ID
+ */
 export const postCartItem = async (
 	item: Omit<ApiCartItem, "id">,
 ): Promise<void> => {
@@ -225,6 +297,11 @@ export const postCartItem = async (
 	});
 };
 
+/**
+ * Remove a specific cart item by client ID.
+ * @param userId - User identifier
+ * @param clientId - Client-side unique key for the cart entry
+ */
 export const deleteCartItemByClientId = async (
 	userId: string,
 	clientId: string,
@@ -232,6 +309,7 @@ export const deleteCartItemByClientId = async (
 	await deleteAllByQuery("cart", { userId, clientId });
 };
 
+/** Clear all cart items for a user. */
 export const clearCartByUser = async (userId: string): Promise<void> => {
 	await deleteAllByQuery("cart", { userId });
 };

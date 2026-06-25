@@ -18,13 +18,19 @@ const DIGIT_RE = /\d/;
 const SPECIAL_RE = /[!@#$%^&*()-_=+[\]{};:'",.<>/?\\|`~]/;
 const NICKNAME_RE = /^[A-Za-z0-9_-]{3,20}$/;
 
+/** Password length constraints. */
 export const PASSWORD_LIMITS = {
 	MIN: MIN_PASSWORD,
 	MAX: MAX_PASSWORD,
 };
 
+/** Max nickname regeneration attempts before manual input is required. */
 export const NICKNAME_REGEN_LIMIT = MAX_NICKNAME_REGEN;
 
+/**
+ * Validate a Belarusian phone number (+375 XX XXX-XX-XX).
+ * @returns Error message or null if valid
+ */
 export const validatePhone = (value: string): string | null => {
 	if (!value.trim()) return "Укажите номер телефона";
 	if (!PHONE_RE.test(value.trim()))
@@ -32,6 +38,10 @@ export const validatePhone = (value: string): string | null => {
 	return null;
 };
 
+/**
+ * Validate email format.
+ * @returns Error message or null if valid
+ */
 export const validateEmail = (value: string): string | null => {
 	if (!value.trim()) return "Укажите e-mail";
 	if (!EMAIL_RE.test(value.trim())) return "Некорректный формат e-mail";
@@ -48,6 +58,10 @@ const calcAge = (dateStr: string): number => {
 	return age;
 };
 
+/**
+ * Validate birth date (age must be between 16 and 120).
+ * @returns Error message or null if valid
+ */
 export const validateBirthDate = (value: string): string | null => {
 	if (!value) return "Укажите дату рождения";
 	const age = calcAge(value);
@@ -57,6 +71,10 @@ export const validateBirthDate = (value: string): string | null => {
 	return null;
 };
 
+/**
+ * Validate password strength (length, case, digit, special char, not in top 100).
+ * @returns Error message or null if valid
+ */
 export const validatePassword = (value: string): string | null => {
 	if (!value) return "Укажите пароль";
 	if (value.length < MIN_PASSWORD) return `Минимум ${MIN_PASSWORD} символов`;
@@ -70,6 +88,10 @@ export const validatePassword = (value: string): string | null => {
 	return null;
 };
 
+/**
+ * Check that password confirmation matches the original.
+ * @returns Error message or null if match
+ */
 export const validatePasswordConfirm = (
 	password: string,
 	confirm: string,
@@ -79,6 +101,12 @@ export const validatePasswordConfirm = (
 	return null;
 };
 
+/**
+ * Check that a required field is not empty.
+ * @param value - Field value
+ * @param label - Field name for the error message
+ * @returns Error message or null if filled
+ */
 export const validateRequired = (
 	value: string,
 	label: string,
@@ -87,6 +115,10 @@ export const validateRequired = (
 	return null;
 };
 
+/**
+ * Validate custom nickname (3-20 chars, latin, digits, _ or -).
+ * @returns Error message or null if valid
+ */
 export const validateNicknameCustom = (value: string): string | null => {
 	if (!value.trim()) return "Укажите никнейм";
 	if (!NICKNAME_RE.test(value.trim()))
@@ -101,6 +133,11 @@ const SPECIALS = "!@#$%^&*-_=+?";
 
 const pick = (s: string): string => s[Math.floor(Math.random() * s.length)];
 
+/**
+ * Generate a random secure password.
+ * @param length - Desired length (clamped to 8-20)
+ * @returns Generated password string
+ */
 export const generatePassword = (length = 12): string => {
 	const len = Math.max(MIN_PASSWORD, Math.min(MAX_PASSWORD, length));
 	const chars = [pick(UPPER), pick(LOWER), pick(DIGITS), pick(SPECIALS)];
@@ -167,6 +204,7 @@ const NOUNS = [
 	"Nomad",
 ];
 
+/** Generate a random nickname like "BraveWolf42". */
 export const generateNickname = (): string => {
 	const a = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
 	const n = NOUNS[Math.floor(Math.random() * NOUNS.length)];
@@ -174,6 +212,7 @@ export const generateNickname = (): string => {
 	return `${a}${n}${num}`;
 };
 
+/** Registered user profile stored in localStorage. */
 export interface RegisteredUser {
 	phone: string;
 	email: string;
@@ -196,11 +235,17 @@ const emitAuthChange = (): void => {
 	window.dispatchEvent(new CustomEvent(AUTH_CHANGE_EVENT));
 };
 
+/** Get server-side user ID from localStorage. */
 export const getServerId = (): string | null =>
 	localStorage.getItem(SERVER_ID_KEY);
+/** Save server-side user ID to localStorage. */
 export const setServerId = (id: string): void =>
 	localStorage.setItem(SERVER_ID_KEY, id);
 
+/**
+ * Save user to localStorage and persist to server in background.
+ * @param user - Complete user profile
+ */
 export const saveUser = (user: RegisteredUser): void => {
 	localStorage.setItem(USER_KEY, JSON.stringify(user));
 	localStorage.setItem(AUTH_KEY, "1");
@@ -212,7 +257,11 @@ export const saveUser = (user: RegisteredUser): void => {
 		.catch(() => {});
 };
 
-// Restores user from server data without creating a duplicate server record
+/**
+ * Restore user from server data without creating a duplicate record.
+ * @param user - User profile
+ * @param serverId - Server-side user ID
+ */
 export const restoreUser = (user: RegisteredUser, serverId: number): void => {
 	localStorage.setItem(USER_KEY, JSON.stringify(user));
 	localStorage.setItem(AUTH_KEY, "1");
@@ -220,6 +269,7 @@ export const restoreUser = (user: RegisteredUser, serverId: number): void => {
 	emitAuthChange();
 };
 
+/** Get the currently logged-in user from localStorage, or null. */
 export const getUser = (): RegisteredUser | null => {
 	try {
 		const raw = localStorage.getItem(USER_KEY);
@@ -229,28 +279,41 @@ export const getUser = (): RegisteredUser | null => {
 	}
 };
 
+/** Check if a user is currently authenticated. */
 export const isAuthenticated = (): boolean =>
 	localStorage.getItem(AUTH_KEY) === "1" && getUser() !== null;
 
+/** Get the current user's role (defaults to "customer"). */
 export const getRole = (): "customer" | "admin" => {
 	const user = getUser();
 	return user?.role === "admin" ? "admin" : "customer";
 };
 
+/** Check if the current user has admin role. */
 export const isAdmin = (): boolean =>
 	isAuthenticated() && getRole() === "admin";
 
+/**
+ * Set or clear the authentication flag.
+ * @param authenticated - Whether the user is logged in
+ */
 export const setAuthenticated = (authenticated: boolean): void => {
 	if (authenticated) localStorage.setItem(AUTH_KEY, "1");
 	else localStorage.removeItem(AUTH_KEY);
 	emitAuthChange();
 };
 
+/** Log out the current user and emit auth change. */
 export const logout = (): void => {
 	localStorage.removeItem(AUTH_KEY);
 	emitAuthChange();
 };
 
+/**
+ * Subscribe to authentication state changes.
+ * @param handler - Callback invoked on auth changes
+ * @returns Unsubscribe function
+ */
 export const onAuthChange = (handler: () => void): (() => void) => {
 	const listener = (): void => handler();
 	window.addEventListener(AUTH_CHANGE_EVENT, listener);

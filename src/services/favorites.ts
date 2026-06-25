@@ -19,6 +19,11 @@ const setIds = (next: number[]): void => {
 	emit();
 };
 
+/**
+ * Favorites service — manages local favorites state and syncs with the server.
+ *
+ * Methods: list, has, count, toggle, sync, onChange
+ */
 export const favorites = {
 	list(): number[] {
 		return ids;
