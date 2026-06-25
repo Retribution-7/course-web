@@ -1,4 +1,5 @@
 import { t } from "../services/i18n";
+import { MessengerLinks } from "../shared/ui/MessengerLinks";
 
 export const initFooter = (): void => {
   document.addEventListener("click", (event) => {
@@ -48,23 +49,7 @@ export const Footer = (): string => {
               <span class="text-[13px] text-primary font-normal leading-[1.3]" data-i18n="footer-ask-online">Задайте вопрос online</span>
             </div>
             <div class="flex items-center gap-[15px]">
-              <a href="https://wa.me/78123255055" target="_blank" rel="noopener noreferrer"
-                 class="flex items-center justify-center w-[50px] h-[41px] rounded-[8px] shrink-0 transition-opacity hover:opacity-80"
-                 style="background: linear-gradient(145deg, rgba(0,215,41,0.3) 0%, rgb(0,215,41) 100%)"
-                 aria-label="WhatsApp">
-                <img src="/icons/whats-app-logo.svg" alt="WhatsApp" class="size-[19px]">
-              </a>
-              <a href="https://t.me/metallobaza" target="_blank" rel="noopener noreferrer"
-                 class="flex items-center justify-center w-[50px] h-[41px] rounded-[8px] shrink-0 transition-opacity hover:opacity-80"
-                 style="background: linear-gradient(145deg, rgba(40,169,234,0.3) 0%, rgb(40,169,234) 100%)"
-                 aria-label="Telegram">
-                <img src="/icons/telegram-logo.svg" alt="Telegram" class="size-[19px]">
-              </a>
-              <a href="https://vk.com/metallobaza" target="_blank" rel="noopener noreferrer"
-                 class="flex items-center justify-center w-[50px] h-[41px] rounded-[8px] bg-[#0077FF] shrink-0 transition-opacity hover:opacity-80"
-                 aria-label="ВКонтакте">
-                <img src="/icons/vk-logo.svg" alt="ВКонтакте" class="size-[19px]">
-              </a>
+              ${MessengerLinks()}
             </div>
           </div>
 
