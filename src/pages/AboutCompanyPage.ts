@@ -1,3 +1,5 @@
+import { BackLink } from "../shared/ui/BackLink";
+
 interface Stat {
   value: string;
   label: string;
@@ -145,14 +147,7 @@ export const AboutCompanyPage = (): string => `
            aria-labelledby="company-heading">
     <div class="container-main">
 
-      <a href="#"
-         class="inline-flex items-center gap-2 font-sans text-[14px] lg:text-[15px]
-                text-text-secondary hover:text-button-first transition-colors mb-6 lg:mb-10">
-        <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
-          <path d="M10 3l-5 5 5 5"/>
-        </svg>
-        <span data-i18n="company-home">На главную</span>
-      </a>
+      ${BackLink("#", "company-home", "На главную", "text-text-secondary")}
 
       <header class="bg-surface rounded-[14px] card-shadow p-6 sm:p-8 lg:p-10 xl:p-14 transition-colors duration-300">
         <span data-i18n="company-label"

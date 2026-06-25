@@ -1,4 +1,5 @@
 import type { Product } from "../entities/products";
+import { BackLink } from "../shared/ui/BackLink";
 import {
   deleteProduct,
   deleteReview,
@@ -43,14 +44,7 @@ export const AdminPage = (): string => `
            aria-labelledby="admin-heading">
     <div class="container-main">
 
-      <a href="#"
-         class="inline-flex items-center gap-2 font-sans text-[14px] text-primary
-                hover:text-button-first transition-colors mb-6 lg:mb-10">
-        <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
-          <path d="M10 3l-5 5 5 5"/>
-        </svg>
-        <span data-i18n="admin-home">На главную</span>
-      </a>
+      ${BackLink("#", "admin-home", "На главную")}
 
       <h1 id="admin-heading"
           data-i18n="admin-heading"

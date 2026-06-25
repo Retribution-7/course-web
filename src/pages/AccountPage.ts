@@ -3,6 +3,7 @@ import { cart } from "../services/cart";
 import { favorites } from "../services/favorites";
 import { t } from "../services/i18n";
 import { formatDate } from "../shared/utils/format";
+import { BackLink } from "../shared/ui/BackLink";
 
 const getInitials = (user: RegisteredUser): string => {
   const f = user.firstName.charAt(0).toUpperCase();
@@ -21,14 +22,7 @@ export const AccountPage = (): string => `
            aria-labelledby="account-heading">
     <div class="container-main">
 
-      <a href="#"
-         class="inline-flex items-center gap-2 font-sans text-[14px] lg:text-[15px]
-                text-primary hover:text-button-first transition-colors mb-6 lg:mb-10">
-        <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
-          <path d="M10 3l-5 5 5 5"/>
-        </svg>
-        <span data-i18n="account-home">На главную</span>
-      </a>
+      ${BackLink("#", "account-home", "На главную")}
 
       <h1 id="account-heading"
           data-i18n="account-heading"

@@ -8,6 +8,7 @@ import {
 } from "../entities/ProductCard";
 import type { Product } from "../entities/products";
 import { fetchProductById, fetchProducts } from "../services/api";
+import { BackLink } from "../shared/ui/BackLink";
 import { SPEC_LABEL_I18N_KEY, t, translateTitle } from "../services/i18n";
 
 const catKey = (category: Product["category"]): string => {
@@ -50,14 +51,7 @@ const renderDetail = (
       `;
 
   return `
-    <a href="#catalog"
-       class="inline-flex items-center gap-2 font-sans text-[14px] lg:text-[15px]
-              text-text-secondary hover:text-button-first transition-colors mb-6 lg:mb-10">
-      <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
-        <path d="M10 3l-5 5 5 5"/>
-      </svg>
-      ${t("product-to-catalog")}
-    </a>
+    ${BackLink("#catalog", "product-to-catalog", t("product-to-catalog"), "text-text-secondary")}
 
     <article class="bg-surface rounded-[14px] card-shadow p-5 sm:p-6 lg:p-10 transition-colors duration-300"
              data-category="${product.category}"

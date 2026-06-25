@@ -3,6 +3,7 @@ import type { Product } from "../entities/products";
 import { fetchProductsByIds } from "../services/api";
 import { favorites } from "../services/favorites";
 import { getCurrentLang, t } from "../services/i18n";
+import { BackLink } from "../shared/ui/BackLink";
 import { pluralize } from "../shared/utils/pluralize";
 
 const renderEmpty = (): string => `
@@ -41,14 +42,7 @@ export const FavoritesPage = (): string => `
            aria-labelledby="favorites-heading">
     <div class="container-main">
 
-      <a href="#catalog"
-         class="inline-flex items-center gap-2 font-sans text-[14px] lg:text-[15px]
-                text-primary hover:text-button-first transition-colors mb-6 lg:mb-10">
-        <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
-          <path d="M10 3l-5 5 5 5"/>
-        </svg>
-        <span data-i18n="favorites-to-catalog">В каталог</span>
-      </a>
+      ${BackLink("#catalog", "favorites-to-catalog", "В каталог")}
 
       <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-6 mb-6 lg:mb-10">
         <div>

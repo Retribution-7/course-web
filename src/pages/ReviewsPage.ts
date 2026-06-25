@@ -3,6 +3,7 @@ import { fetchReviews, postReview } from "../services/api";
 import { isAuthenticated, getUser } from "../services/auth";
 import { getCurrentLang, t } from "../services/i18n";
 import { pluralize } from "../shared/utils/pluralize";
+import { BackLink } from "../shared/ui/BackLink";
 import { showToast } from "../shared/ui/toast";
 
 type SortOrder = "newest" | "oldest" | "rating";
@@ -110,14 +111,7 @@ export const ReviewsPage = (): string => `
            aria-labelledby="reviews-heading">
     <div class="container-main">
 
-      <a href="#testimonials"
-         class="inline-flex items-center gap-2 font-sans text-[14px] lg:text-[15px]
-                text-text-secondary hover:text-button-first transition-colors mb-6 lg:mb-10">
-        <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.6">
-          <path d="M10 3l-5 5 5 5"/>
-        </svg>
-        <span data-i18n="reviews-back">Назад</span>
-      </a>
+      ${BackLink("#testimonials", "reviews-back", "Назад", "text-text-secondary")}
 
       <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-6 mb-6 lg:mb-10">
         <div>
