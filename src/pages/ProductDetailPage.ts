@@ -12,6 +12,7 @@ import { SPEC_LABEL_I18N_KEY, t, translateTitle } from "../services/i18n";
 import { catKey } from "../shared/constants/categories";
 import { RELATED_PRODUCTS_LIMIT } from "../shared/lib/constants";
 import { BackLink } from "../shared/ui/BackLink";
+import { Skeleton } from "../shared/ui/Skeleton";
 
 const renderDetail = (
 	product: Product,
@@ -156,8 +157,8 @@ const showPage = async (show: boolean, productIdx?: number): Promise<void> => {
 
 	window.scrollTo({ top: 0, behavior: "smooth" });
 	content.innerHTML = `
-    <div class="flex justify-center py-20">
-      <span class="font-sans text-[15px] text-text-third">${t("product-loading")}</span>
+    <div class="py-20">
+      ${Skeleton(5)}
     </div>
   `;
 

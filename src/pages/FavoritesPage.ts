@@ -6,6 +6,7 @@ import { getCurrentLang, t } from "../services/i18n";
 import { showConfirm } from "../shared/ui/ConfirmModal";
 import { BackLink } from "../shared/ui/BackLink";
 import { EmptyState } from "../shared/ui/EmptyState";
+import { SkeletonGrid } from "../shared/ui/Skeleton";
 import { pluralize } from "../shared/utils/pluralize";
 
 const renderEmpty = (): string =>
@@ -79,8 +80,8 @@ const render = async (): Promise<void> => {
 	}
 
 	content.innerHTML = `
-    <div class="col-span-full flex justify-center py-16">
-      <span class="font-sans text-[15px] text-text-third">${t("favorites-loading")}</span>
+    <div class="py-16">
+      ${SkeletonGrid(3)}
     </div>
   `;
 

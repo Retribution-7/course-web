@@ -1,6 +1,7 @@
 import type { Review } from "../entities/reviews";
 import { fetchReviews } from "../services/api";
 import { t } from "../services/i18n";
+import { SkeletonCard } from "../shared/ui/Skeleton";
 import {
 	CAROUSEL_AUTO_INTERVAL_MS,
 	CAROUSEL_DESKTOP_BREAKPOINT_PX,
@@ -78,7 +79,7 @@ export const Testimonials = (): string => `
         <div
           id="testimonials-track"
           class="flex gap-[41px] transition-transform duration-500 ease-in-out min-h-[200px] items-center">
-          <span class="w-full text-center font-sans text-[15px] text-text-third" data-i18n="testimonials-loading">Загрузка отзывов...</span>
+          ${SkeletonCard()}
         </div>
       </div>
 

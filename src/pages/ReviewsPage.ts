@@ -4,6 +4,7 @@ import { getUser, isAuthenticated } from "../services/auth";
 import { getCurrentLang, t } from "../services/i18n";
 import { BackLink } from "../shared/ui/BackLink";
 import { EmptyState } from "../shared/ui/EmptyState";
+import { SkeletonGrid } from "../shared/ui/Skeleton";
 import { showToast } from "../shared/ui/toast";
 import { pluralize } from "../shared/utils/pluralize";
 
@@ -356,8 +357,8 @@ const showLoadingState = (): void => {
 	if (grid) {
 		grid.classList.remove("hidden");
 		grid.innerHTML = `
-      <div class="col-span-full flex justify-center py-16">
-        <span class="font-sans text-[15px] text-text-third">${t("reviews-loading")}</span>
+      <div class="col-span-full py-16">
+        ${SkeletonGrid(6)}
       </div>
     `;
 	}

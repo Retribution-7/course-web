@@ -7,6 +7,7 @@ import type { ProductFilters } from "../services/api";
 import { fetchProducts } from "../services/api";
 import { t } from "../services/i18n";
 import { SEARCH_DEBOUNCE_MS } from "../shared/lib/constants";
+import { SkeletonGrid } from "../shared/ui/Skeleton";
 
 type CategoryKey = "metal-tile" | "corrugated-sheet" | "seam-roofing";
 type TabKey = "all" | CategoryKey;
@@ -124,7 +125,7 @@ export const Catalog = (): string => `
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 xl:gap-10 mt-14 lg:mt-20 xl:mt-24"
         role="tabpanel">
         <div class="col-span-full flex justify-center items-center py-20">
-          <span class="font-sans text-[15px] text-text-third" data-i18n="catalog-loading">Загрузка каталога...</span>
+          ${SkeletonGrid(4)}
         </div>
       </div>
 
@@ -142,8 +143,8 @@ const renderGrid = async (): Promise<void> => {
 	if (!grid) return;
 
 	grid.innerHTML = `
-    <div class="col-span-full flex justify-center items-center py-20">
-      <span class="font-sans text-[15px] text-text-third">${t("catalog-loading")}</span>
+    <div class="col-span-full py-20">
+      ${SkeletonGrid(4)}
     </div>
   `;
 
