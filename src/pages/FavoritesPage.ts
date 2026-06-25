@@ -116,7 +116,6 @@ const render = async (): Promise<void> => {
 	syncFavoriteButtons();
 };
 
-
 const showPage = (show: boolean): void => {
 	const page = document.getElementById("favorites-page");
 	if (!page) return;
@@ -127,11 +126,9 @@ const showPage = (show: boolean): void => {
 	}
 };
 
-
 const handleRoute = (): void => {
 	showPage(window.location.hash === "#favorites");
 };
-
 
 export const initFavoritesPage = (): void => {
 	handleRoute();

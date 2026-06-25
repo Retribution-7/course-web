@@ -6,7 +6,6 @@ export const CATEGORY_MAP: Record<Product["category"], string> = {
 	"seam-roofing": "seam",
 };
 
-
 export const catKey = (category: Product["category"]): string =>
 	CATEGORY_MAP[category];
 

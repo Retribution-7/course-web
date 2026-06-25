@@ -14,12 +14,10 @@ const emit = (): void => {
 	window.dispatchEvent(new CustomEvent(CHANGE_EVENT));
 };
 
-
 const setIds = (next: number[]): void => {
 	ids = next;
 	emit();
 };
-
 
 export const favorites = {
 	list(): number[] {

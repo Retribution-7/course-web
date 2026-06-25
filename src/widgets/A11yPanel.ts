@@ -199,7 +199,6 @@ const getOrCreateOverlay = (): HTMLElement => {
 	return overlay;
 };
 
-
 const getPanel = (): HTMLElement | null =>
 	document.getElementById("a11y-panel");
 
@@ -207,7 +206,6 @@ const setActive = (el: HTMLElement, active: boolean): void => {
 	el.classList.toggle("active", active);
 	el.setAttribute("aria-pressed", String(active));
 };
-
 
 const syncPanelUI = (): void => {
 	const s = a11y.getSettings();
@@ -251,7 +249,6 @@ const syncPanelUI = (): void => {
 		});
 };
 
-
 const MOBILE_BP = 768;
 
 const positionPanel = (trigger: HTMLElement): void => {
@@ -293,7 +290,6 @@ const positionPanel = (trigger: HTMLElement): void => {
 	}
 };
 
-
 const closePanel = (): void => {
 	const panel = getPanel();
 	if (!panel) return;
@@ -305,7 +301,6 @@ const closePanel = (): void => {
 			btn.setAttribute("aria-expanded", "false");
 		});
 };
-
 
 const openPanel = (trigger: HTMLElement): void => {
 	const panel = getPanel();
@@ -335,7 +330,6 @@ const openPanel = (trigger: HTMLElement): void => {
 			btn.setAttribute("aria-expanded", "true");
 		});
 };
-
 
 export const initA11yPanel = (): void => {
 	document.body.insertAdjacentHTML("beforeend", buildPanelHTML());

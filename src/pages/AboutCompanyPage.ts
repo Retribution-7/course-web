@@ -327,11 +327,9 @@ const showPage = (show: boolean): void => {
 	if (show) window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
-
 const handleRoute = (): void => {
 	showPage(window.location.hash === "#company");
 };
-
 
 export const initAboutCompanyPage = (): void => {
 	handleRoute();

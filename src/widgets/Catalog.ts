@@ -183,7 +183,6 @@ const renderGrid = async (): Promise<void> => {
 	}
 };
 
-
 export const initCatalog = (): void => {
 	initProductCards();
 

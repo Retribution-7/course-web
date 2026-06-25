@@ -10,7 +10,6 @@ export const hidePreloader = (): void => {
 	window.setTimeout(() => el.remove(), PRELOADER_FADE_DURATION_MS);
 };
 
-
 export const showPreloader = (): void => {
 	let el = document.getElementById(PRELOADER_ID);
 	if (!el) {

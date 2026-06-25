@@ -277,7 +277,6 @@ export const Header = (): string => {
   `;
 };
 
-
 const syncCartBadges = (): void => {
 	const count = cart.count();
 	document
@@ -288,7 +287,6 @@ const syncCartBadges = (): void => {
 		});
 };
 
-
 const syncFavoritesBadges = (): void => {
 	const count = favorites.count();
 	document
@@ -298,7 +296,6 @@ const syncFavoritesBadges = (): void => {
 			badge.classList.toggle("hidden", count === 0);
 		});
 };
-
 
 const syncAuthLink = (): void => {
 	const auth = isAuthenticated();
@@ -313,14 +310,12 @@ const syncAuthLink = (): void => {
 		});
 };
 
-
 const syncAdminLink = (): void => {
 	const admin = isAdmin();
 	document.querySelectorAll<HTMLElement>("[data-admin-link]").forEach((el) => {
 		el.style.display = admin ? "grid" : "none";
 	});
 };
-
 
 const updateLangToggle = (lang: Lang): void => {
 	const isEn = lang === "en";
@@ -336,7 +331,6 @@ const updateLangToggle = (lang: Lang): void => {
 		});
 };
 
-
 const updateThemeIcons = (isDark: boolean): void => {
 	document
 		.querySelectorAll<HTMLElement>("[data-theme-icon-light]")
@@ -350,7 +344,6 @@ const updateThemeIcons = (isDark: boolean): void => {
 		});
 };
 
-
 export const initTheme = (): void => {
 	const saved = localStorage.getItem("theme");
 	const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -358,7 +351,6 @@ export const initTheme = (): void => {
 	document.documentElement.classList.toggle("dark", isDark);
 	updateThemeIcons(isDark);
 };
-
 
 export const initHeader = (): void => {
 	syncCartBadges();

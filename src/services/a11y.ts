@@ -33,7 +33,6 @@ const DEFAULTS: A11ySettings = {
 	images: true,
 };
 
-
 const getSettings = (): A11ySettings => {
 	try {
 		const raw = localStorage.getItem(STORAGE_KEY);
@@ -46,11 +45,9 @@ const getSettings = (): A11ySettings => {
 	}
 };
 
-
 const saveSettings = (s: A11ySettings): void => {
 	localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
 };
-
 
 const IMAGE_SELECTOR = 'img:not([aria-hidden="true"])';
 
@@ -74,12 +71,10 @@ const ensurePlaceholder = (img: HTMLImageElement): void => {
 	img.insertAdjacentElement("afterend", ph);
 };
 
-
 const removePlaceholder = (img: HTMLImageElement): void => {
 	const next = img.nextElementSibling as HTMLElement | null;
 	if (next?.dataset?.a11yPlaceholder) next.remove();
 };
-
 
 const applyImageVisibility = (hide: boolean): void => {
 	document.querySelectorAll<HTMLImageElement>(IMAGE_SELECTOR).forEach((img) => {
@@ -102,7 +97,6 @@ const applyImageVisibility = (hide: boolean): void => {
 	}
 };
 
-
 const applyToDOM = (s: A11ySettings): void => {
 	const html = document.documentElement;
 
@@ -123,7 +117,6 @@ const applyToDOM = (s: A11ySettings): void => {
 
 	applyImageVisibility(s.enabled && !s.images);
 };
-
 
 let imageObserver: MutationObserver | null = null;
 

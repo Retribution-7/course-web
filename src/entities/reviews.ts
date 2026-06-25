@@ -13,5 +13,4 @@ const parseDate = (s: string): number => {
 	return new Date(y, m - 1, d).getTime();
 };
 
-
 export const reviewDateMs = (review: Review): number => parseDate(review.date);

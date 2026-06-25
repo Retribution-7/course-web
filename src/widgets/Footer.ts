@@ -16,7 +16,6 @@ export const initFooter = (): void => {
 	});
 };
 
-
 export const Footer = (): string => {
 	return `
     <footer class="bg-surface border-t border-primary/10 transition-colors duration-300" aria-label="Подвал сайта">

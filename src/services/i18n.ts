@@ -813,7 +813,6 @@ const i18Obj: Record<Lang, Record<string, string>> = {
 	},
 };
 
-
 const PRODUCT_TITLE_EN: Record<string, string> = {
 	Монтеррей: "Monterrey",
 	Каскад: "Cascade",
@@ -840,14 +839,12 @@ const PRODUCT_TITLE_EN: Record<string, string> = {
 	"Фальц премиум": "Premium Seam",
 };
 
-
 export const SURFACE_I18N_KEY: Record<string, string> = {
 	Полиэстер: "surface-polyester",
 	Матовая: "surface-matte",
 	Глянцевая: "surface-glossy",
 	Структурная: "surface-structured",
 };
-
 
 export const SPEC_LABEL_I18N_KEY: Record<string, string> = {
 	"Высота волны, мм": "spec-wave-height",
@@ -857,7 +854,6 @@ export const SPEC_LABEL_I18N_KEY: Record<string, string> = {
 	"Ширина общая, мм": "spec-total-width",
 	"Ширина полезная, мм": "spec-useful-width",
 };
-
 
 let currentLang: Lang = (localStorage.getItem("lang") as Lang | null) ?? "ru";
 
@@ -869,7 +865,6 @@ export const translateSurface = (surface: string): string => {
 	const key = SURFACE_I18N_KEY[surface];
 	return key ? t(key) : surface;
 };
-
 
 export const translateTitle = (title: string): string =>
 	currentLang === "en" ? (PRODUCT_TITLE_EN[title] ?? title) : title;
@@ -934,7 +929,6 @@ export const getTranslate = (lang: Lang): void => {
 				: russianTitle;
 	});
 };
-
 
 export const initI18n = (): void => {
 	getTranslate(currentLang);
