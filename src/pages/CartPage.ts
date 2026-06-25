@@ -189,24 +189,25 @@ export const initCartPage = (): void => {
     const remove = target.closest<HTMLElement>('[data-action="cart-remove"]');
     if (remove) {
       const id = remove.dataset.id;
-      if (id) cart.remove(id);
+      if (id) void cart.remove(id);
       return;
     }
 
     if (target.closest('[data-action="cart-clear"]')) {
-      if (confirm(t("cart-clear-confirm"))) cart.clear();
+      if (confirm(t("cart-clear-confirm"))) void cart.clear();
       return;
     }
 
     if (target.closest('[data-action="cart-checkout"]')) {
       showToast(t("cart-checkout-thanks"), { type: "success" });
-      cart.clear();
-      window.location.hash = "";
-      setTimeout(() => {
-        document
-          .getElementById("consultation")
-          ?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
+      void cart.clear().then(() => {
+        window.location.hash = "";
+        setTimeout(() => {
+          document
+            .getElementById("consultation")
+            ?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      });
       return;
     }
   });

@@ -374,7 +374,7 @@ export const initCalculator = (): void => {
       (installation ? area * INSTALLATION_PER_M2 : 0) +
       (delivery ? DELIVERY_FEE : 0);
 
-    cart.add({
+    void cart.add({
       title: state.title,
       image: state.image,
       color: state.color,
@@ -385,13 +385,13 @@ export const initCalculator = (): void => {
       installation,
       delivery,
       total,
+    }).then(() => {
+      showToast(
+        `«${translateTitle(state.title)}» ${t("calc-toast-cart-added")}`,
+        { type: "success" },
+      );
+      closeModal();
+      window.location.hash = "#cart";
     });
-
-    showToast(
-      `«${translateTitle(state.title)}» ${t("calc-toast-cart-added")}`,
-      { type: "success" },
-    );
-    closeModal();
-    window.location.hash = "#cart";
   });
 };

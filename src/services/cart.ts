@@ -20,65 +20,78 @@ export interface CartItem {
   total: number;
 }
 
-const STORAGE_KEY = "metallobaza-cart";
 const CHANGE_EVENT = "cart:change";
 
-const read = (): CartItem[] => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? (parsed as CartItem[]) : [];
-  } catch {
-    return [];
-  }
+let items: CartItem[] = [];
+
+const emit = (): void => {
+  window.dispatchEvent(new CustomEvent(CHANGE_EVENT));
 };
 
-const write = (items: CartItem[]): void => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  window.dispatchEvent(new CustomEvent(CHANGE_EVENT));
+const setItems = (next: CartItem[]): void => {
+  items = next;
+  emit();
 };
 
 export const cart = {
   list(): CartItem[] {
-    return read();
-  },
-  add(item: Omit<CartItem, "id">): void {
-    const id = crypto.randomUUID();
-    const items = read();
-    items.push({ ...item, id });
-    write(items);
-
-    const userId = getServerId();
-    if (userId) {
-      void postCartItem({ ...item, clientId: id, userId }).catch(() => {});
-    }
-  },
-  remove(id: string): void {
-    write(read().filter((it) => it.id !== id));
-
-    const userId = getServerId();
-    if (userId) void deleteCartItemByClientId(userId, id).catch(() => {});
-  },
-  clear(): void {
-    write([]);
-
-    const userId = getServerId();
-    if (userId) void clearCartByUser(userId).catch(() => {});
+    return items;
   },
   count(): number {
-    return read().length;
+    return items.length;
   },
   total(): number {
-    return read().reduce((sum, it) => sum + it.total, 0);
+    return items.reduce((sum, it) => sum + it.total, 0);
+  },
+
+  async add(item: Omit<CartItem, "id">): Promise<void> {
+    const userId = getServerId();
+    const clientId = crypto.randomUUID();
+    const newItem: CartItem = { ...item, id: clientId };
+    setItems([...items, newItem]);
+
+    if (userId) {
+      try {
+        await postCartItem({ ...item, clientId, userId });
+      } catch {
+        setItems(items.filter((it) => it.id !== clientId));
+      }
+    }
+  },
+
+  async remove(id: string): Promise<void> {
+    setItems(items.filter((it) => it.id !== id));
+    const userId = getServerId();
+    if (userId) {
+      try {
+        await deleteCartItemByClientId(userId, id);
+      } catch {
+        /* keep current state */
+      }
+    }
+  },
+
+  async clear(): Promise<void> {
+    setItems([]);
+    const userId = getServerId();
+    if (userId) {
+      try {
+        await clearCartByUser(userId);
+      } catch {
+        /* keep empty */
+      }
+    }
   },
 
   async loadFromServer(): Promise<void> {
     const userId = getServerId();
-    if (!userId) return;
+    if (!userId) {
+      setItems([]);
+      return;
+    }
     try {
-      const items = await getCartByUser(userId);
-      const mapped: CartItem[] = items.map((i) => ({
+      const raw = await getCartByUser(userId);
+      const mapped: CartItem[] = raw.map((i) => ({
         id: i.clientId,
         title: i.title,
         image: i.image,
@@ -91,19 +104,17 @@ export const cart = {
         delivery: i.delivery,
         total: i.total,
       }));
-      write(mapped);
+      setItems(mapped);
     } catch {
-      /* fail silently — local cache remains */
+      /* keep current cache */
     }
   },
 
   onChange(handler: () => void): () => void {
     const listener = () => handler();
     window.addEventListener(CHANGE_EVENT, listener);
-    window.addEventListener("storage", listener);
     return () => {
       window.removeEventListener(CHANGE_EVENT, listener);
-      window.removeEventListener("storage", listener);
     };
   },
 };
