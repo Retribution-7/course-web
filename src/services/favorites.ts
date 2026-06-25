@@ -48,12 +48,12 @@ export const favorites = {
 			} else {
 				await deleteFavorite(userId, id);
 			}
+			return added;
 		} catch {
 			// revert on failure
 			setIds(added ? ids.filter((x) => x !== id) : [...ids, id]);
+			return !added;
 		}
-
-		return added;
 	},
 
 	async clear(): Promise<void> {
