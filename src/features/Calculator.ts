@@ -1,6 +1,7 @@
 import { isAuthenticated } from "../services/auth";
 import { cart } from "../services/cart";
 import { t, translateTitle } from "../services/i18n";
+import { formatRub } from "../shared/utils/format";
 import { showToast } from "../shared/ui/toast";
 
 const THICKNESS_MULTIPLIER: Record<string, number> = {
@@ -22,9 +23,6 @@ const SURFACE_MULTIPLIER: Record<string, number> = {
 
 const DELIVERY_FEE = 3500;
 const INSTALLATION_PER_M2 = 450;
-
-const formatRub = (value: number): string =>
-  `${Math.round(value).toLocaleString("ru-RU")} ₽`;
 
 const formatMultiplier = (m: number): string =>
   m === 1 ? "×1.00" : `×${m.toFixed(2)}`;

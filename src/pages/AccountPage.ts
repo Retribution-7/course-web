@@ -1,28 +1,13 @@
 import { getUser, logout, onAuthChange, type RegisteredUser } from "../services/auth";
 import { cart } from "../services/cart";
 import { favorites } from "../services/favorites";
-import { getCurrentLang, t } from "../services/i18n";
+import { t } from "../services/i18n";
+import { formatDate } from "../shared/utils/format";
 
 const getInitials = (user: RegisteredUser): string => {
   const f = user.firstName.charAt(0).toUpperCase();
   const l = user.lastName.charAt(0).toUpperCase();
   return `${l}${f}` || "?";
-};
-
-const formatBirthDate = (iso: string): string => {
-  if (!iso) return "—";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  const locale = getCurrentLang() === "en" ? "en-US" : "ru-RU";
-  return d.toLocaleDateString(locale, { day: "2-digit", month: "long", year: "numeric" });
-};
-
-const formatCreatedAt = (iso: string): string => {
-  if (!iso) return "—";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  const locale = getCurrentLang() === "en" ? "en-US" : "ru-RU";
-  return d.toLocaleDateString(locale, { day: "2-digit", month: "long", year: "numeric" });
 };
 
 const fullName = (user: RegisteredUser): string => {
@@ -74,7 +59,7 @@ const renderProfileCard = (user: RegisteredUser): string => `
         ${fullName(user)}
       </h2>
       <p class="font-sans text-[14px] lg:text-[15px] leading-[1.4] text-text-third">
-        ${t("account-member-since")} ${formatCreatedAt(user.createdAt)}
+        ${t("account-member-since")} ${formatDate(user.createdAt)}
       </p>
     </div>
   </div>
@@ -97,7 +82,7 @@ const renderInfoCard = (user: RegisteredUser): string => `
       </div>
       <div class="flex flex-col gap-1">
         <dt class="text-[13px] uppercase tracking-[0.04em] text-text-third">${t("account-birthdate")}</dt>
-        <dd class="text-primary">${formatBirthDate(user.birthDate)}</dd>
+        <dd class="text-primary">${formatDate(user.birthDate)}</dd>
       </div>
       <div class="flex flex-col gap-1">
         <dt class="text-[13px] uppercase tracking-[0.04em] text-text-third">${t("account-nickname")}</dt>

@@ -5,10 +5,8 @@ import {
   translateSurface,
   translateTitle,
 } from "../services/i18n";
+import { formatRub } from "../shared/utils/format";
 import { showToast } from "../shared/ui/toast";
-
-const formatRub = (value: number): string =>
-  `${Math.round(value).toLocaleString("ru-RU")} ₽`;
 
 const renderItem = (item: CartItem): string => `
   <article class="bg-surface rounded-[14px] card-shadow p-5 lg:p-6 transition-colors duration-300
