@@ -13,19 +13,11 @@ import {
 import { getUser, isAdmin, onAuthChange } from "../services/auth";
 import { getCurrentLang, t } from "../services/i18n";
 import { showToast } from "../shared/ui/toast";
+import { catLabelKey } from "../shared/constants/categories";
 
 type AdminTab = "users" | "products" | "reviews";
 
 let currentTab: AdminTab = "users";
-
-const catLabelKey = (category: string): string => {
-  const map: Record<string, string> = {
-    "metal-tile": "metal-tile",
-    "corrugated-sheet": "corrugated",
-    "seam-roofing": "seam",
-  };
-  return `cat-label-${map[category] ?? category}`;
-};
 
 const ROLE_COLORS: Record<string, string> = {
   customer: "bg-[#E8F5E9] text-[#2E7D32]",

@@ -10,15 +10,7 @@ import type { Product } from "../entities/products";
 import { fetchProductById, fetchProducts } from "../services/api";
 import { BackLink } from "../shared/ui/BackLink";
 import { SPEC_LABEL_I18N_KEY, t, translateTitle } from "../services/i18n";
-
-const catKey = (category: Product["category"]): string => {
-  const map: Record<Product["category"], string> = {
-    "metal-tile": "metal-tile",
-    "corrugated-sheet": "corrugated",
-    "seam-roofing": "seam",
-  };
-  return map[category];
-};
+import { catKey } from "../shared/constants/categories";
 
 const renderDetail = (
   product: Product,
