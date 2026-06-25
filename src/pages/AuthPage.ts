@@ -16,6 +16,7 @@ import {
   validateRequired,
 } from "../services/auth";
 import { t } from "../services/i18n";
+import { AUTO_PASSWORD_LENGTH } from "../shared/lib/constants";
 import { showToast } from "../shared/ui/toast";
 
 type Tab = "login" | "register";
@@ -472,7 +473,7 @@ const switchPasswordMode = (mode: "manual" | "auto"): void => {
   auto?.classList.toggle("hidden", mode !== "auto");
 
   if (mode === "auto") {
-    regState.autoPassword = generatePassword(12);
+    regState.autoPassword = generatePassword(AUTO_PASSWORD_LENGTH);
     const input = getInput("reg-password-auto");
     if (input) input.value = regState.autoPassword;
     setError("reg-password", null);
@@ -616,7 +617,7 @@ export const initAuthPage = (): void => {
     });
 
   document.getElementById("pwd-regen")?.addEventListener("click", () => {
-    regState.autoPassword = generatePassword(12);
+    regState.autoPassword = generatePassword(AUTO_PASSWORD_LENGTH);
     const input = getInput("reg-password-auto");
     if (input) input.value = regState.autoPassword;
   });

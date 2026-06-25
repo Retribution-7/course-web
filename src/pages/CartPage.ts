@@ -1,9 +1,10 @@
 import { type CartItem, cart } from "../services/cart";
 import { t, translateSurface, translateTitle } from "../services/i18n";
-import { formatRub } from "../shared/utils/format";
-import { pluralize } from "../shared/utils/pluralize";
+import { SCROLL_DELAY_MS } from "../shared/lib/constants";
 import { EmptyState } from "../shared/ui/EmptyState";
 import { showToast } from "../shared/ui/toast";
+import { formatRub } from "../shared/utils/format";
+import { pluralize } from "../shared/utils/pluralize";
 
 const renderItem = (item: CartItem): string => `
   <article class="bg-surface rounded-[14px] card-shadow p-5 lg:p-6 transition-colors duration-300
@@ -186,7 +187,7 @@ export const initCartPage = (): void => {
           document
             .getElementById("consultation")
             ?.scrollIntoView({ behavior: "smooth" });
-        }, 100);
+        }, SCROLL_DELAY_MS);
       });
       return;
     }

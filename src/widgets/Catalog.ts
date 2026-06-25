@@ -6,6 +6,7 @@ import {
 import type { ProductFilters } from "../services/api";
 import { fetchProducts } from "../services/api";
 import { t } from "../services/i18n";
+import { SEARCH_DEBOUNCE_MS } from "../shared/lib/constants";
 
 type CategoryKey = "metal-tile" | "corrugated-sheet" | "seam-roofing";
 type TabKey = "all" | CategoryKey;
@@ -207,7 +208,7 @@ export const initCatalog = (): void => {
     searchTimer = setTimeout(() => {
       searchQuery = (e.target as HTMLInputElement).value;
       void renderGrid();
-    }, 350);
+    }, SEARCH_DEBOUNCE_MS);
   });
 
   document.getElementById("catalog-sort")?.addEventListener("change", (e) => {

@@ -1,6 +1,10 @@
 import type { Review } from "../entities/reviews";
 import { fetchReviews } from "../services/api";
 import { t } from "../services/i18n";
+import {
+  CAROUSEL_AUTO_INTERVAL_MS,
+  CAROUSEL_DESKTOP_BREAKPOINT_PX,
+} from "../shared/lib/constants";
 
 const renderReviewCard = (review: Review, idx: number): string => `
   <article
@@ -115,7 +119,7 @@ const setupSlider = (track: HTMLElement, dotsContainer: HTMLElement): void => {
   const GAP = 41;
   let autoTimer: ReturnType<typeof setInterval> | null = null;
 
-  const getPerView = (): number => (window.innerWidth >= 1024 ? 3 : 1);
+  const getPerView = (): number => (window.innerWidth >= CAROUSEL_DESKTOP_BREAKPOINT_PX ? 3 : 1);
   const getMaxIndex = (): number => Math.max(0, slides.length - getPerView());
   const getSlidePx = (): number => (slides[0]?.offsetWidth ?? 0) + GAP;
 
@@ -146,7 +150,7 @@ const setupSlider = (track: HTMLElement, dotsContainer: HTMLElement): void => {
   };
 
   const startAuto = (): void => {
-    autoTimer = setInterval(() => goTo(current + 1), 4000);
+    autoTimer = setInterval(() => goTo(current + 1), CAROUSEL_AUTO_INTERVAL_MS);
   };
 
   const manualGoTo = (idx: number): void => {

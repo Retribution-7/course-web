@@ -1,5 +1,4 @@
 import type { Product } from "../entities/products";
-import { BackLink } from "../shared/ui/BackLink";
 import {
   deleteProduct,
   deleteReview,
@@ -12,8 +11,9 @@ import {
 } from "../services/api";
 import { getUser, isAdmin, onAuthChange } from "../services/auth";
 import { getCurrentLang, t } from "../services/i18n";
-import { showToast } from "../shared/ui/toast";
 import { catLabelKey } from "../shared/constants/categories";
+import { BackLink } from "../shared/ui/BackLink";
+import { showToast } from "../shared/ui/toast";
 
 type AdminTab = "users" | "products" | "reviews";
 

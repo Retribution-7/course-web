@@ -1,3 +1,5 @@
+import { PRELOADER_FADE_DURATION_MS } from "../lib/constants";
+
 const PRELOADER_ID = "app-preloader";
 
 export const hidePreloader = (): void => {
@@ -5,7 +7,7 @@ export const hidePreloader = (): void => {
   if (!el) return;
   el.style.opacity = "0";
   el.style.pointerEvents = "none";
-  window.setTimeout(() => el.remove(), 300);
+  window.setTimeout(() => el.remove(), PRELOADER_FADE_DURATION_MS);
 };
 
 export const showPreloader = (): void => {

@@ -1,3 +1,5 @@
+import { SMALL_IMAGE_MAX_HEIGHT, SMALL_IMAGE_MAX_WIDTH } from "../shared/lib/constants";
+
 const STORAGE_KEY = "a11y";
 
 const ALL_SCHEME_CLASSES = [
@@ -58,7 +60,7 @@ const ensurePlaceholder = (img: HTMLImageElement): void => {
   if (h > 0) ph.style.height = `${h}px`;
   ph.style.maxWidth = "100%";
   // Only show text for images large enough to fit it; small icons get an empty dashed box
-  const isSmall = (w > 0 && w < 120) || (h > 0 && h < 80);
+  const isSmall = (w > 0 && w < SMALL_IMAGE_MAX_WIDTH) || (h > 0 && h < SMALL_IMAGE_MAX_HEIGHT);
   if (!isSmall) ph.textContent = img.alt || "Изображение";
   img.insertAdjacentElement("afterend", ph);
 };

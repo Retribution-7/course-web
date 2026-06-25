@@ -1,3 +1,5 @@
+import { TOAST_FADE_DURATION_MS } from "../lib/constants";
+
 type ToastType = "success" | "info" | "warning" | "error";
 
 interface ToastOptions {
@@ -55,6 +57,6 @@ export const showToast = (
     toast.style.opacity = "0";
     toast.style.transform = "translateY(8px)";
     toast.style.transition = "opacity 300ms, transform 300ms";
-    window.setTimeout(() => toast.remove(), 350);
+    window.setTimeout(() => toast.remove(), TOAST_FADE_DURATION_MS);
   }, duration);
 };

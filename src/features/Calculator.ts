@@ -1,8 +1,9 @@
 import { isAuthenticated } from "../services/auth";
 import { cart } from "../services/cart";
 import { t, translateTitle } from "../services/i18n";
-import { formatRub } from "../shared/utils/format";
+import { AREA_DEFAULT, AREA_MAX, AREA_MIN, AREA_STEP } from "../shared/lib/constants";
 import { showToast } from "../shared/ui/toast";
+import { formatRub } from "../shared/utils/format";
 
 const THICKNESS_MULTIPLIER: Record<string, number> = {
   "0,35": 0.85,
@@ -201,7 +202,7 @@ const recalc = (): void => {
   ) as HTMLInputElement | null;
   if (!areaInput) return;
 
-  const area = Math.max(1, Math.min(10000, parseNumber(areaInput.value)));
+    const area = Math.max(AREA_MIN, Math.min(AREA_MAX, parseNumber(areaInput.value)));
   const tMult = getThicknessMult(state.thickness);
   const sMult = getSurfaceMult(state.surface);
 
@@ -269,7 +270,7 @@ const openModal = (article: HTMLElement): void => {
   const areaInput = document.getElementById(
     "calc-area",
   ) as HTMLInputElement | null;
-  if (areaInput) areaInput.value = "100";
+  if (areaInput) areaInput.value = String(AREA_DEFAULT);
   const install = document.getElementById(
     "calc-installation",
   ) as HTMLInputElement | null;
@@ -330,7 +331,7 @@ export const initCalculator = (): void => {
       "calc-area",
     ) as HTMLInputElement | null;
     if (!input) return;
-    const next = Math.max(1, parseNumber(input.value) - 10);
+    const next = Math.max(AREA_MIN, parseNumber(input.value) - AREA_STEP);
     input.value = String(next);
     recalc();
   });
@@ -339,7 +340,7 @@ export const initCalculator = (): void => {
       "calc-area",
     ) as HTMLInputElement | null;
     if (!input) return;
-    const next = Math.min(10000, parseNumber(input.value) + 10);
+    const next = Math.min(AREA_MAX, parseNumber(input.value) + AREA_STEP);
     input.value = String(next);
     recalc();
   });
@@ -361,7 +362,7 @@ export const initCalculator = (): void => {
     ) as HTMLInputElement | null;
     if (!areaInput) return;
 
-    const area = Math.max(1, Math.min(10000, parseNumber(areaInput.value)));
+  const area = Math.max(AREA_MIN, Math.min(AREA_MAX, parseNumber(areaInput.value)));
     const tMult = getThicknessMult(state.thickness);
     const sMult = getSurfaceMult(state.surface);
     const pricePerM2 = state.basePrice * tMult * sMult;

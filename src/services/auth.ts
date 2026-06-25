@@ -1,5 +1,6 @@
 import { postUser } from "./api";
 import { TOP_100_PASSWORDS_2023 } from "./passwords-top";
+import { MAX_AGE_VALIDATION, NICKNAME_RANDOM_MAX } from "../shared/lib/constants";
 
 const MIN_AGE = 16;
 const MIN_PASSWORD = 8;
@@ -49,7 +50,7 @@ export const validateBirthDate = (value: string): string | null => {
   const age = calcAge(value);
   if (age < 0) return "Некорректная дата";
   if (age < MIN_AGE) return `Регистрация доступна с ${MIN_AGE} лет`;
-  if (age > 120) return "Проверьте дату рождения";
+  if (age > MAX_AGE_VALIDATION) return "Проверьте дату рождения";
   return null;
 };
 
@@ -166,7 +167,7 @@ const NOUNS = [
 export const generateNickname = (): string => {
   const a = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
   const n = NOUNS[Math.floor(Math.random() * NOUNS.length)];
-  const num = Math.floor(Math.random() * 1000);
+  const num = Math.floor(Math.random() * NICKNAME_RANDOM_MAX);
   return `${a}${n}${num}`;
 };
 

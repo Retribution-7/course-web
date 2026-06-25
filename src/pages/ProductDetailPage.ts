@@ -8,9 +8,10 @@ import {
 } from "../entities/ProductCard";
 import type { Product } from "../entities/products";
 import { fetchProductById, fetchProducts } from "../services/api";
-import { BackLink } from "../shared/ui/BackLink";
 import { SPEC_LABEL_I18N_KEY, t, translateTitle } from "../services/i18n";
 import { catKey } from "../shared/constants/categories";
+import { RELATED_PRODUCTS_LIMIT } from "../shared/lib/constants";
+import { BackLink } from "../shared/ui/BackLink";
 
 const renderDetail = (
   product: Product,
@@ -182,7 +183,7 @@ const showPage = async (show: boolean, productIdx?: number): Promise<void> => {
     const allInCategory = await fetchProducts({ category: product.category });
     const related = allInCategory
       .filter((p) => p.id !== productIdx)
-      .slice(0, 3);
+      .slice(0, RELATED_PRODUCTS_LIMIT);
 
     content.innerHTML = renderDetail(product, productIdx, related);
     syncFavoriteButtons();
