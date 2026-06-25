@@ -1,6 +1,6 @@
 import { isAdmin, isAuthenticated, onAuthChange } from "../services/auth";
 
-const PAGE_HASHES = new Set<string>([
+const PAGE_HASHES: ReadonlySet<string> = new Set([
   "#cart",
   "#auth",
   "#reviews",
@@ -9,9 +9,9 @@ const PAGE_HASHES = new Set<string>([
   "#account",
   "#admin",
 ]);
-const PAGE_PREFIXES = ["#product/"];
+const PAGE_PREFIXES: readonly string[] = ["#product/"];
 
-const PROTECTED_HASHES = new Set<string>([
+const PROTECTED_HASHES: ReadonlySet<string> = new Set([
   "#cart",
   "#reviews",
   "#company",
@@ -19,9 +19,9 @@ const PROTECTED_HASHES = new Set<string>([
   "#account",
   "#admin",
 ]);
-const PROTECTED_PREFIXES = ["#product/"];
+const PROTECTED_PREFIXES: readonly string[] = ["#product/"];
 
-const ADMIN_HASHES = new Set<string>(["#admin"]);
+const ADMIN_HASHES: ReadonlySet<string> = new Set(["#admin"]);
 
 const isProtected = (hash: string): boolean =>
   PROTECTED_HASHES.has(hash) ||
