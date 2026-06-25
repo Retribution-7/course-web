@@ -72,6 +72,7 @@ export const ContactForm = (): string => {
   `;
 };
 
+
 export const initContactForm = (): void => {
 	const form = document.getElementById(
 		"consultation-form",

@@ -73,12 +73,14 @@ export const fetchProducts = async (
 	return res.json() as Promise<Product[]>;
 };
 
+
 export const fetchProductById = async (id: number): Promise<Product | null> => {
 	const res = await fetch(`${API_BASE}/products/${id}`);
 	if (res.status === 404) return null;
 	if (!res.ok) throw new Error("Ошибка загрузки товара");
 	return res.json() as Promise<Product>;
 };
+
 
 export const fetchProductsByIds = async (ids: number[]): Promise<Product[]> => {
 	if (ids.length === 0) return [];
@@ -88,11 +90,13 @@ export const fetchProductsByIds = async (ids: number[]): Promise<Product[]> => {
 	return res.json() as Promise<Product[]>;
 };
 
+
 export const fetchReviews = async (): Promise<Review[]> => {
 	const res = await fetch(`${API_BASE}/reviews`);
 	if (!res.ok) throw new Error("Ошибка загрузки отзывов");
 	return res.json() as Promise<Review[]>;
 };
+
 
 export const fetchUsers = async (): Promise<ApiUser[]> => {
 	const res = await fetch(`${API_BASE}/users`);
@@ -125,6 +129,7 @@ export const postUser = async (
 	return res.json() as Promise<{ id: number }>;
 };
 
+
 export const updateUser = async (
 	id: number,
 	data: Partial<ApiUser>,
@@ -138,11 +143,13 @@ export const updateUser = async (
 	return res.json() as Promise<ApiUser>;
 };
 
+
 export const getAllCartItems = async (): Promise<ApiCartItem[]> => {
 	const res = await fetch(`${API_BASE}/cart`);
 	if (!res.ok) throw new Error("Ошибка загрузки корзины");
 	return res.json() as Promise<ApiCartItem[]>;
 };
+
 
 export const postProduct = async (
 	product: Omit<Product, "id">,
@@ -156,13 +163,16 @@ export const postProduct = async (
 	return res.json() as Promise<Product>;
 };
 
+
 export const deleteProduct = async (id: number): Promise<void> => {
 	await fetch(`${API_BASE}/products/${id}`, { method: "DELETE" });
 };
 
+
 export const deleteReview = async (id: number): Promise<void> => {
 	await fetch(`${API_BASE}/reviews/${id}`, { method: "DELETE" });
 };
+
 
 export const postReview = async (
 	review: Omit<Review, "id">,
@@ -176,6 +186,7 @@ export const postReview = async (
 	return res.json() as Promise<Review>;
 };
 
+
 export const getFavoritesByUser = async (
 	userId: string,
 ): Promise<ApiFavorite[]> => {
@@ -183,6 +194,7 @@ export const getFavoritesByUser = async (
 	if (!res.ok) throw new Error("Ошибка загрузки избранного");
 	return res.json() as Promise<ApiFavorite[]>;
 };
+
 
 export const postFavorite = async (
 	userId: string,
@@ -195,6 +207,7 @@ export const postFavorite = async (
 	});
 };
 
+
 export const deleteFavorite = async (
 	userId: string,
 	productId: number,
@@ -205,15 +218,18 @@ export const deleteFavorite = async (
 	});
 };
 
+
 export const clearFavoritesByUser = async (userId: string): Promise<void> => {
 	await deleteAllByQuery("favorites", { userId });
 };
+
 
 export const getCartByUser = async (userId: string): Promise<ApiCartItem[]> => {
 	const res = await fetch(`${API_BASE}/cart?userId=${userId}`);
 	if (!res.ok) throw new Error("Ошибка загрузки корзины");
 	return res.json() as Promise<ApiCartItem[]>;
 };
+
 
 export const postCartItem = async (
 	item: Omit<ApiCartItem, "id">,
@@ -225,12 +241,14 @@ export const postCartItem = async (
 	});
 };
 
+
 export const deleteCartItemByClientId = async (
 	userId: string,
 	clientId: string,
 ): Promise<void> => {
 	await deleteAllByQuery("cart", { userId, clientId });
 };
+
 
 export const clearCartByUser = async (userId: string): Promise<void> => {
 	await deleteAllByQuery("cart", { userId });

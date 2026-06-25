@@ -293,6 +293,7 @@ const setError = (fieldId: string, message: string | null): void => {
 	}
 };
 
+
 const setActiveTab = (tab: Tab): void => {
 	const indicator = document.getElementById("auth-toggle-indicator");
 	const buttons = document.querySelectorAll<HTMLElement>("[data-auth-tab]");
@@ -327,6 +328,7 @@ const regState: RegState = {
 	nicknameEditable: false,
 };
 
+
 const getInput = (id: string): HTMLInputElement | null =>
 	document.getElementById(id) as HTMLInputElement | null;
 
@@ -335,6 +337,7 @@ const validateLoginForm = (): boolean => {
 	const password = getInput("login-password")?.value ?? "";
 	return phone.trim().length > 0 && password.length > 0;
 };
+
 
 const validateRegisterForm = (silent: boolean): boolean => {
 	const phoneErr = validatePhone(getInput("reg-phone")?.value ?? "");
@@ -393,6 +396,7 @@ const validateRegisterForm = (silent: boolean): boolean => {
 	);
 };
 
+
 const refreshSubmit = (): void => {
 	const loginBtn = document.getElementById(
 		"login-submit",
@@ -403,6 +407,7 @@ const refreshSubmit = (): void => {
 	if (loginBtn) loginBtn.disabled = !validateLoginForm();
 	if (regBtn) regBtn.disabled = !validateRegisterForm(true);
 };
+
 
 const wireFieldClear = (
 	fieldId: string,
@@ -441,6 +446,7 @@ const wireFieldClear = (
 	});
 };
 
+
 const regenerateNickname = (): void => {
 	const input = getInput("reg-nickname");
 	const hint = document.getElementById("nick-hint");
@@ -465,6 +471,7 @@ const regenerateNickname = (): void => {
 	refreshSubmit();
 };
 
+
 const switchPasswordMode = (mode: "manual" | "auto"): void => {
 	regState.pwdMode = mode;
 	const manual = document.getElementById("pwd-manual");
@@ -481,6 +488,7 @@ const switchPasswordMode = (mode: "manual" | "auto"): void => {
 	}
 	refreshSubmit();
 };
+
 
 const handleRegisterSubmit = (event: Event): void => {
 	event.preventDefault();
@@ -508,6 +516,7 @@ const handleRegisterSubmit = (event: Event): void => {
 	showToast(t("auth-success-register"), { type: "success" });
 	window.location.hash = "";
 };
+
 
 const handleLoginSubmit = (event: Event): void => {
 	event.preventDefault();
@@ -569,6 +578,7 @@ const handleLoginSubmit = (event: Event): void => {
 		});
 };
 
+
 const showPage = (show: boolean): void => {
 	const page = document.getElementById("auth-page");
 	if (!page) return;
@@ -576,9 +586,11 @@ const showPage = (show: boolean): void => {
 	if (show) window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
+
 const handleRoute = (): void => {
 	showPage(window.location.hash === "#auth");
 };
+
 
 export const initAuthPage = (): void => {
 	handleRoute();

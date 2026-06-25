@@ -16,12 +16,14 @@ const getInitials = (user: RegisteredUser): string => {
 	return `${l}${f}` || "?";
 };
 
+
 const fullName = (user: RegisteredUser): string => {
 	const parts = [user.lastName, user.firstName, user.middleName].filter(
 		Boolean,
 	);
 	return parts.join(" ").trim() || user.nickname;
 };
+
 
 export const AccountPage = (): string => `
   <section id="account-page"
@@ -193,6 +195,7 @@ const render = (): void => {
   `;
 };
 
+
 const showPage = (show: boolean): void => {
 	const page = document.getElementById("account-page");
 	if (!page) return;
@@ -203,9 +206,11 @@ const showPage = (show: boolean): void => {
 	}
 };
 
+
 const handleRoute = (): void => {
 	showPage(window.location.hash === "#account");
 };
+
 
 export const initAccountPage = (): void => {
 	handleRoute();

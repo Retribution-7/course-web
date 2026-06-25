@@ -20,12 +20,14 @@ const THICKNESS_MULTIPLIER: Record<string, number> = {
 	"0,8": 1.4,
 };
 
+
 const SURFACE_MULTIPLIER: Record<string, number> = {
 	Полиэстер: 1.0,
 	Матовая: 1.15,
 	Глянцевая: 1.2,
 	Структурная: 1.3,
 };
+
 
 const DELIVERY_FEE = 3500;
 const INSTALLATION_PER_M2 = 450;
@@ -195,6 +197,7 @@ const state: CalcState = {
 	surface: "",
 };
 
+
 const recalc = (): void => {
 	const areaInput = document.getElementById(
 		"calc-area",
@@ -240,6 +243,7 @@ const recalc = (): void => {
 		.getElementById("calc-row-delivery")
 		?.classList.toggle("hidden", !deliveryEl?.checked);
 };
+
 
 const openModal = (article: HTMLElement): void => {
 	const modal = document.getElementById("calc-modal");
@@ -295,6 +299,7 @@ const openModal = (article: HTMLElement): void => {
 	document.body.style.overflow = "hidden";
 };
 
+
 const closeModal = (): void => {
 	const modal = document.getElementById("calc-modal");
 	if (!modal) return;
@@ -302,6 +307,7 @@ const closeModal = (): void => {
 	modal.classList.remove("flex");
 	document.body.style.overflow = "";
 };
+
 
 export const initCalculator = (): void => {
 	const modal = document.getElementById("calc-modal");

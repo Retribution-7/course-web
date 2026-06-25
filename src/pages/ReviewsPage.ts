@@ -26,6 +26,7 @@ const state: FilterState = {
 	page: 1,
 };
 
+
 let cachedReviews: Review[] = [];
 
 const Stars = (rating: number): string => {
@@ -51,6 +52,7 @@ const Stars = (rating: number): string => {
     </div>
   `;
 };
+
 
 const renderCard = (review: Review): string => `
   <article class="bg-surface rounded-[14px] card-shadow p-5 sm:p-6 lg:p-7
@@ -254,6 +256,7 @@ const matchesFilters = (review: Review): boolean => {
 	return true;
 };
 
+
 const sortReviews = (list: Review[]): Review[] => {
 	const sorted = [...list];
 	if (state.sort === "newest") {
@@ -267,6 +270,7 @@ const sortReviews = (list: Review[]): Review[] => {
 	}
 	return sorted;
 };
+
 
 const renderPagination = (totalPages: number, currentPage: number): string => {
 	if (totalPages <= 1) return "";
@@ -299,6 +303,7 @@ const renderPagination = (totalPages: number, currentPage: number): string => {
 	pages.push(pageBtn("→", currentPage + 1, false, currentPage === totalPages));
 	return pages.join("");
 };
+
 
 const renderGrid = (): void => {
 	const grid = document.getElementById("reviews-grid");
@@ -351,6 +356,7 @@ const renderGrid = (): void => {
 		cachedReviews.length > 0 ? (sum / cachedReviews.length).toFixed(1) : "";
 };
 
+
 const showLoadingState = (): void => {
 	const grid = document.getElementById("reviews-grid");
 	if (grid) {
@@ -362,6 +368,7 @@ const showLoadingState = (): void => {
     `;
 	}
 };
+
 
 const showPage = (show: boolean): void => {
 	const page = document.getElementById("reviews-page");
@@ -396,9 +403,11 @@ const showPage = (show: boolean): void => {
 		});
 };
 
+
 const handleRoute = (): void => {
 	showPage(window.location.hash === "#reviews");
 };
+
 
 const resetFilters = (): void => {
 	state.search = "";
@@ -419,6 +428,7 @@ const resetFilters = (): void => {
 	if (sort) sort.value = "newest";
 	renderGrid();
 };
+
 
 export const initReviewsPage = (): void => {
 	handleRoute();
@@ -501,6 +511,7 @@ export const initReviewsPage = (): void => {
 			rating,
 			...(product ? { product } : {}),
 		};
+
 
 		const btn = (e.target as HTMLFormElement).querySelector(
 			'[type="submit"]',

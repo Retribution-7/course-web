@@ -46,6 +46,7 @@ const DROPDOWN_I18N: Record<string, string> = {
 	surface: "calc-surface-label",
 };
 
+
 export const Dropdown = (
 	label: string,
 	value: string,
@@ -104,6 +105,7 @@ export const Dropdown = (
     </div>
   `;
 };
+
 
 export const ProductCard = (product: Product, index: number): string => {
 	return `
@@ -185,6 +187,7 @@ export const ProductCard = (product: Product, index: number): string => {
   `;
 };
 
+
 export const syncFavoriteButtons = (): void => {
 	document
 		.querySelectorAll<HTMLElement>(".product-favorite")
@@ -208,6 +211,7 @@ export const syncFavoriteButtons = (): void => {
 			}
 		});
 };
+
 
 export const initProductCards = (): void => {
 	const closeAll = (except?: Element): void => {

@@ -136,6 +136,7 @@ const renderDetail = (
   `;
 };
 
+
 export const ProductDetailPage = (): string => `
   <section id="product-page"
            class="hidden bg-bg-first py-10 lg:py-16 min-h-[60vh] transition-colors duration-300"
@@ -197,11 +198,13 @@ const showPage = async (show: boolean, productIdx?: number): Promise<void> => {
 	}
 };
 
+
 const handleRoute = (): void => {
 	const match = window.location.hash.match(/^#product\/(\d+)$/);
 	if (match) void showPage(true, Number.parseInt(match[1], 10));
 	else void showPage(false);
 };
+
 
 export const initProductDetailPage = (): void => {
 	handleRoute();

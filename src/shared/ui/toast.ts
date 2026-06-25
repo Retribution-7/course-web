@@ -14,12 +14,14 @@ const COLOR: Record<ToastType, string> = {
 	error: "#EF4444",
 };
 
+
 const ICON: Record<ToastType, string> = {
 	success: "✓",
 	info: "i",
 	warning: "!",
 	error: "✕",
 };
+
 
 let container: HTMLElement | null = null;
 
@@ -32,6 +34,7 @@ const ensureContainer = (): HTMLElement => {
 	document.body.appendChild(container);
 	return container;
 };
+
 
 export const showToast = (
 	message: string,

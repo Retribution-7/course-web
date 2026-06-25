@@ -40,6 +40,7 @@ const guard = (): boolean => {
 	return true;
 };
 
+
 const update = (): void => {
 	const main = document.querySelector<HTMLElement>("main");
 	if (!main) return;
@@ -49,10 +50,12 @@ const update = (): void => {
 	main.classList.toggle("hidden", isPage);
 };
 
+
 const handle = (): void => {
 	if (!guard()) return;
 	update();
 };
+
 
 export const initRouter = (): void => {
 	handle();

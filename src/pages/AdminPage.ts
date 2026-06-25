@@ -25,6 +25,7 @@ const ROLE_COLORS: Record<string, string> = {
 	manager: "bg-[#E3F2FD] text-[#1565C0]",
 };
 
+
 const formatPrice = (n: number): string =>
 	`${n.toLocaleString("ru-RU", { maximumFractionDigits: 0 })} ₽`;
 
@@ -184,6 +185,7 @@ const RoleBadge = (role: string): string => {
 	const cls = ROLE_COLORS[role] ?? "bg-gray-100 text-gray-600";
 	return `<span class="inline-block px-2.5 py-0.5 rounded-full text-[12px] ${cls}">${label}</span>`;
 };
+
 
 const renderUsersTab = async (): Promise<void> => {
 	const el = document.getElementById("admin-content");
@@ -417,6 +419,7 @@ const wireProductForm = (): void => {
 	});
 };
 
+
 const renderProductsTab = async (): Promise<void> => {
 	const el = document.getElementById("admin-content");
 	if (!el) return;
@@ -602,9 +605,11 @@ const showPage = (show: boolean): void => {
 	}
 };
 
+
 const handleRoute = (): void => {
 	showPage(window.location.hash === "#admin");
 };
+
 
 export const initAdminPage = (): void => {
 	handleRoute();

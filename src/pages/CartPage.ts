@@ -143,6 +143,7 @@ const render = (): void => {
 	if (countEl) countEl.textContent = pluralCount(items.length);
 };
 
+
 const showPage = (show: boolean): void => {
 	const page = document.getElementById("cart-page");
 	if (!page) return;
@@ -153,9 +154,11 @@ const showPage = (show: boolean): void => {
 	}
 };
 
+
 const handleRoute = (): void => {
 	showPage(window.location.hash === "#cart");
 };
+
 
 export const initCartPage = (): void => {
 	handleRoute();

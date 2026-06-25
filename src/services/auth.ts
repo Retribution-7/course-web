@@ -23,6 +23,7 @@ export const PASSWORD_LIMITS = {
 	MAX: MAX_PASSWORD,
 };
 
+
 export const NICKNAME_REGEN_LIMIT = MAX_NICKNAME_REGEN;
 
 export const validatePhone = (value: string): string | null => {
@@ -32,11 +33,13 @@ export const validatePhone = (value: string): string | null => {
 	return null;
 };
 
+
 export const validateEmail = (value: string): string | null => {
 	if (!value.trim()) return "Укажите e-mail";
 	if (!EMAIL_RE.test(value.trim())) return "Некорректный формат e-mail";
 	return null;
 };
+
 
 const calcAge = (dateStr: string): number => {
 	const d = new Date(dateStr);
@@ -48,6 +51,7 @@ const calcAge = (dateStr: string): number => {
 	return age;
 };
 
+
 export const validateBirthDate = (value: string): string | null => {
 	if (!value) return "Укажите дату рождения";
 	const age = calcAge(value);
@@ -56,6 +60,7 @@ export const validateBirthDate = (value: string): string | null => {
 	if (age > MAX_AGE_VALIDATION) return "Проверьте дату рождения";
 	return null;
 };
+
 
 export const validatePassword = (value: string): string | null => {
 	if (!value) return "Укажите пароль";
@@ -70,6 +75,7 @@ export const validatePassword = (value: string): string | null => {
 	return null;
 };
 
+
 export const validatePasswordConfirm = (
 	password: string,
 	confirm: string,
@@ -79,6 +85,7 @@ export const validatePasswordConfirm = (
 	return null;
 };
 
+
 export const validateRequired = (
 	value: string,
 	label: string,
@@ -87,12 +94,14 @@ export const validateRequired = (
 	return null;
 };
 
+
 export const validateNicknameCustom = (value: string): string | null => {
 	if (!value.trim()) return "Укажите никнейм";
 	if (!NICKNAME_RE.test(value.trim()))
 		return "3–20 символов: латиница, цифры, _ или -";
 	return null;
 };
+
 
 const UPPER = "ABCDEFGHJKLMNPQRSTUVWXYZ";
 const LOWER = "abcdefghijkmnpqrstuvwxyz";
@@ -112,6 +121,7 @@ export const generatePassword = (length = 12): string => {
 	}
 	return chars.join("");
 };
+
 
 const ADJECTIVES = [
 	"Brave",
@@ -196,6 +206,7 @@ const emitAuthChange = (): void => {
 	window.dispatchEvent(new CustomEvent(AUTH_CHANGE_EVENT));
 };
 
+
 export const getServerId = (): string | null =>
 	localStorage.getItem(SERVER_ID_KEY);
 export const setServerId = (id: string): void =>
@@ -220,6 +231,7 @@ export const restoreUser = (user: RegisteredUser, serverId: number): void => {
 	emitAuthChange();
 };
 
+
 export const getUser = (): RegisteredUser | null => {
 	try {
 		const raw = localStorage.getItem(USER_KEY);
@@ -229,6 +241,7 @@ export const getUser = (): RegisteredUser | null => {
 	}
 };
 
+
 export const isAuthenticated = (): boolean =>
 	localStorage.getItem(AUTH_KEY) === "1" && getUser() !== null;
 
@@ -236,6 +249,7 @@ export const getRole = (): "customer" | "admin" => {
 	const user = getUser();
 	return user?.role === "admin" ? "admin" : "customer";
 };
+
 
 export const isAdmin = (): boolean =>
 	isAuthenticated() && getRole() === "admin";
@@ -246,10 +260,12 @@ export const setAuthenticated = (authenticated: boolean): void => {
 	emitAuthChange();
 };
 
+
 export const logout = (): void => {
 	localStorage.removeItem(AUTH_KEY);
 	emitAuthChange();
 };
+
 
 export const onAuthChange = (handler: () => void): (() => void) => {
 	const listener = (): void => handler();

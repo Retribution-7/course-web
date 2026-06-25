@@ -136,12 +136,14 @@ const setupSlider = (track: HTMLElement, dotsContainer: HTMLElement): void => {
 		});
 	};
 
+
 	const goTo = (idx: number): void => {
 		const total = getMaxIndex() + 1;
 		current = ((idx % total) + total) % total;
 		track.style.transform = `translateX(-${current * getSlidePx()}px)`;
 		updateDots(current);
 	};
+
 
 	const stopAuto = (): void => {
 		if (autoTimer !== null) {
@@ -150,15 +152,18 @@ const setupSlider = (track: HTMLElement, dotsContainer: HTMLElement): void => {
 		}
 	};
 
+
 	const startAuto = (): void => {
 		autoTimer = setInterval(() => goTo(current + 1), CAROUSEL_AUTO_INTERVAL_MS);
 	};
+
 
 	const manualGoTo = (idx: number): void => {
 		stopAuto();
 		goTo(idx);
 		startAuto();
 	};
+
 
 	const applyLayout = (): void => {
 		const perView = getPerView();
@@ -201,6 +206,7 @@ const setupSlider = (track: HTMLElement, dotsContainer: HTMLElement): void => {
 		startAuto();
 	});
 };
+
 
 export const initTestimonials = (): void => {
 	fetchReviews()

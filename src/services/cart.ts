@@ -28,10 +28,12 @@ const emit = (): void => {
 	window.dispatchEvent(new CustomEvent(CHANGE_EVENT));
 };
 
+
 const setItems = (next: CartItem[]): void => {
 	items = next;
 	emit();
 };
+
 
 export const cart = {
 	list(): CartItem[] {
