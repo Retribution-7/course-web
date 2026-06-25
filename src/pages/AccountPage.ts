@@ -7,6 +7,7 @@ import {
 import { cart } from "../services/cart";
 import { favorites } from "../services/favorites";
 import { t } from "../services/i18n";
+import { showConfirm } from "../shared/ui/ConfirmModal";
 import { BackLink } from "../shared/ui/BackLink";
 import { formatDate } from "../shared/utils/format";
 
@@ -220,10 +221,10 @@ export const initAccountPage = (): void => {
 		if (window.location.hash === "#account") render();
 	});
 
-	document.addEventListener("click", (event) => {
+	document.addEventListener("click", async (event) => {
 		const target = event.target as HTMLElement;
 		if (target.closest('[data-action="logout"]')) {
-			if (confirm(t("account-logout-confirm"))) {
+			if (await showConfirm(t("account-logout-confirm"))) {
 				logout();
 				window.location.hash = "";
 			}

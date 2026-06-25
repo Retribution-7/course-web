@@ -1,6 +1,7 @@
 import { type CartItem, cart } from "../services/cart";
 import { t, translateSurface, translateTitle } from "../services/i18n";
 import { SCROLL_DELAY_MS } from "../shared/lib/constants";
+import { showConfirm } from "../shared/ui/ConfirmModal";
 import { EmptyState } from "../shared/ui/EmptyState";
 import { showToast } from "../shared/ui/toast";
 import { formatRub } from "../shared/utils/format";
@@ -164,7 +165,7 @@ export const initCartPage = (): void => {
 		if (window.location.hash === "#cart") render();
 	});
 
-	document.addEventListener("click", (event) => {
+	document.addEventListener("click", async (event) => {
 		const target = event.target as HTMLElement;
 
 		const remove = target.closest<HTMLElement>('[data-action="cart-remove"]');
@@ -175,7 +176,7 @@ export const initCartPage = (): void => {
 		}
 
 		if (target.closest('[data-action="cart-clear"]')) {
-			if (confirm(t("cart-clear-confirm"))) void cart.clear();
+			if (await showConfirm(t("cart-clear-confirm"))) void cart.clear();
 			return;
 		}
 

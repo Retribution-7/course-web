@@ -12,6 +12,7 @@ import {
 import { getUser, isAdmin, onAuthChange } from "../services/auth";
 import { getCurrentLang, t } from "../services/i18n";
 import { catLabelKey } from "../shared/constants/categories";
+import { showConfirm } from "../shared/ui/ConfirmModal";
 import { BackLink } from "../shared/ui/BackLink";
 import { showToast } from "../shared/ui/toast";
 
@@ -484,7 +485,7 @@ const renderProductsTab = async (): Promise<void> => {
 			(btn) => {
 				btn.addEventListener("click", async () => {
 					const id = Number(btn.dataset.deleteProduct);
-					if (!confirm(t("admin-confirm-delete-product"))) return;
+					if (!(await showConfirm(t("admin-confirm-delete-product")))) return;
 					try {
 						await deleteProduct(id);
 						void renderProductsTab();
@@ -563,7 +564,7 @@ const renderReviewsTab = async (): Promise<void> => {
 			(btn) => {
 				btn.addEventListener("click", async () => {
 					const id = Number(btn.dataset.deleteReview);
-					if (!confirm(t("admin-confirm-delete-review"))) return;
+					if (!(await showConfirm(t("admin-confirm-delete-review")))) return;
 					try {
 						await deleteReview(id);
 						void renderReviewsTab();

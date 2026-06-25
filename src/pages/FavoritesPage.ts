@@ -3,6 +3,7 @@ import type { Product } from "../entities/products";
 import { fetchProductsByIds } from "../services/api";
 import { favorites } from "../services/favorites";
 import { getCurrentLang, t } from "../services/i18n";
+import { showConfirm } from "../shared/ui/ConfirmModal";
 import { BackLink } from "../shared/ui/BackLink";
 import { EmptyState } from "../shared/ui/EmptyState";
 import { pluralize } from "../shared/utils/pluralize";
@@ -141,7 +142,7 @@ export const initFavoritesPage = (): void => {
 		}
 	});
 
-	document.getElementById("favorites-clear")?.addEventListener("click", () => {
-		if (confirm(t("favorites-clear-confirm"))) favorites.clear();
+	document.getElementById("favorites-clear")?.addEventListener("click", async () => {
+		if (await showConfirm(t("favorites-clear-confirm"))) favorites.clear();
 	});
 };

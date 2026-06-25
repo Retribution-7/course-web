@@ -1,13 +1,14 @@
 import { t } from "../services/i18n";
 import { MessengerLinks } from "../shared/ui/MessengerLinks";
+import { showConfirm } from "../shared/ui/ConfirmModal";
 
 export const initFooter = (): void => {
-	document.addEventListener("click", (event) => {
+	document.addEventListener("click", async (event) => {
 		const btn = (event.target as HTMLElement).closest(
 			'[data-action="reset-settings"]',
 		);
 		if (!btn) return;
-		if (confirm(t("footer-reset-confirm"))) {
+		if (await showConfirm(t("footer-reset-confirm"))) {
 			localStorage.clear();
 			localStorage.setItem("theme", "light");
 			window.location.hash = "";
