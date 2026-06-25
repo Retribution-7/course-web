@@ -210,7 +210,7 @@ export const syncFavoriteButtons = (): void => {
 };
 
 export const initProductCards = (): void => {
-	const closeAll = (except?: Element) => {
+	const closeAll = (except?: Element): void => {
 		document
 			.querySelectorAll<HTMLElement>(".product-dropdown")
 			.forEach((dropdown) => {

@@ -220,7 +220,7 @@ const recalc = (): void => {
 	const delivery = deliveryEl?.checked ? DELIVERY_FEE : 0;
 	const total = material + installation + delivery;
 
-	const set = (id: string, text: string) => {
+	const set = (id: string, text: string): void => {
 		const el = document.getElementById(id);
 		if (el) el.textContent = text;
 	};
@@ -266,7 +266,7 @@ const openModal = (article: HTMLElement): void => {
 	state.thickness = thickness;
 	state.surface = surface;
 
-	const setText = (id: string, text: string) => {
+	const setText = (id: string, text: string): void => {
 		const el = document.getElementById(id);
 		if (el) el.textContent = text;
 	};
