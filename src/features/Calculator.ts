@@ -10,7 +10,7 @@ import {
 import { showToast } from "../shared/ui/toast";
 import { formatRub } from "../shared/utils/format";
 
-const THICKNESS_MULTIPLIER: Record<string, number> = {
+const THICKNESS_MULTIPLIER = Object.freeze({
 	"0,35": 0.85,
 	"0,4": 0.9,
 	"0,45": 0.95,
@@ -18,14 +18,14 @@ const THICKNESS_MULTIPLIER: Record<string, number> = {
 	"0,55": 1.08,
 	"0,7": 1.25,
 	"0,8": 1.4,
-};
+} as Record<string, number>);
 
-const SURFACE_MULTIPLIER: Record<string, number> = {
-	Полиэстер: 1.0,
-	Матовая: 1.15,
-	Глянцевая: 1.2,
-	Структурная: 1.3,
-};
+const SURFACE_MULTIPLIER = Object.freeze({
+	"Полиэстер": 1.0,
+	"Матовая": 1.15,
+	"Глянцевая": 1.2,
+	"Структурная": 1.3,
+} as Record<string, number>);
 
 const DELIVERY_FEE = 3500;
 const INSTALLATION_PER_M2 = 450;

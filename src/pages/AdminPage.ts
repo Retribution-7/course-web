@@ -20,11 +20,11 @@ type AdminTab = "users" | "products" | "reviews";
 
 let currentTab: AdminTab = "users";
 
-const ROLE_COLORS: Record<string, string> = {
+const ROLE_COLORS = Object.freeze({
 	customer: "bg-[#E8F5E9] text-[#2E7D32]",
 	admin: "bg-gradient-to-r from-button-first to-button-second text-primary",
 	manager: "bg-[#E3F2FD] text-[#1565C0]",
-};
+} as Record<string, string>);
 
 const formatPrice = (n: number): string =>
 	`${n.toLocaleString("ru-RU", { maximumFractionDigits: 0 })} ₽`;

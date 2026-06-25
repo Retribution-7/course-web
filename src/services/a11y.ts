@@ -26,12 +26,12 @@ export interface A11ySettings {
 	images: boolean;
 }
 
-const DEFAULTS: A11ySettings = {
+const DEFAULTS = Object.freeze({
 	enabled: false,
-	fontSize: "normal",
-	scheme: "white-black",
+	fontSize: "normal" as const,
+	scheme: "white-black" as const,
 	images: true,
-};
+} satisfies A11ySettings);
 
 const getSettings = (): A11ySettings => {
 	try {

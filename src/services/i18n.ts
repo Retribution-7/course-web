@@ -813,7 +813,7 @@ const i18Obj: Record<Lang, Record<string, string>> = {
 	},
 };
 
-const PRODUCT_TITLE_EN: Record<string, string> = {
+const PRODUCT_TITLE_EN = Object.freeze({
 	Монтеррей: "Monterrey",
 	Каскад: "Cascade",
 	Супермонтеррей: "Super Monterrey",
@@ -837,25 +837,25 @@ const PRODUCT_TITLE_EN: Record<string, string> = {
 	"Фальц двойной": "Double Seam",
 	"Фальц стоячий": "Standing Seam",
 	"Фальц премиум": "Premium Seam",
-};
+} as Record<string, string>);
 
 /** Maps Russian surface names to i18n keys. */
-export const SURFACE_I18N_KEY: Record<string, string> = {
+export const SURFACE_I18N_KEY = Object.freeze({
 	Полиэстер: "surface-polyester",
 	Матовая: "surface-matte",
 	Глянцевая: "surface-glossy",
 	Структурная: "surface-structured",
-};
+} as Record<string, string>);
 
 /** Maps Russian spec labels to i18n keys. */
-export const SPEC_LABEL_I18N_KEY: Record<string, string> = {
+export const SPEC_LABEL_I18N_KEY = Object.freeze({
 	"Высота волны, мм": "spec-wave-height",
 	"Высота ступеньки, мм": "spec-step-height",
 	"Максимальная длина, м": "spec-max-length",
 	"Минимальная длина, м": "spec-min-length",
 	"Ширина общая, мм": "spec-total-width",
 	"Ширина полезная, мм": "spec-useful-width",
-};
+} as Record<string, string>);
 
 let currentLang: Lang = (localStorage.getItem("lang") as Lang | null) ?? "ru";
 

@@ -7,19 +7,19 @@ interface ToastOptions {
 	duration?: number;
 }
 
-const COLOR: Record<ToastType, string> = {
+const COLOR = Object.freeze({
 	success: "#22C55E",
 	info: "#FFC400",
 	warning: "#F59E0B",
 	error: "#EF4444",
-};
+} as Record<ToastType, string>);
 
-const ICON: Record<ToastType, string> = {
+const ICON = Object.freeze({
 	success: "✓",
 	info: "i",
 	warning: "!",
 	error: "✕",
-};
+} as Record<ToastType, string>);
 
 let container: HTMLElement | null = null;
 

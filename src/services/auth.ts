@@ -19,10 +19,10 @@ const SPECIAL_RE = /[!@#$%^&*()-_=+[\]{};:'",.<>/?\\|`~]/;
 const NICKNAME_RE = /^[A-Za-z0-9_-]{3,20}$/;
 
 /** Password length constraints. */
-export const PASSWORD_LIMITS = {
+export const PASSWORD_LIMITS = Object.freeze({
 	MIN: MIN_PASSWORD,
 	MAX: MAX_PASSWORD,
-};
+});
 
 /** Max nickname regeneration attempts before manual input is required. */
 export const NICKNAME_REGEN_LIMIT = MAX_NICKNAME_REGEN;

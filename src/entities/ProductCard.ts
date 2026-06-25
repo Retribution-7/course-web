@@ -40,11 +40,11 @@ export const SURFACE_OPTIONS = [
 	"Структурная",
 ] as const;
 
-const DROPDOWN_I18N: Record<string, string> = {
+const DROPDOWN_I18N = Object.freeze({
 	color: "calc-color-label",
 	thickness: "calc-thickness-label",
 	surface: "calc-surface-label",
-};
+} as Record<string, string>);
 
 export const Dropdown = (
 	label: string,
