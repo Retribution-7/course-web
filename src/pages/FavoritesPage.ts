@@ -5,33 +5,25 @@ import { favorites } from "../services/favorites";
 import { getCurrentLang, t } from "../services/i18n";
 import { BackLink } from "../shared/ui/BackLink";
 import { pluralize } from "../shared/utils/pluralize";
+import { EmptyState } from "../shared/ui/EmptyState";
 
-const renderEmpty = (): string => `
-  <div class="bg-surface rounded-[14px] card-shadow p-10 lg:p-16 text-center transition-colors duration-300">
-    <div class="mx-auto mb-6 grid size-20 place-items-center rounded-full gradient-icon
-                shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)]
-                border border-[rgba(255,196,0,0.3)]">
-      <svg viewBox="0 0 24 24" class="size-10 text-primary" fill="none" stroke="currentColor"
+const renderEmpty = (): string =>
+  EmptyState({
+    icon: `<svg viewBox="0 0 24 24" class="size-10 text-primary" fill="none" stroke="currentColor"
            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M12 21s-7-4.5-7-10.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 7 4.5C19 16.5 12 21 12 21z"/>
-      </svg>
-    </div>
-    <h3 class="font-sans font-normal text-[24px] leading-[1.2] gradient-text">
-      ${t("favorites-empty-title")}
-    </h3>
-    <p class="mt-3 font-sans text-[14px] sm:text-[15px] leading-[1.5] text-primary">
-      ${t("favorites-empty-desc")}
-    </p>
-    <a href="#catalog"
-       class="mt-8 inline-flex items-center justify-center rounded-full
+      </svg>`,
+    title: t("favorites-empty-title"),
+    description: t("favorites-empty-desc"),
+    action: `<a href="#catalog"
+       class="inline-flex items-center justify-center rounded-full
               bg-gradient-to-r from-button-first to-button-second
               px-6 py-[15px] font-sans text-[15px] lg:text-[17px] leading-[1.4] text-primary
               transition-all duration-300 hover:scale-[1.02] cursor-pointer
               shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)] no-underline">
       ${t("favorites-to-catalog")}
-    </a>
-  </div>
-`;
+    </a>`,
+  });
 
 const pluralItems = (n: number): string =>
   pluralize(n, ["товар", "товара", "товаров"], "item");

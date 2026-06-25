@@ -4,6 +4,7 @@ import { isAuthenticated, getUser } from "../services/auth";
 import { getCurrentLang, t } from "../services/i18n";
 import { pluralize } from "../shared/utils/pluralize";
 import { BackLink } from "../shared/ui/BackLink";
+import { EmptyState } from "../shared/ui/EmptyState";
 import { showToast } from "../shared/ui/toast";
 
 type SortOrder = "newest" | "oldest" | "rating";
@@ -86,24 +87,19 @@ const renderCard = (review: Review): string => `
   </article>
 `;
 
-const renderEmpty = (): string => `
-  <div class="bg-surface rounded-[14px] card-shadow p-10 lg:p-16 text-center transition-colors duration-300">
-    <h3 class="font-sans font-normal text-[22px] leading-[1.2] gradient-text">
-      ${t("reviews-empty-title")}
-    </h3>
-    <p class="mt-3 font-sans text-[14px] leading-[1.5] text-text-secondary">
-      ${t("reviews-empty-desc")}
-    </p>
-    <button type="button"
+const renderEmpty = (): string =>
+  EmptyState({
+    title: t("reviews-empty-title"),
+    description: t("reviews-empty-desc"),
+    action: `<button type="button"
             data-action="reviews-reset"
-            class="mt-6 inline-flex items-center justify-center rounded-full
+            class="inline-flex items-center justify-center rounded-full
                    bg-surface-hover border border-button-first
                    px-6 py-3 font-sans text-[14px] lg:text-[15px] text-text-secondary
                    hover:bg-surface transition-colors cursor-pointer">
       ${t("reviews-reset")}
-    </button>
-  </div>
-`;
+    </button>`,
+  });
 
 export const ReviewsPage = (): string => `
   <section id="reviews-page"

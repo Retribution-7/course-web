@@ -2,6 +2,7 @@ import { type CartItem, cart } from "../services/cart";
 import { t, translateSurface, translateTitle } from "../services/i18n";
 import { formatRub } from "../shared/utils/format";
 import { pluralize } from "../shared/utils/pluralize";
+import { EmptyState } from "../shared/ui/EmptyState";
 import { showToast } from "../shared/ui/toast";
 
 const renderItem = (item: CartItem): string => `
@@ -46,29 +47,21 @@ const renderItem = (item: CartItem): string => `
   </article>
 `;
 
-const renderEmpty = (): string => `
-  <div class="bg-surface rounded-[14px] card-shadow p-10 lg:p-16 text-center transition-colors duration-300">
-    <div class="mx-auto mb-6 size-20 rounded-full gradient-icon grid place-items-center
-                shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)]">
-      <img src="/icons/cart.svg" alt="" class="size-10" aria-hidden="true">
-    </div>
-    <h3 class="font-sans font-normal text-[24px] leading-[1.2] gradient-text">
-      ${t("cart-empty-title")}
-    </h3>
-    <p class="mt-3 font-sans text-[15px] leading-[1.5] text-primary">
-      ${t("cart-empty-desc")}
-    </p>
-    <a href="#catalog"
+const renderEmpty = (): string =>
+  EmptyState({
+    icon: `<img src="/icons/cart.svg" alt="" class="size-10" aria-hidden="true">`,
+    title: t("cart-empty-title"),
+    description: t("cart-empty-desc"),
+    action: `<a href="#catalog"
        data-action="cart-back"
-       class="mt-8 inline-flex items-center justify-center rounded-full
+       class="inline-flex items-center justify-center rounded-full
               bg-gradient-to-r from-button-first to-button-second
               px-6 py-[15px] font-sans text-[17px] leading-[1.4] text-primary
               transition-all duration-300 hover:scale-[1.02] cursor-pointer
               shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]">
       ${t("cart-to-catalog")}
-    </a>
-  </div>
-`;
+    </a>`,
+  });
 
 export const CartPage = (): string => `
   <section id="cart-page"
