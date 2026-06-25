@@ -1,6 +1,8 @@
 import { type Review, reviewDateMs } from "../entities/reviews";
-import { fetchReviews } from "../services/api";
+import { fetchReviews, postReview } from "../services/api";
+import { isAuthenticated, getUser } from "../services/auth";
 import { getCurrentLang, t } from "../services/i18n";
+import { showToast } from "../shared/ui/toast";
 
 type SortOrder = "newest" | "oldest" | "rating";
 type RatingFilter = "all" | "5" | "4plus" | "3plus";
@@ -178,6 +180,58 @@ export const ReviewsPage = (): string => `
         </div>
       </div>
 
+      <div id="reviews-form-wrapper" class="hidden mb-6 lg:mb-8">
+        <div class="bg-surface rounded-[14px] card-shadow p-5 sm:p-6 lg:p-8 transition-colors duration-300">
+          <h2 class="font-sans font-normal text-[20px] lg:text-[24px] leading-[1.2] text-primary mb-5"
+              data-i18n="reviews-form-title">Оставить отзыв</h2>
+          <form id="reviews-form" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="sm:col-span-2">
+              <label for="review-text" class="block font-sans text-[14px] text-text-secondary mb-1.5"
+                     data-i18n="reviews-form-text-label">Текст отзыва</label>
+              <textarea id="review-text" rows="4" required
+                        class="w-full rounded-[8px] border border-border-input bg-surface px-3 py-2.5
+                               font-sans text-[14px] lg:text-[15px] text-primary resize-none
+                               focus:outline-none focus:border-button-first transition-colors"
+                        data-i18n-placeholder="reviews-form-text-placeholder"
+                        placeholder="Расскажите о вашем опыте..."></textarea>
+            </div>
+            <div>
+              <label for="review-rating" class="block font-sans text-[14px] text-text-secondary mb-1.5"
+                     data-i18n="reviews-form-rating-label">Оценка</label>
+              <select id="review-rating" required
+                      class="h-11 w-full rounded-[8px] border border-border-input bg-surface px-3
+                             font-sans text-[14px] lg:text-[15px] text-primary
+                             focus:outline-none focus:border-button-first transition-colors cursor-pointer">
+                <option value="5">5 ★</option>
+                <option value="4">4 ★</option>
+                <option value="3">3 ★</option>
+                <option value="2">2 ★</option>
+                <option value="1">1 ★</option>
+              </select>
+            </div>
+            <div>
+              <label for="review-product" class="block font-sans text-[14px] text-text-secondary mb-1.5"
+                     data-i18n="reviews-form-product-label">Продукт (необязательно)</label>
+              <input id="review-product" type="text"
+                     class="h-11 w-full rounded-[8px] border border-border-input bg-surface px-3
+                            font-sans text-[14px] lg:text-[15px] text-primary
+                            focus:outline-none focus:border-button-first transition-colors"
+                     data-i18n-placeholder="reviews-form-product-placeholder"
+                     placeholder="Например: Профнастил" />
+            </div>
+            <div class="sm:col-span-2 flex justify-end">
+              <button type="submit"
+                      class="inline-flex items-center justify-center rounded-full
+                             bg-gradient-to-r from-button-first to-button-second
+                             px-6 py-3 font-sans text-[15px] leading-[1.4] text-primary
+                             transition-all duration-300 hover:scale-[1.02] cursor-pointer
+                             shadow-[inset_0_0_12px_0_rgba(255,255,255,0.45)]"
+                      data-i18n="reviews-form-submit">Отправить</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
       <div id="reviews-grid"
            class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
       </div>
@@ -331,6 +385,9 @@ const showPage = (show: boolean): void => {
   page.classList.toggle("hidden", !show);
   if (!show) return;
 
+  const formWrapper = document.getElementById("reviews-form-wrapper");
+  if (formWrapper) formWrapper.classList.toggle("hidden", !isAuthenticated());
+
   window.scrollTo({ top: 0, behavior: "smooth" });
 
   if (cachedReviews.length > 0) {
@@ -422,5 +479,63 @@ export const initReviewsPage = (): void => {
     if (target.closest('[data-action="reviews-reset"]')) {
       resetFilters();
     }
+  });
+
+  document.getElementById("reviews-form")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!isAuthenticated()) {
+      window.location.hash = "#auth";
+      return;
+    }
+    const user = getUser();
+    const text = (
+      document.getElementById("review-text") as HTMLTextAreaElement
+    ).value.trim();
+    const rating = Number.parseInt(
+      (document.getElementById("review-rating") as HTMLSelectElement).value,
+      10,
+    );
+    const product = (
+      document.getElementById("review-product") as HTMLInputElement
+    ).value.trim();
+
+    if (!text) {
+      showToast(t("reviews-form-error-empty"), { type: "error" });
+      return;
+    }
+
+    const now = new Date();
+    const dd = String(now.getDate()).padStart(2, "0");
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const yyyy = now.getFullYear();
+
+    const newReview: Omit<Review, "id"> = {
+      name: user ? `${user.firstName} ${user.lastName}` : "Пользователь",
+      date: `${dd}.${mm}.${yyyy}`,
+      avatar: "/images/customers/customer-1.svg",
+      text,
+      rating,
+      ...(product ? { product } : {}),
+    };
+
+    const btn = (e.target as HTMLFormElement).querySelector(
+      '[type="submit"]',
+    ) as HTMLButtonElement | null;
+    if (btn) btn.disabled = true;
+
+    void postReview(newReview)
+      .then((saved) => {
+        cachedReviews.unshift(saved);
+        (e.target as HTMLFormElement).reset();
+        state.page = 1;
+        renderGrid();
+        showToast(t("reviews-form-success"), { type: "success" });
+      })
+      .catch(() => {
+        showToast(t("reviews-form-error"), { type: "error" });
+      })
+      .finally(() => {
+        if (btn) btn.disabled = false;
+      });
   });
 };

@@ -150,6 +150,18 @@ export const deleteReview = async (id: number): Promise<void> => {
   await fetch(`${API_BASE}/reviews/${id}`, { method: "DELETE" });
 };
 
+export const postReview = async (
+  review: Omit<Review, "id">,
+): Promise<Review> => {
+  const res = await fetch(`${API_BASE}/reviews`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(review),
+  });
+  if (!res.ok) throw new Error("Ошибка отправки отзыва");
+  return res.json() as Promise<Review>;
+};
+
 export const getFavoritesByUser = async (
   userId: string,
 ): Promise<ApiFavorite[]> => {
