@@ -2,6 +2,7 @@ import { type Review, reviewDateMs } from "../entities/reviews";
 import { fetchReviews, postReview } from "../services/api";
 import { isAuthenticated, getUser } from "../services/auth";
 import { getCurrentLang, t } from "../services/i18n";
+import { pluralize } from "../shared/utils/pluralize";
 import { showToast } from "../shared/ui/toast";
 
 type SortOrder = "newest" | "oldest" | "rating";
@@ -243,15 +244,8 @@ export const ReviewsPage = (): string => `
   </section>
 `;
 
-const pluralReviews = (n: number): string => {
-  if (getCurrentLang() === "en") return `${n} review${n !== 1 ? "s" : ""}`;
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return `${n} отзыв`;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14))
-    return `${n} отзыва`;
-  return `${n} отзывов`;
-};
+const pluralReviews = (n: number): string =>
+  pluralize(n, ["отзыв", "отзыва", "отзывов"], "review");
 
 const matchesFilters = (review: Review): boolean => {
   if (state.search) {

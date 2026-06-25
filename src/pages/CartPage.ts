@@ -1,11 +1,7 @@
 import { type CartItem, cart } from "../services/cart";
-import {
-  getCurrentLang,
-  t,
-  translateSurface,
-  translateTitle,
-} from "../services/i18n";
+import { t, translateSurface, translateTitle } from "../services/i18n";
 import { formatRub } from "../shared/utils/format";
+import { pluralize } from "../shared/utils/pluralize";
 import { showToast } from "../shared/ui/toast";
 
 const renderItem = (item: CartItem): string => `
@@ -129,15 +125,8 @@ export const CartPage = (): string => `
   </section>
 `;
 
-const pluralCount = (n: number): string => {
-  if (getCurrentLang() === "en") return `${n} item${n !== 1 ? "s" : ""}`;
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return `${n} товар`;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14))
-    return `${n} товара`;
-  return `${n} товаров`;
-};
+const pluralCount = (n: number): string =>
+  pluralize(n, ["товар", "товара", "товаров"], "item");
 
 const render = (): void => {
   const content = document.getElementById("cart-content");

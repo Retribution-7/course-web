@@ -3,6 +3,7 @@ import type { Product } from "../entities/products";
 import { fetchProductsByIds } from "../services/api";
 import { favorites } from "../services/favorites";
 import { getCurrentLang, t } from "../services/i18n";
+import { pluralize } from "../shared/utils/pluralize";
 
 const renderEmpty = (): string => `
   <div class="bg-surface rounded-[14px] card-shadow p-10 lg:p-16 text-center transition-colors duration-300">
@@ -31,15 +32,8 @@ const renderEmpty = (): string => `
   </div>
 `;
 
-const pluralItems = (n: number): string => {
-  if (getCurrentLang() === "en") return `${n} item${n !== 1 ? "s" : ""}`;
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return `${n} товар`;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14))
-    return `${n} товара`;
-  return `${n} товаров`;
-};
+const pluralItems = (n: number): string =>
+  pluralize(n, ["товар", "товара", "товаров"], "item");
 
 export const FavoritesPage = (): string => `
   <section id="favorites-page"
