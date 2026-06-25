@@ -1,5 +1,5 @@
-import { fetchReviews } from "../services/api";
 import type { Review } from "../entities/reviews";
+import { fetchReviews } from "../services/api";
 import { t } from "../services/i18n";
 
 const renderReviewCard = (review: Review, idx: number): string => `
@@ -100,9 +100,14 @@ export const Testimonials = (): string => `
 
 const setupSlider = (track: HTMLElement, dotsContainer: HTMLElement): void => {
   const slides = track.querySelectorAll<HTMLElement>(".testimonial-slide");
-  const dots = dotsContainer.querySelectorAll<HTMLButtonElement>(".testimonial-dot");
-  const prevBtn = document.getElementById("testimonials-prev") as HTMLButtonElement | null;
-  const nextBtn = document.getElementById("testimonials-next") as HTMLButtonElement | null;
+  const dots =
+    dotsContainer.querySelectorAll<HTMLButtonElement>(".testimonial-dot");
+  const prevBtn = document.getElementById(
+    "testimonials-prev",
+  ) as HTMLButtonElement | null;
+  const nextBtn = document.getElementById(
+    "testimonials-next",
+  ) as HTMLButtonElement | null;
 
   if (!slides.length) return;
 
@@ -134,14 +139,21 @@ const setupSlider = (track: HTMLElement, dotsContainer: HTMLElement): void => {
   };
 
   const stopAuto = (): void => {
-    if (autoTimer !== null) { clearInterval(autoTimer); autoTimer = null; }
+    if (autoTimer !== null) {
+      clearInterval(autoTimer);
+      autoTimer = null;
+    }
   };
 
   const startAuto = (): void => {
     autoTimer = setInterval(() => goTo(current + 1), 4000);
   };
 
-  const manualGoTo = (idx: number): void => { stopAuto(); goTo(idx); startAuto(); };
+  const manualGoTo = (idx: number): void => {
+    stopAuto();
+    goTo(idx);
+    startAuto();
+  };
 
   const applyLayout = (): void => {
     const perView = getPerView();
@@ -151,15 +163,19 @@ const setupSlider = (track: HTMLElement, dotsContainer: HTMLElement): void => {
         s.style.minWidth = "0";
       });
     } else {
-      slides.forEach((s) => { s.style.flex = "0 0 100%"; s.style.minWidth = "100%"; });
+      slides.forEach((s) => {
+        s.style.flex = "0 0 100%";
+        s.style.minWidth = "100%";
+      });
     }
     current = Math.min(current, getMaxIndex());
-    void track.offsetWidth; // force reflow so offsetWidth is correct in getSlidePx
+    void track.offsetWidth;
     goTo(current);
   };
 
   prevBtn?.addEventListener("click", () => manualGoTo(current - 1));
   nextBtn?.addEventListener("click", () => manualGoTo(current + 1));
+  // biome-ignore lint/suspicious/useIterableCallbackReturn: side-effect only — addEventListener
   dots.forEach((dot, i) => dot.addEventListener("click", () => manualGoTo(i)));
   track.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft") manualGoTo(current - 1);
@@ -174,7 +190,11 @@ const setupSlider = (track: HTMLElement, dotsContainer: HTMLElement): void => {
 
   applyLayout();
   startAuto();
-  window.addEventListener("resize", () => { stopAuto(); applyLayout(); startAuto(); });
+  window.addEventListener("resize", () => {
+    stopAuto();
+    applyLayout();
+    startAuto();
+  });
 };
 
 export const initTestimonials = (): void => {
@@ -185,12 +205,15 @@ export const initTestimonials = (): void => {
       if (!track || !dotsContainer) return;
 
       track.innerHTML = all.map(renderReviewCard).join("");
-      dotsContainer.innerHTML = all.map((_, i) => renderDot(i, i === 0)).join("");
+      dotsContainer.innerHTML = all
+        .map((_, i) => renderDot(i, i === 0))
+        .join("");
 
       setupSlider(track, dotsContainer);
     })
     .catch(() => {
       const track = document.getElementById("testimonials-track");
-      if (track) track.innerHTML = `<span class="font-sans text-[15px] text-text-third">${t("testimonials-error")}</span>`;
+      if (track)
+        track.innerHTML = `<span class="font-sans text-[15px] text-text-third">${t("testimonials-error")}</span>`;
     });
 };

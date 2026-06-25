@@ -31,8 +31,7 @@ const cards: FeatureCard[] = [
     icon: "/icons/cart.svg",
     iconAlt: "Корзина",
     title: "Справедливая цена",
-    description:
-      "Собственные ресурсы и транспорт позволяют снижать стоимость.",
+    description: "Собственные ресурсы и транспорт позволяют снижать стоимость.",
   },
   {
     icon: "/icons/time.svg",

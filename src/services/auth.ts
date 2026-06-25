@@ -1,5 +1,5 @@
-import { TOP_100_PASSWORDS_2023 } from "./passwords-top";
 import { postUser } from "./api";
+import { TOP_100_PASSWORDS_2023 } from "./passwords-top";
 
 const MIN_AGE = 16;
 const MIN_PASSWORD = 8;
@@ -75,7 +75,10 @@ export const validatePasswordConfirm = (
   return null;
 };
 
-export const validateRequired = (value: string, label: string): string | null => {
+export const validateRequired = (
+  value: string,
+  label: string,
+): string | null => {
   if (!value.trim()) return `Укажите ${label}`;
   return null;
 };
@@ -107,15 +110,57 @@ export const generatePassword = (length = 12): string => {
 };
 
 const ADJECTIVES = [
-  "Brave", "Swift", "Silent", "Mighty", "Lucky", "Wild", "Calm", "Bold",
-  "Crimson", "Golden", "Silver", "Iron", "Shadow", "Royal", "Cosmic", "Lunar",
-  "Solar", "Nimble", "Fierce", "Loyal", "Quiet", "Rapid", "Steel", "Storm",
+  "Brave",
+  "Swift",
+  "Silent",
+  "Mighty",
+  "Lucky",
+  "Wild",
+  "Calm",
+  "Bold",
+  "Crimson",
+  "Golden",
+  "Silver",
+  "Iron",
+  "Shadow",
+  "Royal",
+  "Cosmic",
+  "Lunar",
+  "Solar",
+  "Nimble",
+  "Fierce",
+  "Loyal",
+  "Quiet",
+  "Rapid",
+  "Steel",
+  "Storm",
 ];
 
 const NOUNS = [
-  "Tiger", "Wolf", "Eagle", "Falcon", "Lion", "Bear", "Panda", "Fox",
-  "Hawk", "Otter", "Lynx", "Raven", "Cobra", "Shark", "Phoenix", "Dragon",
-  "Knight", "Ranger", "Hunter", "Pilot", "Captain", "Rider", "Voyager", "Nomad",
+  "Tiger",
+  "Wolf",
+  "Eagle",
+  "Falcon",
+  "Lion",
+  "Bear",
+  "Panda",
+  "Fox",
+  "Hawk",
+  "Otter",
+  "Lynx",
+  "Raven",
+  "Cobra",
+  "Shark",
+  "Phoenix",
+  "Dragon",
+  "Knight",
+  "Ranger",
+  "Hunter",
+  "Pilot",
+  "Captain",
+  "Rider",
+  "Voyager",
+  "Nomad",
 ];
 
 export const generateNickname = (): string => {
@@ -147,8 +192,10 @@ const emitAuthChange = (): void => {
   window.dispatchEvent(new CustomEvent(AUTH_CHANGE_EVENT));
 };
 
-export const getServerId = (): string | null => localStorage.getItem(SERVER_ID_KEY);
-export const setServerId = (id: string): void => localStorage.setItem(SERVER_ID_KEY, id);
+export const getServerId = (): string | null =>
+  localStorage.getItem(SERVER_ID_KEY);
+export const setServerId = (id: string): void =>
+  localStorage.setItem(SERVER_ID_KEY, id);
 
 export const saveUser = (user: RegisteredUser): void => {
   localStorage.setItem(USER_KEY, JSON.stringify(user));
@@ -186,7 +233,8 @@ export const getRole = (): "customer" | "admin" => {
   return user?.role === "admin" ? "admin" : "customer";
 };
 
-export const isAdmin = (): boolean => isAuthenticated() && getRole() === "admin";
+export const isAdmin = (): boolean =>
+  isAuthenticated() && getRole() === "admin";
 
 export const setAuthenticated = (authenticated: boolean): void => {
   if (authenticated) localStorage.setItem(AUTH_KEY, "1");

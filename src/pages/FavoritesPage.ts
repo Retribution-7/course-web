@@ -1,8 +1,8 @@
 import { ProductCard, syncFavoriteButtons } from "../entities/ProductCard";
+import type { Product } from "../entities/products";
 import { fetchProductsByIds } from "../services/api";
 import { favorites } from "../services/favorites";
-import type { Product } from "../entities/products";
-import { t, getCurrentLang } from "../services/i18n";
+import { getCurrentLang, t } from "../services/i18n";
 
 const renderEmpty = (): string => `
   <div class="bg-surface rounded-[14px] card-shadow p-10 lg:p-16 text-center transition-colors duration-300">
@@ -36,7 +36,8 @@ const pluralItems = (n: number): string => {
   const mod10 = n % 10;
   const mod100 = n % 100;
   if (mod10 === 1 && mod100 !== 11) return `${n} товар`;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${n} товара`;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14))
+    return `${n} товара`;
   return `${n} товаров`;
 };
 
@@ -127,9 +128,10 @@ const render = async (): Promise<void> => {
     </div>
   `;
   const n = items.length;
-  summary.textContent = getCurrentLang() === "en"
-    ? `${n} item${n !== 1 ? "s" : ""} in favorites`
-    : `${pluralItems(n)} в избранном`;
+  summary.textContent =
+    getCurrentLang() === "en"
+      ? `${n} item${n !== 1 ? "s" : ""} in favorites`
+      : `${pluralItems(n)} в избранном`;
   clearBtn.classList.remove("hidden");
   syncFavoriteButtons();
 };

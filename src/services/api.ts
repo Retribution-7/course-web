@@ -45,7 +45,9 @@ export interface ApiCartItem {
   total: number;
 }
 
-export const fetchProducts = async (filters: ProductFilters = {}): Promise<Product[]> => {
+export const fetchProducts = async (
+  filters: ProductFilters = {},
+): Promise<Product[]> => {
   const params = new URLSearchParams();
   if (filters.category) params.set("category", filters.category);
   if (filters._sort) params.set("_sort", filters._sort);
@@ -84,7 +86,22 @@ export const fetchUsers = async (): Promise<ApiUser[]> => {
   return res.json() as Promise<ApiUser[]>;
 };
 
-export const postUser = async (user: object): Promise<{ id: number }> => {
+export interface CreateUserInput {
+  phone: string;
+  email: string;
+  birthDate: string;
+  lastName: string;
+  firstName: string;
+  middleName?: string;
+  nickname: string;
+  password: string;
+  role?: "customer" | "admin";
+  createdAt: string;
+}
+
+export const postUser = async (
+  user: CreateUserInput,
+): Promise<{ id: number }> => {
   const res = await fetch(`${API_BASE}/users`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -94,7 +111,10 @@ export const postUser = async (user: object): Promise<{ id: number }> => {
   return res.json() as Promise<{ id: number }>;
 };
 
-export const updateUser = async (id: number, data: Partial<ApiUser>): Promise<ApiUser> => {
+export const updateUser = async (
+  id: number,
+  data: Partial<ApiUser>,
+): Promise<ApiUser> => {
   const res = await fetch(`${API_BASE}/users/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
@@ -110,7 +130,9 @@ export const getAllCartItems = async (): Promise<ApiCartItem[]> => {
   return res.json() as Promise<ApiCartItem[]>;
 };
 
-export const postProduct = async (product: Omit<Product, "id">): Promise<Product> => {
+export const postProduct = async (
+  product: Omit<Product, "id">,
+): Promise<Product> => {
   const res = await fetch(`${API_BASE}/products`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -128,13 +150,18 @@ export const deleteReview = async (id: number): Promise<void> => {
   await fetch(`${API_BASE}/reviews/${id}`, { method: "DELETE" });
 };
 
-export const getFavoritesByUser = async (userId: string): Promise<ApiFavorite[]> => {
+export const getFavoritesByUser = async (
+  userId: string,
+): Promise<ApiFavorite[]> => {
   const res = await fetch(`${API_BASE}/favorites?userId=${userId}`);
   if (!res.ok) throw new Error("Ошибка загрузки избранного");
   return res.json() as Promise<ApiFavorite[]>;
 };
 
-export const postFavorite = async (userId: string, productId: number): Promise<void> => {
+export const postFavorite = async (
+  userId: string,
+  productId: number,
+): Promise<void> => {
   await fetch(`${API_BASE}/favorites`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -142,11 +169,18 @@ export const postFavorite = async (userId: string, productId: number): Promise<v
   });
 };
 
-export const deleteFavorite = async (userId: string, productId: number): Promise<void> => {
-  const res = await fetch(`${API_BASE}/favorites?userId=${userId}&productId=${productId}`);
+export const deleteFavorite = async (
+  userId: string,
+  productId: number,
+): Promise<void> => {
+  const res = await fetch(
+    `${API_BASE}/favorites?userId=${userId}&productId=${productId}`,
+  );
   const items = (await res.json()) as ApiFavorite[];
   await Promise.all(
-    items.map((item) => fetch(`${API_BASE}/favorites/${item.id}`, { method: "DELETE" })),
+    items.map((item) =>
+      fetch(`${API_BASE}/favorites/${item.id}`, { method: "DELETE" }),
+    ),
   );
 };
 
@@ -154,7 +188,9 @@ export const clearFavoritesByUser = async (userId: string): Promise<void> => {
   const res = await fetch(`${API_BASE}/favorites?userId=${userId}`);
   const items = (await res.json()) as ApiFavorite[];
   await Promise.all(
-    items.map((item) => fetch(`${API_BASE}/favorites/${item.id}`, { method: "DELETE" })),
+    items.map((item) =>
+      fetch(`${API_BASE}/favorites/${item.id}`, { method: "DELETE" }),
+    ),
   );
 };
 
@@ -164,7 +200,9 @@ export const getCartByUser = async (userId: string): Promise<ApiCartItem[]> => {
   return res.json() as Promise<ApiCartItem[]>;
 };
 
-export const postCartItem = async (item: Omit<ApiCartItem, "id">): Promise<void> => {
+export const postCartItem = async (
+  item: Omit<ApiCartItem, "id">,
+): Promise<void> => {
   await fetch(`${API_BASE}/cart`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -176,10 +214,14 @@ export const deleteCartItemByClientId = async (
   userId: string,
   clientId: string,
 ): Promise<void> => {
-  const res = await fetch(`${API_BASE}/cart?userId=${userId}&clientId=${clientId}`);
+  const res = await fetch(
+    `${API_BASE}/cart?userId=${userId}&clientId=${clientId}`,
+  );
   const items = (await res.json()) as ApiCartItem[];
   await Promise.all(
-    items.map((item) => fetch(`${API_BASE}/cart/${item.id}`, { method: "DELETE" })),
+    items.map((item) =>
+      fetch(`${API_BASE}/cart/${item.id}`, { method: "DELETE" }),
+    ),
   );
 };
 
@@ -187,6 +229,8 @@ export const clearCartByUser = async (userId: string): Promise<void> => {
   const res = await fetch(`${API_BASE}/cart?userId=${userId}`);
   const items = (await res.json()) as ApiCartItem[];
   await Promise.all(
-    items.map((item) => fetch(`${API_BASE}/cart/${item.id}`, { method: "DELETE" })),
+    items.map((item) =>
+      fetch(`${API_BASE}/cart/${item.id}`, { method: "DELETE" }),
+    ),
   );
 };

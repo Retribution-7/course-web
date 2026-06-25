@@ -1,8 +1,8 @@
 import {
+  clearFavoritesByUser,
+  deleteFavorite,
   getFavoritesByUser,
   postFavorite,
-  deleteFavorite,
-  clearFavoritesByUser,
 } from "./api";
 import { getServerId } from "./auth";
 

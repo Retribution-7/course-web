@@ -72,7 +72,9 @@ export const ContactForm = (): string => {
 };
 
 export const initContactForm = (): void => {
-  const form = document.getElementById("consultation-form") as HTMLFormElement | null;
+  const form = document.getElementById(
+    "consultation-form",
+  ) as HTMLFormElement | null;
   if (!form) return;
 
   form.addEventListener("submit", (e) => {

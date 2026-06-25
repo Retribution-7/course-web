@@ -2,7 +2,9 @@ import { t } from "../services/i18n";
 
 export const initFooter = (): void => {
   document.addEventListener("click", (event) => {
-    const btn = (event.target as HTMLElement).closest('[data-action="reset-settings"]');
+    const btn = (event.target as HTMLElement).closest(
+      '[data-action="reset-settings"]',
+    );
     if (!btn) return;
     if (confirm(t("footer-reset-confirm"))) {
       localStorage.clear();

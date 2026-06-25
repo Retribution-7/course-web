@@ -1,4 +1,4 @@
-import { isAuthenticated, isAdmin, onAuthChange } from "../services/auth";
+import { isAdmin, isAuthenticated, onAuthChange } from "../services/auth";
 
 const PAGE_HASHES = new Set<string>([
   "#cart",
@@ -24,7 +24,8 @@ const PROTECTED_PREFIXES = ["#product/"];
 const ADMIN_HASHES = new Set<string>(["#admin"]);
 
 const isProtected = (hash: string): boolean =>
-  PROTECTED_HASHES.has(hash) || PROTECTED_PREFIXES.some((p) => hash.startsWith(p));
+  PROTECTED_HASHES.has(hash) ||
+  PROTECTED_PREFIXES.some((p) => hash.startsWith(p));
 
 const guard = (): boolean => {
   const hash = window.location.hash;

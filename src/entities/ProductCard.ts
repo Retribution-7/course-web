@@ -1,8 +1,13 @@
 import { isAuthenticated } from "../services/auth";
 import { favorites } from "../services/favorites";
+import {
+  SPEC_LABEL_I18N_KEY,
+  t,
+  translateSurface,
+  translateTitle,
+} from "../services/i18n";
 import { showToast } from "../shared/ui/toast";
 import type { Product } from "./products";
-import { t, translateSurface, translateTitle, SPEC_LABEL_I18N_KEY } from "../services/i18n";
 
 export const COLOR_OPTIONS = [
   "RAL 3005",
@@ -18,9 +23,22 @@ export const COLOR_OPTIONS = [
   "Антрацит",
 ];
 
-export const THICKNESS_OPTIONS = ["0,35", "0,4", "0,45", "0,5", "0,55", "0,7", "0,8"];
+export const THICKNESS_OPTIONS = [
+  "0,35",
+  "0,4",
+  "0,45",
+  "0,5",
+  "0,55",
+  "0,7",
+  "0,8",
+];
 
-export const SURFACE_OPTIONS = ["Полиэстер", "Матовая", "Глянцевая", "Структурная"];
+export const SURFACE_OPTIONS = [
+  "Полиэстер",
+  "Матовая",
+  "Глянцевая",
+  "Структурная",
+];
 
 const DROPDOWN_I18N: Record<string, string> = {
   color: "calc-color-label",
@@ -28,16 +46,20 @@ const DROPDOWN_I18N: Record<string, string> = {
   surface: "calc-surface-label",
 };
 
-export const Dropdown = (label: string, value: string, options: string[], name: string): string => {
+export const Dropdown = (
+  label: string,
+  value: string,
+  options: string[],
+  name: string,
+): string => {
   const isSurface = name === "surface";
   const displayValue = isSurface ? translateSurface(value) : value;
 
   const items = options
-    .map(
-      (option) => {
-        const displayOption = isSurface ? translateSurface(option) : option;
-        const surfaceAttr = isSurface ? ` data-i18n-surface="${option}"` : "";
-        return `
+    .map((option) => {
+      const displayOption = isSurface ? translateSurface(option) : option;
+      const surfaceAttr = isSurface ? ` data-i18n-surface="${option}"` : "";
+      return `
         <li>
           <button type="button"
                   class="product-dropdown__option block w-full text-left px-[10px] py-1.5
@@ -49,8 +71,7 @@ export const Dropdown = (label: string, value: string, options: string[], name: 
           </button>
         </li>
       `;
-      },
-    )
+    })
     .join("");
 
   const labelKey = DROPDOWN_I18N[name];
@@ -165,44 +186,56 @@ export const ProductCard = (product: Product, index: number): string => {
 };
 
 export const syncFavoriteButtons = (): void => {
-  document.querySelectorAll<HTMLElement>(".product-favorite").forEach((button) => {
-    const id = Number.parseInt(button.dataset.productId ?? "", 10);
-    if (Number.isNaN(id)) return;
-    const isFav = favorites.has(id);
-    const icon = button.querySelector<SVGElement>(".product-favorite__icon");
-    if (isFav) {
-      button.classList.add("text-button-first");
-      button.classList.remove("text-primary");
-      icon?.setAttribute("fill", "currentColor");
-      button.setAttribute("aria-pressed", "true");
-      button.setAttribute("aria-label", t("card-remove-favorite"));
-    } else {
-      button.classList.remove("text-button-first");
-      button.classList.add("text-primary");
-      icon?.setAttribute("fill", "none");
-      button.setAttribute("aria-pressed", "false");
-      button.setAttribute("aria-label", t("card-add-favorite"));
-    }
-  });
+  document
+    .querySelectorAll<HTMLElement>(".product-favorite")
+    .forEach((button) => {
+      const id = Number.parseInt(button.dataset.productId ?? "", 10);
+      if (Number.isNaN(id)) return;
+      const isFav = favorites.has(id);
+      const icon = button.querySelector<SVGElement>(".product-favorite__icon");
+      if (isFav) {
+        button.classList.add("text-button-first");
+        button.classList.remove("text-primary");
+        icon?.setAttribute("fill", "currentColor");
+        button.setAttribute("aria-pressed", "true");
+        button.setAttribute("aria-label", t("card-remove-favorite"));
+      } else {
+        button.classList.remove("text-button-first");
+        button.classList.add("text-primary");
+        icon?.setAttribute("fill", "none");
+        button.setAttribute("aria-pressed", "false");
+        button.setAttribute("aria-label", t("card-add-favorite"));
+      }
+    });
 };
 
 export const initProductCards = (): void => {
   const closeAll = (except?: Element) => {
-    document.querySelectorAll<HTMLElement>(".product-dropdown").forEach((dropdown) => {
-      if (dropdown === except) return;
-      const menu = dropdown.querySelector<HTMLElement>(".product-dropdown__menu");
-      const toggle = dropdown.querySelector<HTMLElement>(".product-dropdown__toggle");
-      const caret = dropdown.querySelector<HTMLElement>(".product-dropdown__caret");
-      menu?.classList.add("hidden");
-      toggle?.setAttribute("aria-expanded", "false");
-      caret?.classList.remove("rotate-180");
-    });
+    document
+      .querySelectorAll<HTMLElement>(".product-dropdown")
+      .forEach((dropdown) => {
+        if (dropdown === except) return;
+        const menu = dropdown.querySelector<HTMLElement>(
+          ".product-dropdown__menu",
+        );
+        const toggle = dropdown.querySelector<HTMLElement>(
+          ".product-dropdown__toggle",
+        );
+        const caret = dropdown.querySelector<HTMLElement>(
+          ".product-dropdown__caret",
+        );
+        menu?.classList.add("hidden");
+        toggle?.setAttribute("aria-expanded", "false");
+        caret?.classList.remove("rotate-180");
+      });
   };
 
   document.addEventListener("click", (event) => {
     const target = event.target as HTMLElement;
 
-    const favBtn = target.closest<HTMLElement>('[data-action="favorite-toggle"]');
+    const favBtn = target.closest<HTMLElement>(
+      '[data-action="favorite-toggle"]',
+    );
     if (favBtn) {
       event.preventDefault();
       event.stopPropagation();
@@ -214,9 +247,13 @@ export const initProductCards = (): void => {
       if (Number.isNaN(id)) return;
       const added = favorites.toggle(id);
       const card = favBtn.closest<HTMLElement>("article[data-product-title]");
-      const name = translateTitle(card?.dataset.productTitle ?? t("card-product-name"));
+      const name = translateTitle(
+        card?.dataset.productTitle ?? t("card-product-name"),
+      );
       showToast(
-        added ? `«${name}» ${t("card-toast-added")}` : `«${name}» ${t("card-toast-removed")}`,
+        added
+          ? `«${name}» ${t("card-toast-added")}`
+          : `«${name}» ${t("card-toast-removed")}`,
         { type: added ? "success" : "info" },
       );
       return;
@@ -226,8 +263,12 @@ export const initProductCards = (): void => {
     if (toggle) {
       const dropdown = toggle.closest<HTMLElement>(".product-dropdown");
       if (!dropdown) return;
-      const menu = dropdown.querySelector<HTMLElement>(".product-dropdown__menu");
-      const caret = dropdown.querySelector<HTMLElement>(".product-dropdown__caret");
+      const menu = dropdown.querySelector<HTMLElement>(
+        ".product-dropdown__menu",
+      );
+      const caret = dropdown.querySelector<HTMLElement>(
+        ".product-dropdown__caret",
+      );
       const willOpen = menu?.classList.contains("hidden") ?? false;
       closeAll(willOpen ? dropdown : undefined);
       if (willOpen) {
@@ -241,7 +282,9 @@ export const initProductCards = (): void => {
     const option = target.closest<HTMLElement>(".product-dropdown__option");
     if (option) {
       const dropdown = option.closest<HTMLElement>(".product-dropdown");
-      const valueEl = dropdown?.querySelector<HTMLElement>(".product-dropdown__value");
+      const valueEl = dropdown?.querySelector<HTMLElement>(
+        ".product-dropdown__value",
+      );
       const value = option.dataset.value ?? "";
       if (valueEl) {
         const isSurface = dropdown?.dataset.dropdown === "surface";
@@ -249,9 +292,11 @@ export const initProductCards = (): void => {
         valueEl.dataset.value = value;
         if (isSurface) valueEl.dataset.i18nSurface = value;
       }
-      dropdown?.querySelectorAll<HTMLElement>(".product-dropdown__option").forEach((opt) => {
-        opt.classList.toggle("bg-bg-first", opt === option);
-      });
+      dropdown
+        ?.querySelectorAll<HTMLElement>(".product-dropdown__option")
+        .forEach((opt) => {
+          opt.classList.toggle("bg-bg-first", opt === option);
+        });
       closeAll();
       return;
     }

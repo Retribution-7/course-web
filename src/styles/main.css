@@ -17,7 +17,8 @@ body {
 	}
 
 	.btn-primary {
-		@apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-button-first to-button-second px-10 py-6 text-h5 transition-all duration-300 hover:scale-[1.02] shadow-[inset_0_0_12px_0_rgba(255,255,255,0.5)] cursor-pointer;
+		@apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-button-first to-button-second px-10 py-6 text-h5 transition-all duration-300 hover:scale-[1.02] cursor-pointer;
+		box-shadow: inset 0 0 12px 0 rgba(255, 255, 255, 0.5);
 	}
 
 	.gradient-text {

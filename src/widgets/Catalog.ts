@@ -1,6 +1,10 @@
-import { ProductCard, initProductCards, syncFavoriteButtons } from "../entities/ProductCard";
-import { fetchProducts } from "../services/api";
+import {
+  initProductCards,
+  ProductCard,
+  syncFavoriteButtons,
+} from "../entities/ProductCard";
 import type { ProductFilters } from "../services/api";
+import { fetchProducts } from "../services/api";
 import { t } from "../services/i18n";
 
 type CategoryKey = "metal-tile" | "corrugated-sheet" | "seam-roofing";
@@ -8,17 +12,45 @@ type TabKey = "all" | CategoryKey;
 
 const tabs: { key: TabKey; label: string; i18nKey: string }[] = [
   { key: "all", label: "Все материалы", i18nKey: "catalog-tab-all" },
-  { key: "metal-tile", label: "Металлочерепица", i18nKey: "catalog-tab-metal-tile" },
-  { key: "corrugated-sheet", label: "Профнастил", i18nKey: "catalog-tab-corrugated" },
-  { key: "seam-roofing", label: "Фальцевая кровля", i18nKey: "catalog-tab-seam" },
+  {
+    key: "metal-tile",
+    label: "Металлочерепица",
+    i18nKey: "catalog-tab-metal-tile",
+  },
+  {
+    key: "corrugated-sheet",
+    label: "Профнастил",
+    i18nKey: "catalog-tab-corrugated",
+  },
+  {
+    key: "seam-roofing",
+    label: "Фальцевая кровля",
+    i18nKey: "catalog-tab-seam",
+  },
 ];
 
 const sortOptions: { value: string; label: string; i18nKey: string }[] = [
   { value: "", label: "По умолчанию", i18nKey: "catalog-sort-default" },
-  { value: "price:asc", label: "Цена: по возрастанию", i18nKey: "catalog-sort-price-asc" },
-  { value: "price:desc", label: "Цена: по убыванию", i18nKey: "catalog-sort-price-desc" },
-  { value: "title:asc", label: "Название: А → Я", i18nKey: "catalog-sort-name-asc" },
-  { value: "title:desc", label: "Название: Я → А", i18nKey: "catalog-sort-name-desc" },
+  {
+    value: "price:asc",
+    label: "Цена: по возрастанию",
+    i18nKey: "catalog-sort-price-asc",
+  },
+  {
+    value: "price:desc",
+    label: "Цена: по убыванию",
+    i18nKey: "catalog-sort-price-desc",
+  },
+  {
+    value: "title:asc",
+    label: "Название: А → Я",
+    i18nKey: "catalog-sort-name-asc",
+  },
+  {
+    value: "title:desc",
+    label: "Название: Я → А",
+    i18nKey: "catalog-sort-name-desc",
+  },
 ];
 
 export const Catalog = (): string => `
@@ -153,18 +185,22 @@ const renderGrid = async (): Promise<void> => {
 export const initCatalog = (): void => {
   initProductCards();
 
-  document.querySelectorAll<HTMLButtonElement>(".catalog-tab").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll<HTMLButtonElement>(".catalog-tab").forEach((b) => {
-        b.classList.remove("active");
-        b.setAttribute("aria-selected", "false");
+  document
+    .querySelectorAll<HTMLButtonElement>(".catalog-tab")
+    .forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document
+          .querySelectorAll<HTMLButtonElement>(".catalog-tab")
+          .forEach((b) => {
+            b.classList.remove("active");
+            b.setAttribute("aria-selected", "false");
+          });
+        btn.classList.add("active");
+        btn.setAttribute("aria-selected", "true");
+        activeTab = btn.dataset.tab as TabKey;
+        void renderGrid();
       });
-      btn.classList.add("active");
-      btn.setAttribute("aria-selected", "true");
-      activeTab = btn.dataset.tab as TabKey;
-      void renderGrid();
     });
-  });
 
   document.getElementById("catalog-search")?.addEventListener("input", (e) => {
     clearTimeout(searchTimer);

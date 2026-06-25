@@ -192,9 +192,15 @@ const state: CalcState = {
 };
 
 const recalc = (): void => {
-  const areaInput = document.getElementById("calc-area") as HTMLInputElement | null;
-  const installEl = document.getElementById("calc-installation") as HTMLInputElement | null;
-  const deliveryEl = document.getElementById("calc-delivery") as HTMLInputElement | null;
+  const areaInput = document.getElementById(
+    "calc-area",
+  ) as HTMLInputElement | null;
+  const installEl = document.getElementById(
+    "calc-installation",
+  ) as HTMLInputElement | null;
+  const deliveryEl = document.getElementById(
+    "calc-delivery",
+  ) as HTMLInputElement | null;
   if (!areaInput) return;
 
   const area = Math.max(1, Math.min(10000, parseNumber(areaInput.value)));
@@ -236,10 +242,15 @@ const openModal = (article: HTMLElement): void => {
   const image = article.dataset.productImage ?? "";
   const price = parseNumber(article.dataset.productPrice ?? "0");
 
-  const values = article.querySelectorAll<HTMLElement>(".product-dropdown__value");
-  const color = values[0]?.dataset.value ?? values[0]?.textContent?.trim() ?? "";
-  const thickness = values[1]?.dataset.value ?? values[1]?.textContent?.trim() ?? "";
-  const surface = values[2]?.dataset.value ?? values[2]?.textContent?.trim() ?? "";
+  const values = article.querySelectorAll<HTMLElement>(
+    ".product-dropdown__value",
+  );
+  const color =
+    values[0]?.dataset.value ?? values[0]?.textContent?.trim() ?? "";
+  const thickness =
+    values[1]?.dataset.value ?? values[1]?.textContent?.trim() ?? "";
+  const surface =
+    values[2]?.dataset.value ?? values[2]?.textContent?.trim() ?? "";
 
   state.title = title;
   state.image = image;
@@ -257,10 +268,16 @@ const openModal = (article: HTMLElement): void => {
   setText("calc-thickness", thickness);
   setText("calc-surface", surface);
 
-  const areaInput = document.getElementById("calc-area") as HTMLInputElement | null;
+  const areaInput = document.getElementById(
+    "calc-area",
+  ) as HTMLInputElement | null;
   if (areaInput) areaInput.value = "100";
-  const install = document.getElementById("calc-installation") as HTMLInputElement | null;
-  const delivery = document.getElementById("calc-delivery") as HTMLInputElement | null;
+  const install = document.getElementById(
+    "calc-installation",
+  ) as HTMLInputElement | null;
+  const delivery = document.getElementById(
+    "calc-delivery",
+  ) as HTMLInputElement | null;
   if (install) install.checked = false;
   if (delivery) delivery.checked = false;
 
@@ -287,7 +304,9 @@ export const initCalculator = (): void => {
     const target = event.target as HTMLElement;
     const trigger = target.closest<HTMLElement>('[data-action="calculate"]');
     if (trigger) {
-      const article = trigger.closest<HTMLElement>("article[data-product-title]");
+      const article = trigger.closest<HTMLElement>(
+        "article[data-product-title]",
+      );
       if (article) openModal(article);
     }
   });
@@ -298,22 +317,29 @@ export const initCalculator = (): void => {
 
   document.getElementById("calc-close")?.addEventListener("click", closeModal);
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !modal.classList.contains("hidden")) closeModal();
+    if (event.key === "Escape" && !modal.classList.contains("hidden"))
+      closeModal();
   });
 
   document.getElementById("calc-area")?.addEventListener("input", recalc);
-  document.getElementById("calc-installation")?.addEventListener("change", recalc);
+  document
+    .getElementById("calc-installation")
+    ?.addEventListener("change", recalc);
   document.getElementById("calc-delivery")?.addEventListener("change", recalc);
 
   document.getElementById("calc-area-minus")?.addEventListener("click", () => {
-    const input = document.getElementById("calc-area") as HTMLInputElement | null;
+    const input = document.getElementById(
+      "calc-area",
+    ) as HTMLInputElement | null;
     if (!input) return;
     const next = Math.max(1, parseNumber(input.value) - 10);
     input.value = String(next);
     recalc();
   });
   document.getElementById("calc-area-plus")?.addEventListener("click", () => {
-    const input = document.getElementById("calc-area") as HTMLInputElement | null;
+    const input = document.getElementById(
+      "calc-area",
+    ) as HTMLInputElement | null;
     if (!input) return;
     const next = Math.min(10000, parseNumber(input.value) + 10);
     input.value = String(next);
@@ -326,9 +352,15 @@ export const initCalculator = (): void => {
       window.location.hash = "#auth";
       return;
     }
-    const areaInput = document.getElementById("calc-area") as HTMLInputElement | null;
-    const installEl = document.getElementById("calc-installation") as HTMLInputElement | null;
-    const deliveryEl = document.getElementById("calc-delivery") as HTMLInputElement | null;
+    const areaInput = document.getElementById(
+      "calc-area",
+    ) as HTMLInputElement | null;
+    const installEl = document.getElementById(
+      "calc-installation",
+    ) as HTMLInputElement | null;
+    const deliveryEl = document.getElementById(
+      "calc-delivery",
+    ) as HTMLInputElement | null;
     if (!areaInput) return;
 
     const area = Math.max(1, Math.min(10000, parseNumber(areaInput.value)));
@@ -355,7 +387,10 @@ export const initCalculator = (): void => {
       total,
     });
 
-    showToast(`«${translateTitle(state.title)}» ${t("calc-toast-cart-added")}`, { type: "success" });
+    showToast(
+      `«${translateTitle(state.title)}» ${t("calc-toast-cart-added")}`,
+      { type: "success" },
+    );
     closeModal();
     window.location.hash = "#cart";
   });
