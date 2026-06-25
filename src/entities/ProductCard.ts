@@ -245,17 +245,18 @@ export const initProductCards = (): void => {
       }
       const id = Number.parseInt(favBtn.dataset.productId ?? "", 10);
       if (Number.isNaN(id)) return;
-      const added = favorites.toggle(id);
       const card = favBtn.closest<HTMLElement>("article[data-product-title]");
       const name = translateTitle(
         card?.dataset.productTitle ?? t("card-product-name"),
       );
-      showToast(
-        added
-          ? `«${name}» ${t("card-toast-added")}`
-          : `«${name}» ${t("card-toast-removed")}`,
-        { type: added ? "success" : "info" },
-      );
+      void favorites.toggle(id).then((added) => {
+        showToast(
+          added
+            ? `«${name}» ${t("card-toast-added")}`
+            : `«${name}» ${t("card-toast-removed")}`,
+          { type: added ? "success" : "info" },
+        );
+      });
       return;
     }
 

@@ -6,90 +6,82 @@ import {
 } from "./api";
 import { getServerId } from "./auth";
 
-const STORAGE_KEY = "metallobaza-favorites";
 const CHANGE_EVENT = "favorites:change";
 
-const read = (): number[] => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed)
-      ? parsed.filter((n): n is number => typeof n === "number")
-      : [];
-  } catch {
-    return [];
-  }
+let ids: number[] = [];
+
+const emit = (): void => {
+  window.dispatchEvent(new CustomEvent(CHANGE_EVENT));
 };
 
-const write = (ids: number[]): void => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
-  window.dispatchEvent(new CustomEvent(CHANGE_EVENT));
+const setIds = (next: number[]): void => {
+  ids = next;
+  emit();
 };
 
 export const favorites = {
   list(): number[] {
-    return read();
+    return ids;
   },
   has(id: number): boolean {
-    return read().includes(id);
+    return ids.includes(id);
   },
-  add(id: number): void {
-    const ids = read();
-    if (!ids.includes(id)) write([...ids, id]);
+  count(): number {
+    return ids.length;
   },
-  remove(id: number): void {
-    write(read().filter((x) => x !== id));
-  },
-  toggle(id: number): boolean {
-    const ids = read();
-    let added: boolean;
-    if (ids.includes(id)) {
-      write(ids.filter((x) => x !== id));
-      added = false;
-    } else {
-      write([...ids, id]);
-      added = true;
-    }
 
+  async toggle(id: number): Promise<boolean> {
     const userId = getServerId();
-    if (userId) {
+    if (!userId) return false;
+
+    const added = !ids.includes(id);
+    setIds(added ? [...ids, id] : ids.filter((x) => x !== id));
+
+    try {
       if (added) {
-        void postFavorite(userId, id).catch(() => {});
+        await postFavorite(userId, id);
       } else {
-        void deleteFavorite(userId, id).catch(() => {});
+        await deleteFavorite(userId, id);
       }
+    } catch {
+      // revert on failure
+      setIds(added ? ids.filter((x) => x !== id) : [...ids, id]);
     }
 
     return added;
   },
-  count(): number {
-    return read().length;
-  },
-  clear(): void {
-    write([]);
+
+  async clear(): Promise<void> {
     const userId = getServerId();
-    if (userId) void clearFavoritesByUser(userId).catch(() => {});
+    setIds([]);
+    if (userId) {
+      try {
+        await clearFavoritesByUser(userId);
+      } catch {
+        /* keep empty */
+      }
+    }
   },
 
   async loadFromServer(): Promise<void> {
     const userId = getServerId();
-    if (!userId) return;
+    if (!userId) {
+      setIds([]);
+      return;
+    }
     try {
       const items = await getFavoritesByUser(userId);
-      write(items.map((i) => i.productId));
+      setIds(items.map((i) => i.productId));
     } catch {
-      /* fail silently — local cache remains */
+      /* keep current cache */
     }
   },
 
   onChange(handler: () => void): () => void {
     const listener = () => handler();
     window.addEventListener(CHANGE_EVENT, listener);
-    window.addEventListener("storage", listener);
     return () => {
       window.removeEventListener(CHANGE_EVENT, listener);
-      window.removeEventListener("storage", listener);
     };
   },
 };
