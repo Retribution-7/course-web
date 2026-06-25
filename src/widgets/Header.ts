@@ -135,7 +135,8 @@ export const Header = (): string => {
           </a>
 
           <!-- Кнопка каталога -->
-          <a href="#catalog" class="hidden 2xl:inline-flex btn-primary text-[17px] px-6 py-5 shrink-0" data-i18n="header-catalog-btn">
+          <a href="#catalog" class="hidden 2xl:inline-flex btn-primary text-[17px] px-6 py-5 shrink-0" data-i18n="header-catalog-btn"
+             onclick="document.getElementById('catalog')?.scrollIntoView({behavior:'smooth'}); return false;">
             Посмотреть каталог товаров
           </a>
 
@@ -264,7 +265,8 @@ export const Header = (): string => {
             </div>
             <span data-i18n="header-pdf-download">Скачать прайс-лист</span>
           </a>
-          <a href="#catalog" class="btn-primary w-full text-center text-[17px] px-6 py-4" data-i18n="header-catalog-btn">
+          <a href="#catalog" class="btn-primary w-full text-center text-[17px] px-6 py-4" data-i18n="header-catalog-btn"
+             onclick="document.getElementById('catalog')?.scrollIntoView({behavior:'smooth'}); return false;">
             Посмотреть каталог товаров
           </a>
           <div class="flex gap-3">
