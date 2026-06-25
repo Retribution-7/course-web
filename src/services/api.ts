@@ -3,6 +3,20 @@ import type { Review } from "../entities/reviews";
 
 export const API_BASE = "/api";
 
+const deleteAllByQuery = async (
+  collection: string,
+  params: Record<string, string>,
+): Promise<void> => {
+  const qs = new URLSearchParams(params).toString();
+  const res = await fetch(`${API_BASE}/${collection}?${qs}`);
+  const items = (await res.json()) as { id: number }[];
+  await Promise.all(
+    items.map((item) =>
+      fetch(`${API_BASE}/${collection}/${item.id}`, { method: "DELETE" }),
+    ),
+  );
+};
+
 export interface ProductFilters {
   category?: string;
   _sort?: string;
@@ -185,25 +199,14 @@ export const deleteFavorite = async (
   userId: string,
   productId: number,
 ): Promise<void> => {
-  const res = await fetch(
-    `${API_BASE}/favorites?userId=${userId}&productId=${productId}`,
-  );
-  const items = (await res.json()) as ApiFavorite[];
-  await Promise.all(
-    items.map((item) =>
-      fetch(`${API_BASE}/favorites/${item.id}`, { method: "DELETE" }),
-    ),
-  );
+  await deleteAllByQuery("favorites", {
+    userId,
+    productId: String(productId),
+  });
 };
 
 export const clearFavoritesByUser = async (userId: string): Promise<void> => {
-  const res = await fetch(`${API_BASE}/favorites?userId=${userId}`);
-  const items = (await res.json()) as ApiFavorite[];
-  await Promise.all(
-    items.map((item) =>
-      fetch(`${API_BASE}/favorites/${item.id}`, { method: "DELETE" }),
-    ),
-  );
+  await deleteAllByQuery("favorites", { userId });
 };
 
 export const getCartByUser = async (userId: string): Promise<ApiCartItem[]> => {
@@ -226,23 +229,9 @@ export const deleteCartItemByClientId = async (
   userId: string,
   clientId: string,
 ): Promise<void> => {
-  const res = await fetch(
-    `${API_BASE}/cart?userId=${userId}&clientId=${clientId}`,
-  );
-  const items = (await res.json()) as ApiCartItem[];
-  await Promise.all(
-    items.map((item) =>
-      fetch(`${API_BASE}/cart/${item.id}`, { method: "DELETE" }),
-    ),
-  );
+  await deleteAllByQuery("cart", { userId, clientId });
 };
 
 export const clearCartByUser = async (userId: string): Promise<void> => {
-  const res = await fetch(`${API_BASE}/cart?userId=${userId}`);
-  const items = (await res.json()) as ApiCartItem[];
-  await Promise.all(
-    items.map((item) =>
-      fetch(`${API_BASE}/cart/${item.id}`, { method: "DELETE" }),
-    ),
-  );
+  await deleteAllByQuery("cart", { userId });
 };
