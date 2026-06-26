@@ -8,6 +8,7 @@ import { SkeletonGrid } from "../shared/ui/Skeleton";
 import { showToast } from "../shared/ui/toast";
 import { pluralize } from "../shared/utils/pluralize";
 import { createPageRouter } from "../shared/lib/page";
+import { escapeHtml } from "../shared/utils/escape";
 import { Stars } from "../shared/ui/Stars";
 
 type SortOrder = "newest" | "oldest" | "rating";
@@ -42,15 +43,15 @@ const renderCard = (review: Review): string => `
            aria-hidden="true">
       <div class="flex-1 min-w-0">
         <h3 class="font-sans font-normal text-[16px] sm:text-[18px] leading-[1.2] text-primary truncate">
-          ${review.name}
+          ${escapeHtml(review.name)}
         </h3>
-        <p class="font-sans text-[13px] leading-[1.3] text-text-third mt-1">${review.date}</p>
+        <p class="font-sans text-[13px] leading-[1.3] text-text-third mt-1">${escapeHtml(review.date)}</p>
       </div>
       ${Stars(review.rating)}
     </div>
 
     <p class="font-sans text-[14px] sm:text-[15px] leading-[1.55] text-text-secondary flex-1">
-      ${review.text}
+      ${escapeHtml(review.text)}
     </p>
 
     ${
@@ -58,7 +59,7 @@ const renderCard = (review: Review): string => `
 				? `<div class="pt-3 border-t border-border-light dark:border-border-dark">
              <span class="inline-flex items-center gap-1.5 font-sans text-[12px] text-text-third">
                <span class="size-1.5 rounded-full bg-button-first"></span>
-               ${review.product}
+               ${escapeHtml(review.product)}
              </span>
            </div>`
 				: ""

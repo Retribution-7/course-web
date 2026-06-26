@@ -4,6 +4,7 @@ import { t } from "../../services/i18n";
 import { catLabelKey } from "../../shared/constants/categories";
 import { showConfirm } from "../../shared/ui/ConfirmModal";
 import { showToast } from "../../shared/ui/toast";
+import { escapeHtml } from "../../shared/utils/escape";
 import { showLoading, TableWrap, ThRow } from "./shared";
 
 const INPUT_CLS =
@@ -170,16 +171,16 @@ export const renderProductsTab = async (): Promise<void> => {
       <tr class="border-t border-primary/10 hover:bg-bg-first transition-colors">
         <td class="px-4 py-3 text-text-third">#${p.id ?? "—"}</td>
         <td class="px-4 py-3">
-          <img src="${p.image}" alt="${p.title}"
+          <img src="${p.image}" alt="${escapeHtml(p.title)}"
                class="w-12 h-12 object-cover rounded-[8px]" loading="lazy">
         </td>
-        <td class="px-4 py-3 text-primary whitespace-nowrap">${p.title}</td>
+        <td class="px-4 py-3 text-primary whitespace-nowrap">${escapeHtml(p.title)}</td>
         <td class="px-4 py-3 text-primary whitespace-nowrap">${t(catLabelKey(p.category))}</td>
-        <td class="px-4 py-3 text-primary whitespace-nowrap">${p.price} ₽/м²</td>
-        <td class="px-4 py-3 text-primary">${p.brand}</td>
-        <td class="px-4 py-3 text-primary">${p.color}</td>
-        <td class="px-4 py-3 text-primary">${p.thickness}</td>
-        <td class="px-4 py-3 text-primary">${p.surface}</td>
+        <td class="px-4 py-3 text-primary whitespace-nowrap">${escapeHtml(p.price)} ₽/м²</td>
+        <td class="px-4 py-3 text-primary">${escapeHtml(p.brand)}</td>
+        <td class="px-4 py-3 text-primary">${escapeHtml(p.color)}</td>
+        <td class="px-4 py-3 text-primary">${escapeHtml(p.thickness)}</td>
+        <td class="px-4 py-3 text-primary">${escapeHtml(p.surface)}</td>
         <td class="px-4 py-3">
           <button type="button"
                   data-delete-product="${p.id}"

@@ -2,6 +2,7 @@ import type { Review } from "../entities/reviews";
 import { fetchReviews } from "../services/api";
 import { t } from "../services/i18n";
 import { SkeletonCard } from "../shared/ui/Skeleton";
+import { escapeHtml } from "../shared/utils/escape";
 import {
 	CAROUSEL_AUTO_INTERVAL_MS,
 	CAROUSEL_DESKTOP_BREAKPOINT_PX,
@@ -15,13 +16,13 @@ const renderReviewCard = (review: Review, idx: number): string => `
     <div class="flex items-center gap-[25px]">
       <img
         src="${review.avatar}"
-        alt="${review.name}"
+        alt="${escapeHtml(review.name)}"
         class="size-[70px] rounded-full object-cover shrink-0"
         loading="lazy"
       >
       <div class="flex flex-col">
-        <span class="font-sans font-normal text-[22px] leading-[30px] text-123-first">${review.name}</span>
-        <span class="font-sans font-normal text-[17px] leading-[1.8] text-123-second">${review.date}</span>
+        <span class="font-sans font-normal text-[22px] leading-[30px] text-123-first">${escapeHtml(review.name)}</span>
+        <span class="font-sans font-normal text-[17px] leading-[1.8] text-123-second">${escapeHtml(review.date)}</span>
       </div>
     </div>
 
@@ -29,7 +30,7 @@ const renderReviewCard = (review: Review, idx: number): string => `
       <img src="/icons/yandex-logo.png" alt="Яндекс Карты — 5 звёзд" class="h-[23px] object-contain">
     </div>
 
-    <p class="font-sans font-normal text-[22px] leading-[30px] text-primary opacity-80">${review.text}</p>
+    <p class="font-sans font-normal text-[22px] leading-[30px] text-primary opacity-80">${escapeHtml(review.text)}</p>
 
   </article>
 `;

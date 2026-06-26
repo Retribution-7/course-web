@@ -7,6 +7,7 @@ import { showToast } from "../shared/ui/toast";
 import { formatRub } from "../shared/utils/format";
 import { pluralize } from "../shared/utils/pluralize";
 import { createPageRouter } from "../shared/lib/page";
+import { escapeHtml } from "../shared/utils/escape";
 
 const renderItem = (item: CartItem): string => `
   <article class="bg-surface rounded-[14px] card-shadow p-5 lg:p-6 transition-colors duration-300
@@ -14,17 +15,17 @@ const renderItem = (item: CartItem): string => `
            data-cart-id="${item.id}">
 
     <div class="h-[120px] w-full md:w-[120px] overflow-hidden rounded-[8px] shrink-0">
-      <img src="${item.image}" alt="${item.title}" class="size-full object-cover" loading="lazy">
+      <img src="${item.image}" alt="${escapeHtml(item.title)}" class="size-full object-cover" loading="lazy">
     </div>
 
     <div class="flex flex-col gap-2">
       <h3 class="font-sans font-normal text-[18px] lg:text-[20px] leading-[1.2] text-primary">
-        ${translateTitle(item.title)}
+        ${escapeHtml(translateTitle(item.title))}
       </h3>
       <dl class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 font-sans text-[13px] leading-[1.3] text-primary">
-        <dt class="text-text-third">${t("cart-color")}</dt><dd>${item.color}</dd>
-        <dt class="text-text-third">${t("cart-thickness")}</dt><dd>${item.thickness}</dd>
-        <dt class="text-text-third">${t("cart-surface")}</dt><dd>${translateSurface(item.surface)}</dd>
+        <dt class="text-text-third">${t("cart-color")}</dt><dd>${escapeHtml(item.color)}</dd>
+        <dt class="text-text-third">${t("cart-thickness")}</dt><dd>${escapeHtml(item.thickness)}</dd>
+        <dt class="text-text-third">${t("cart-surface")}</dt><dd>${escapeHtml(translateSurface(item.surface))}</dd>
         <dt class="text-text-third">${t("cart-area")}</dt><dd>${item.area} м²</dd>
         ${item.installation ? `<dt class="text-text-third">${t("cart-installation-label")}</dt><dd>${t("cart-installation-included")}</dd>` : ""}
         ${item.delivery ? `<dt class="text-text-third">${t("cart-delivery-label")}</dt><dd>${t("cart-delivery-included")}</dd>` : ""}

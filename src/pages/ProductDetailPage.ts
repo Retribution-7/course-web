@@ -14,6 +14,7 @@ import { RELATED_PRODUCTS_LIMIT } from "../shared/lib/constants";
 import { BackLink } from "../shared/ui/BackLink";
 import { Skeleton } from "../shared/ui/Skeleton";
 import { togglePage } from "../shared/lib/page";
+import { escapeHtml } from "../shared/utils/escape";
 
 const renderDetail = (
 	product: Product,
@@ -51,15 +52,15 @@ const renderDetail = (
     <article class="bg-surface rounded-[14px] card-shadow p-5 sm:p-6 lg:p-10 transition-colors duration-300"
              data-category="${product.category}"
              data-product-id="${index}"
-             data-product-title="${product.title}"
-             data-product-price="${product.price}"
+             data-product-title="${escapeHtml(product.title)}"
+             data-product-price="${escapeHtml(product.price)}"
              data-product-image="${product.image}">
 
       <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-6 lg:gap-10">
 
         <div class="aspect-[4/3] sm:aspect-[16/10] lg:aspect-square w-full overflow-hidden rounded-[10px]">
           <img src="${product.image}"
-               alt="${product.title}"
+               alt="${escapeHtml(product.title)}"
                class="size-full object-cover"
                loading="lazy">
         </div>
@@ -70,20 +71,20 @@ const renderDetail = (
           </span>
 
           <h1 class="font-sans font-normal text-[28px] leading-[1.1] sm:text-[36px] lg:text-[44px] xl:text-[52px] gradient-text"
-              data-i18n-title="${product.title}">
-            ${translateTitle(product.title)}
+              data-i18n-title="${escapeHtml(product.title)}">
+            ${escapeHtml(translateTitle(product.title))}
           </h1>
 
           <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 font-sans">
             <span class="text-[14px] text-text-third">${t("product-price-from")}</span>
-            <span class="text-[32px] lg:text-[40px] leading-none text-primary">${product.price}</span>
+            <span class="text-[32px] lg:text-[40px] leading-none text-primary">${escapeHtml(product.price)}</span>
             <span class="text-[18px] lg:text-[20px] text-text-secondary tracking-[-0.03em]">₽ / м²</span>
-            <span class="ml-auto text-[13px] text-text-third">${t("product-brand")} ${product.brand}</span>
+            <span class="ml-auto text-[13px] text-text-third">${t("product-brand")} ${escapeHtml(product.brand)}</span>
           </div>
 
           <dl class="grid grid-cols-[1fr_auto] gap-x-6 gap-y-2 font-sans text-[14px] leading-[1.4] text-text-secondary border-t border-b border-border-light dark:border-border-dark py-4">
-            <dt class="text-text-third" data-i18n="${SPEC_LABEL_I18N_KEY[product.specs[0].label] ?? ""}">${t(SPEC_LABEL_I18N_KEY[product.specs[0].label] ?? product.specs[0].label)}</dt><dd class="text-right">${product.specs[0].value}</dd>
-            <dt class="text-text-third" data-i18n="${SPEC_LABEL_I18N_KEY[product.specs[1].label] ?? ""}">${t(SPEC_LABEL_I18N_KEY[product.specs[1].label] ?? product.specs[1].label)}</dt><dd class="text-right">${product.specs[1].value}</dd>
+            <dt class="text-text-third" data-i18n="${SPEC_LABEL_I18N_KEY[product.specs[0].label] ?? ""}">${t(SPEC_LABEL_I18N_KEY[product.specs[0].label] ?? product.specs[0].label)}</dt><dd class="text-right">${escapeHtml(product.specs[0].value)}</dd>
+            <dt class="text-text-third" data-i18n="${SPEC_LABEL_I18N_KEY[product.specs[1].label] ?? ""}">${t(SPEC_LABEL_I18N_KEY[product.specs[1].label] ?? product.specs[1].label)}</dt><dd class="text-right">${escapeHtml(product.specs[1].value)}</dd>
             <dt class="text-text-third">${t("product-category")}</dt><dd class="text-right">${t(`cat-label-${key}`)}</dd>
           </dl>
 

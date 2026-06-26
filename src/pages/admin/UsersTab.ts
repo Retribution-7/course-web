@@ -2,6 +2,7 @@ import { fetchUsers, updateUser } from "../../services/api";
 import { getUser } from "../../services/auth";
 import { getCurrentLang, t } from "../../services/i18n";
 import { showToast } from "../../shared/ui/toast";
+import { escapeHtml } from "../../shared/utils/escape";
 import { showLoading, TableWrap, ThRow } from "./shared";
 
 export const ROLE_COLORS = Object.freeze({
@@ -36,11 +37,11 @@ export const renderUsersTab = async (): Promise<void> => {
         <tr class="border-t border-primary/10 hover:bg-bg-first transition-colors">
           <td class="px-4 py-3 text-text-third">#${u.id}</td>
           <td class="px-4 py-3">
-            <div class="text-primary">${u.lastName} ${u.firstName}</div>
-            <div class="text-[12px] text-text-third">@${u.nickname ?? "—"}</div>
+            <div class="text-primary">${escapeHtml(u.lastName)} ${escapeHtml(u.firstName)}</div>
+            <div class="text-[12px] text-text-third">@${escapeHtml(u.nickname ?? "—")}</div>
           </td>
-          <td class="px-4 py-3 text-primary whitespace-nowrap">${u.phone}</td>
-          <td class="px-4 py-3 text-primary break-all">${u.email}</td>
+          <td class="px-4 py-3 text-primary whitespace-nowrap">${escapeHtml(u.phone)}</td>
+          <td class="px-4 py-3 text-primary break-all">${escapeHtml(u.email)}</td>
           <td class="px-4 py-3">${RoleBadge(u.role ?? "customer")}</td>
           <td class="px-4 py-3 text-text-third whitespace-nowrap">
             ${u.createdAt ? new Date(u.createdAt).toLocaleDateString(locale) : "—"}

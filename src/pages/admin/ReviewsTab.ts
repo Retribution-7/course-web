@@ -3,6 +3,7 @@ import { t } from "../../services/i18n";
 import { showConfirm } from "../../shared/ui/ConfirmModal";
 import { showToast } from "../../shared/ui/toast";
 import { Stars } from "../../shared/ui/Stars";
+import { escapeHtml } from "../../shared/utils/escape";
 import { showLoading, TableWrap, ThRow } from "./shared";
 
 export const renderReviewsTab = async (): Promise<void> => {
@@ -21,14 +22,14 @@ export const renderReviewsTab = async (): Promise<void> => {
           <div class="flex items-center gap-3">
             <img src="${r.avatar}" alt=""
                  class="size-9 rounded-full object-cover shrink-0" loading="lazy">
-            <span class="text-primary whitespace-nowrap">${r.name}</span>
+            <span class="text-primary whitespace-nowrap">${escapeHtml(r.name)}</span>
           </div>
         </td>
-        <td class="px-4 py-3 text-primary whitespace-nowrap">${r.date}</td>
+        <td class="px-4 py-3 text-primary whitespace-nowrap">${escapeHtml(r.date)}</td>
         <td class="px-4 py-3 text-[16px] leading-none">${Stars(r.rating)}</td>
-        <td class="px-4 py-3 text-primary whitespace-nowrap">${r.product ?? "—"}</td>
+        <td class="px-4 py-3 text-primary whitespace-nowrap">${escapeHtml(r.product ?? "—")}</td>
         <td class="px-4 py-3 text-primary max-w-[260px]">
-          <span class="line-clamp-2">${r.text}</span>
+          <span class="line-clamp-2">${escapeHtml(r.text)}</span>
         </td>
         <td class="px-4 py-3">
           <button type="button"

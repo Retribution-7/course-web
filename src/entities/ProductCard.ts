@@ -7,6 +7,7 @@ import {
 	translateTitle,
 } from "../services/i18n";
 import { showToast } from "../shared/ui/toast";
+import { escapeHtml } from "../shared/utils/escape";
 import type { Product } from "./products";
 
 export const COLOR_OPTIONS = [
@@ -110,14 +111,14 @@ export const ProductCard = (product: Product, index: number): string => {
     <article class="bg-surface rounded-[14px] card-shadow p-6 flex flex-col gap-[23px] transition-colors duration-300"
              data-category="${product.category}"
              data-product-id="${index}"
-             data-product-title="${product.title}"
-             data-product-price="${product.price}"
+             data-product-title="${escapeHtml(product.title)}"
+             data-product-price="${escapeHtml(product.price)}"
              data-product-image="${product.image}">
 
       <div class="relative h-[260px] w-full overflow-hidden rounded-[8px]">
         <img
           src="${product.image}"
-          alt="${product.title}"
+          alt="${escapeHtml(product.title)}"
           class="size-full object-cover transition-transform duration-300 hover:scale-105"
           loading="lazy"
         >
@@ -140,19 +141,19 @@ export const ProductCard = (product: Product, index: number): string => {
       </div>
 
       <h3 class="font-sans font-normal text-[20px] leading-[1.2] tracking-[0.04em] text-primary"
-          data-i18n-title="${product.title}">
-        ${translateTitle(product.title)}
+          data-i18n-title="${escapeHtml(product.title)}">
+        ${escapeHtml(translateTitle(product.title))}
       </h3>
 
       <dl class="grid grid-cols-[1fr_auto] gap-x-6 gap-y-[5px] font-sans text-[13px] leading-[1.3] text-primary">
-        <dt data-i18n="card-brand">${t("card-brand")}</dt><dd class="text-right">${product.brand}</dd>
-        <dt data-i18n="${SPEC_LABEL_I18N_KEY[product.specs[0].label] ?? ""}">${t(SPEC_LABEL_I18N_KEY[product.specs[0].label] ?? product.specs[0].label)}</dt><dd class="text-right">${product.specs[0].value}</dd>
-        <dt data-i18n="${SPEC_LABEL_I18N_KEY[product.specs[1].label] ?? ""}">${t(SPEC_LABEL_I18N_KEY[product.specs[1].label] ?? product.specs[1].label)}</dt><dd class="text-right">${product.specs[1].value}</dd>
+        <dt data-i18n="card-brand">${t("card-brand")}</dt><dd class="text-right">${escapeHtml(product.brand)}</dd>
+        <dt data-i18n="${SPEC_LABEL_I18N_KEY[product.specs[0].label] ?? ""}">${t(SPEC_LABEL_I18N_KEY[product.specs[0].label] ?? product.specs[0].label)}</dt><dd class="text-right">${escapeHtml(product.specs[0].value)}</dd>
+        <dt data-i18n="${SPEC_LABEL_I18N_KEY[product.specs[1].label] ?? ""}">${t(SPEC_LABEL_I18N_KEY[product.specs[1].label] ?? product.specs[1].label)}</dt><dd class="text-right">${escapeHtml(product.specs[1].value)}</dd>
       </dl>
 
       <div class="flex items-end gap-[7px] font-sans">
         <span class="text-[13px] leading-[1.3] text-text-third" data-i18n="product-price-from">${t("product-price-from")}</span>
-        <span class="text-[20px] leading-none text-primary">${product.price}</span>
+        <span class="text-[20px] leading-none text-primary">${escapeHtml(product.price)}</span>
         <span class="text-[20px] leading-none text-primary tracking-[-0.05em]">₽ / м²</span>
       </div>
 
