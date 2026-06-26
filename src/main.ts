@@ -7,7 +7,7 @@ import {
 	initAboutCompanyPage,
 } from "./pages/AboutCompanyPage";
 import { AccountPage, initAccountPage } from "./pages/AccountPage";
-import { AdminPage, initAdminPage } from "./pages/AdminPage";
+import { AdminPage, initAdminPage } from "./pages/admin/AdminPage";
 import { AuthPage, initAuthPage } from "./pages/AuthPage";
 import { CartPage, initCartPage } from "./pages/CartPage";
 import { FavoritesPage, initFavoritesPage } from "./pages/FavoritesPage";
