@@ -17,6 +17,7 @@ import {
 } from "../services/auth";
 import { t } from "../services/i18n";
 import { AUTO_PASSWORD_LENGTH } from "../shared/lib/constants";
+import { createPageRouter } from "../shared/lib/page";
 import { showToast } from "../shared/ui/toast";
 
 type Tab = "login" | "register";
@@ -569,18 +570,8 @@ const handleLoginSubmit = (event: Event): void => {
 		});
 };
 
-const showPage = (show: boolean): void => {
-	const page = document.getElementById("auth-page");
-	if (!page) return;
-	page.classList.toggle("hidden", !show);
-	if (show) window.scrollTo({ top: 0, behavior: "smooth" });
-};
-
-const handleRoute = (): void => {
-	showPage(window.location.hash === "#auth");
-};
-
 export const initAuthPage = (): void => {
+	const handleRoute = createPageRouter("auth-page", "#auth");
 	handleRoute();
 	window.addEventListener("hashchange", handleRoute);
 

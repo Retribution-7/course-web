@@ -8,6 +8,7 @@ import { BackLink } from "../shared/ui/BackLink";
 import { EmptyState } from "../shared/ui/EmptyState";
 import { SkeletonGrid } from "../shared/ui/Skeleton";
 import { pluralize } from "../shared/utils/pluralize";
+import { createPageRouter } from "../shared/lib/page";
 
 const renderEmpty = (): string =>
 	EmptyState({
@@ -118,21 +119,8 @@ const render = async (): Promise<void> => {
 	syncFavoriteButtons();
 };
 
-const showPage = (show: boolean): void => {
-	const page = document.getElementById("favorites-page");
-	if (!page) return;
-	page.classList.toggle("hidden", !show);
-	if (show) {
-		void render();
-		window.scrollTo({ top: 0, behavior: "smooth" });
-	}
-};
-
-const handleRoute = (): void => {
-	showPage(window.location.hash === "#favorites");
-};
-
 export const initFavoritesPage = (): void => {
+	const handleRoute = createPageRouter("favorites-page", "#favorites", () => void render());
 	handleRoute();
 	window.addEventListener("hashchange", handleRoute);
 	favorites.onChange(() => {

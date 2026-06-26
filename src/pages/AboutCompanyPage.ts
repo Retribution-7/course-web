@@ -1,3 +1,4 @@
+import { createPageRouter } from "../shared/lib/page";
 import { BackLink } from "../shared/ui/BackLink";
 
 interface Stat {
@@ -320,18 +321,8 @@ export const AboutCompanyPage = (): string => `
   </section>
 `;
 
-const showPage = (show: boolean): void => {
-	const page = document.getElementById("company-page");
-	if (!page) return;
-	page.classList.toggle("hidden", !show);
-	if (show) window.scrollTo({ top: 0, behavior: "smooth" });
-};
-
-const handleRoute = (): void => {
-	showPage(window.location.hash === "#company");
-};
-
 export const initAboutCompanyPage = (): void => {
+	const handleRoute = createPageRouter("company-page", "#company");
 	handleRoute();
 	window.addEventListener("hashchange", handleRoute);
 };

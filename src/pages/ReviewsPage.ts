@@ -7,6 +7,7 @@ import { EmptyState } from "../shared/ui/EmptyState";
 import { SkeletonGrid } from "../shared/ui/Skeleton";
 import { showToast } from "../shared/ui/toast";
 import { pluralize } from "../shared/utils/pluralize";
+import { createPageRouter } from "../shared/lib/page";
 
 type SortOrder = "newest" | "oldest" | "rating";
 type RatingFilter = "all" | "5" | "4plus" | "3plus";
@@ -364,16 +365,9 @@ const showLoadingState = (): void => {
 	}
 };
 
-const showPage = (show: boolean): void => {
-	const page = document.getElementById("reviews-page");
-	if (!page) return;
-	page.classList.toggle("hidden", !show);
-	if (!show) return;
-
+const onReviewsShow = (): void => {
 	const formWrapper = document.getElementById("reviews-form-wrapper");
 	if (formWrapper) formWrapper.classList.toggle("hidden", !isAuthenticated());
-
-	window.scrollTo({ top: 0, behavior: "smooth" });
 
 	if (cachedReviews.length > 0) {
 		renderGrid();
@@ -397,10 +391,6 @@ const showPage = (show: boolean): void => {
 		});
 };
 
-const handleRoute = (): void => {
-	showPage(window.location.hash === "#reviews");
-};
-
 const resetFilters = (): void => {
 	state.search = "";
 	state.rating = "all";
@@ -422,6 +412,7 @@ const resetFilters = (): void => {
 };
 
 export const initReviewsPage = (): void => {
+	const handleRoute = createPageRouter("reviews-page", "#reviews", onReviewsShow);
 	handleRoute();
 	window.addEventListener("hashchange", handleRoute);
 

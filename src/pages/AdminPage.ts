@@ -15,6 +15,7 @@ import { catLabelKey } from "../shared/constants/categories";
 import { showConfirm } from "../shared/ui/ConfirmModal";
 import { BackLink } from "../shared/ui/BackLink";
 import { showToast } from "../shared/ui/toast";
+import { createPageRouter } from "../shared/lib/page";
 
 type AdminTab = "users" | "products" | "reviews";
 
@@ -592,22 +593,13 @@ const switchTab = (tab: AdminTab): void => {
 
 // ── Page lifecycle ────────────────────────────────────────────────────────────
 
-const showPage = (show: boolean): void => {
-	const page = document.getElementById("admin-page");
-	if (!page) return;
-	page.classList.toggle("hidden", !show);
-	if (show) {
-		window.scrollTo({ top: 0, behavior: "smooth" });
-		void loadStats();
-		switchTab(currentTab);
-	}
-};
-
-const handleRoute = (): void => {
-	showPage(window.location.hash === "#admin");
+const onAdminShow = (): void => {
+	void loadStats();
+	switchTab(currentTab);
 };
 
 export const initAdminPage = (): void => {
+	const handleRoute = createPageRouter("admin-page", "#admin", onAdminShow);
 	handleRoute();
 	window.addEventListener("hashchange", handleRoute);
 

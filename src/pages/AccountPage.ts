@@ -7,6 +7,7 @@ import {
 import { cart } from "../services/cart";
 import { favorites } from "../services/favorites";
 import { t } from "../services/i18n";
+import { createPageRouter } from "../shared/lib/page";
 import { showConfirm } from "../shared/ui/ConfirmModal";
 import { BackLink } from "../shared/ui/BackLink";
 import { formatDate } from "../shared/utils/format";
@@ -194,21 +195,8 @@ const render = (): void => {
   `;
 };
 
-const showPage = (show: boolean): void => {
-	const page = document.getElementById("account-page");
-	if (!page) return;
-	page.classList.toggle("hidden", !show);
-	if (show) {
-		render();
-		window.scrollTo({ top: 0, behavior: "smooth" });
-	}
-};
-
-const handleRoute = (): void => {
-	showPage(window.location.hash === "#account");
-};
-
 export const initAccountPage = (): void => {
+	const handleRoute = createPageRouter("account-page", "#account", render);
 	handleRoute();
 	window.addEventListener("hashchange", handleRoute);
 	onAuthChange(() => {

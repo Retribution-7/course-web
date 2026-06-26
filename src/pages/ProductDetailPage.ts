@@ -13,6 +13,7 @@ import { catKey } from "../shared/constants/categories";
 import { RELATED_PRODUCTS_LIMIT } from "../shared/lib/constants";
 import { BackLink } from "../shared/ui/BackLink";
 import { Skeleton } from "../shared/ui/Skeleton";
+import { togglePage } from "../shared/lib/page";
 
 const renderDetail = (
 	product: Product,
@@ -148,14 +149,12 @@ export const ProductDetailPage = (): string => `
 `;
 
 const showPage = async (show: boolean, productIdx?: number): Promise<void> => {
-	const page = document.getElementById("product-page");
+	togglePage("product-page", show);
 	const content = document.getElementById("product-detail-content");
-	if (!page || !content) return;
-	page.classList.toggle("hidden", !show);
+	if (!content) return;
 
 	if (!show || productIdx === undefined) return;
 
-	window.scrollTo({ top: 0, behavior: "smooth" });
 	content.innerHTML = `
     <div class="py-20">
       ${Skeleton(5)}

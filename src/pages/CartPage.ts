@@ -6,6 +6,7 @@ import { EmptyState } from "../shared/ui/EmptyState";
 import { showToast } from "../shared/ui/toast";
 import { formatRub } from "../shared/utils/format";
 import { pluralize } from "../shared/utils/pluralize";
+import { createPageRouter } from "../shared/lib/page";
 
 const renderItem = (item: CartItem): string => `
   <article class="bg-surface rounded-[14px] card-shadow p-5 lg:p-6 transition-colors duration-300
@@ -144,21 +145,8 @@ const render = (): void => {
 	if (countEl) countEl.textContent = pluralCount(items.length);
 };
 
-const showPage = (show: boolean): void => {
-	const page = document.getElementById("cart-page");
-	if (!page) return;
-	page.classList.toggle("hidden", !show);
-	if (show) {
-		render();
-		window.scrollTo({ top: 0, behavior: "smooth" });
-	}
-};
-
-const handleRoute = (): void => {
-	showPage(window.location.hash === "#cart");
-};
-
 export const initCartPage = (): void => {
+	const handleRoute = createPageRouter("cart-page", "#cart", render);
 	handleRoute();
 	window.addEventListener("hashchange", handleRoute);
 	cart.onChange(() => {
