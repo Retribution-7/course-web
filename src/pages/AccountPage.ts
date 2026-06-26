@@ -8,6 +8,7 @@ import { cart } from "../services/cart";
 import { favorites } from "../services/favorites";
 import { t } from "../services/i18n";
 import { createPageRouter } from "../shared/lib/page";
+import { escapeHtml } from "../shared/utils/escape";
 import { showConfirm } from "../shared/ui/ConfirmModal";
 import { BackLink } from "../shared/ui/BackLink";
 import { formatDate } from "../shared/utils/format";
@@ -56,10 +57,10 @@ const renderProfileCard = (user: RegisteredUser): string => `
     </div>
     <div class="flex flex-col gap-2">
       <span class="font-sans text-[13px] uppercase tracking-[0.08em] text-button-first">
-        @${user.nickname}
+        @${escapeHtml(user.nickname)}
       </span>
       <h2 class="font-sans font-normal text-[24px] leading-[1.2] sm:text-[28px] lg:text-[32px] gradient-text">
-        ${fullName(user)}
+        ${escapeHtml(fullName(user))}
       </h2>
       <p class="font-sans text-[14px] lg:text-[15px] leading-[1.4] text-text-third">
         ${t("account-member-since")} ${formatDate(user.createdAt)}
@@ -77,11 +78,11 @@ const renderInfoCard = (user: RegisteredUser): string => `
                font-sans text-[14px] lg:text-[15px] leading-[1.4]">
       <div class="flex flex-col gap-1">
         <dt class="text-[13px] uppercase tracking-[0.04em] text-text-third">${t("account-phone")}</dt>
-        <dd class="text-primary">${user.phone}</dd>
+        <dd class="text-primary">${escapeHtml(user.phone)}</dd>
       </div>
       <div class="flex flex-col gap-1">
         <dt class="text-[13px] uppercase tracking-[0.04em] text-text-third">${t("account-email")}</dt>
-        <dd class="text-primary break-all">${user.email}</dd>
+        <dd class="text-primary break-all">${escapeHtml(user.email)}</dd>
       </div>
       <div class="flex flex-col gap-1">
         <dt class="text-[13px] uppercase tracking-[0.04em] text-text-third">${t("account-birthdate")}</dt>
@@ -89,7 +90,7 @@ const renderInfoCard = (user: RegisteredUser): string => `
       </div>
       <div class="flex flex-col gap-1">
         <dt class="text-[13px] uppercase tracking-[0.04em] text-text-third">${t("account-nickname")}</dt>
-        <dd class="text-primary">${user.nickname}</dd>
+        <dd class="text-primary">${escapeHtml(user.nickname)}</dd>
       </div>
     </dl>
   </div>

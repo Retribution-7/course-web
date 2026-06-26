@@ -1,3 +1,5 @@
+import { escapeHtml } from "../utils/escape";
+
 let activeModal: HTMLElement | null = null;
 
 /**
@@ -19,7 +21,7 @@ export const showConfirm = (message: string): Promise<boolean> => {
 		modal.style.cssText =
 			"background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.18);padding:28px 32px;max-width:400px;width:90%;font-family:sans-serif;display:flex;flex-direction:column;gap:20px;";
 		modal.innerHTML = `
-			<p style="margin:0;font-size:16px;line-height:1.5;color:#44444E;">${message}</p>
+			<p style="margin:0;font-size:16px;line-height:1.5;color:#44444E;">${escapeHtml(message)}</p>
 			<div style="display:flex;justify-content:flex-end;gap:10px;">
 				<button type="button" data-confirm="false"
 					style="padding:8px 20px;border-radius:20px;border:1px solid #ddd;background:#fff;font-size:14px;color:#44444E;cursor:pointer;transition:background 0.15s;">

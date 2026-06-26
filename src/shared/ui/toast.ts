@@ -1,4 +1,5 @@
 import { TOAST_FADE_DURATION_MS } from "../lib/constants";
+import { escapeHtml } from "../utils/escape";
 
 type ToastType = "success" | "info" | "warning" | "error";
 
@@ -49,7 +50,7 @@ export const showToast = (
 	toast.setAttribute("role", "status");
 	toast.innerHTML = `
     <span style="display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:${accent};color:#fff;font-size:13px;font-weight:500;flex-shrink:0;" aria-hidden="true">${icon}</span>
-    <span style="flex:1;">${message}</span>
+    <span style="flex:1;">${escapeHtml(message)}</span>
   `;
 	root.appendChild(toast);
 
