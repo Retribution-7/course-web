@@ -88,5 +88,6 @@ const syncFromServer = (): void => {
 	}
 };
 
-syncFromServer();
+void cart.loadFromServer();
+void favorites.loadFromServer();
 onAuthChange(syncFromServer);
