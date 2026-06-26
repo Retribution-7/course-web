@@ -2,14 +2,8 @@ import { deleteReview, fetchReviews } from "../../services/api";
 import { t } from "../../services/i18n";
 import { showConfirm } from "../../shared/ui/ConfirmModal";
 import { showToast } from "../../shared/ui/toast";
+import { Stars } from "../../shared/ui/Stars";
 import { showLoading, TableWrap, ThRow } from "./shared";
-
-const Stars = (rating: number): string =>
-	Array.from(
-		{ length: 5 },
-		(_, i) =>
-			`<span class="${i < Math.round(rating) ? "text-[#FFC400]" : "text-gray-300"}">★</span>`,
-	).join("");
 
 export const renderReviewsTab = async (): Promise<void> => {
 	const el = document.getElementById("admin-content");
